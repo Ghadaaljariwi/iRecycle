@@ -1,0 +1,82 @@
+{
+  "project_info": {
+    "project_number": "111247537996",
+    "project_id": "irecycle-gp",
+    "storage_bucket": "irecycle-gp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:111247537996:android:b19d69fb1ead5fab8341e9",
+        "android_client_info": {
+          "package_name": "com.example.irecycle"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "111247537996-ht7r984d0v5r8s5oqb2sjvjav8ov2qlr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAcfoJjKPEFSzb-gSIN2NPCvT8WtCdiUyk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "111247537996-ht7r984d0v5r8s5oqb2sjvjav8ov2qlr.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "111247537996-d4jqa553vbhtrpflk3avhb9ph9obqe2j.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.irecycle"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:111247537996:android:1000f7d8e069d4c98341e9",
+        "android_client_info": {
+          "package_name": "com.example.irecyclegp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "111247537996-ht7r984d0v5r8s5oqb2sjvjav8ov2qlr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAcfoJjKPEFSzb-gSIN2NPCvT8WtCdiUyk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "111247537996-ht7r984d0v5r8s5oqb2sjvjav8ov2qlr.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "111247537996-d4jqa553vbhtrpflk3avhb9ph9obqe2j.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.irecycle"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
