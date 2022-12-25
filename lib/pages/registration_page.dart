@@ -24,10 +24,10 @@ class _RegistrationPageState extends State<RegistrationPage> {
   bool checkedValue = false;
   bool checkboxValue = false;
 
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _passController = TextEditingController();
-  TextEditingController _repassController = TextEditingController();
-  TextEditingController _nameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passController = TextEditingController();
+  final TextEditingController _repassController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
 
   Future addUserDetails(String name, String email) async {
     final firebaseUser = await FirebaseAuth.instance.currentUser!;
@@ -62,7 +62,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
   @override
   Widget build(BuildContext context) {
     print('fuck');
-    print(_nameController.text);
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
@@ -195,8 +195,9 @@ class _RegistrationPageState extends State<RegistrationPage> {
                               }).onError((error, stackTrace) {
                                 showToastMessage("Error ${error.toString()}");
                               });
-                              addUserDetails(_nameController.text.trim(),
-                                  _emailController.text.trim());
+                              addUserDetails("name", 'email');
+                              //_nameController.text.trim(),
+                              //_emailController.text.trim());
                             },
                           ),
                         ),
