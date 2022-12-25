@@ -43,7 +43,7 @@ class _LoginPageState extends State<LoginPage> {
                             fontSize: 60, fontWeight: FontWeight.bold),
                       ),
                       Text(
-                        'Signin into your account',
+                        'Sign in into your account',
                         style: TextStyle(color: Colors.grey),
                       ),
                       SizedBox(height: 30.0),
@@ -135,7 +135,7 @@ class _LoginPageState extends State<LoginPage> {
                                 child: Text.rich(TextSpan(children: [
                                   TextSpan(text: "Don\'t have an account? "),
                                   TextSpan(
-                                    text: 'Create',
+                                    text: 'Create an account',
                                     recognizer: TapGestureRecognizer()
                                       ..onTap = () {
                                         Navigator.push(

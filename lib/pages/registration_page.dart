@@ -8,6 +8,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 import 'profile_page.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class RegistrationPage extends StatefulWidget {
   @override
@@ -21,8 +24,45 @@ class _RegistrationPageState extends State<RegistrationPage> {
   bool checkedValue = false;
   bool checkboxValue = false;
 
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _passController = TextEditingController();
+  TextEditingController _repassController = TextEditingController();
+  TextEditingController _nameController = TextEditingController();
+
+  Future addUserDetails(String name, String email) async {
+    final firebaseUser = await FirebaseAuth.instance.currentUser!;
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(firebaseUser.uid)
+        .set({
+      'firstName': name,
+      'email': email,
+      'image': '',
+      'uid': firebaseUser.uid,
+    });
+  }
+
+  void showToastMessage(String message) {
+    //raghad
+    Fluttertoast.showToast(
+        msg: message, //message to show toast
+        toastLength: Toast.LENGTH_LONG, //duration for message to show
+        gravity: ToastGravity.CENTER, //where you want to show, top, bottom
+        timeInSecForIosWeb: 1, //for iOS only
+        //backgroundColor: Colors.red, //background Color for message
+        textColor: Colors.white,
+        backgroundColor: Colors.red,
+
+        //message text color
+
+        fontSize: 16.0 //message font size
+        );
+  }
+
   @override
   Widget build(BuildContext context) {
+    print('fuck');
+    print(_nameController.text);
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
@@ -43,7 +83,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                     style: TextStyle(fontSize: 60, fontWeight: FontWeight.bold),
                   ),
                   Text(
-                    'Signup a new account',
+                    'Sign up for a new account',
                     style: TextStyle(color: Colors.grey),
                   ),
                   SizedBox(height: 30.0),
@@ -53,6 +93,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                       children: [
                         Container(
                           child: TextFormField(
+                            controller: _nameController,
                             decoration: ThemeHelper()
                                 .textInputDecoration('Name', 'Enter your name'),
                             validator: (val) {
@@ -65,8 +106,10 @@ class _RegistrationPageState extends State<RegistrationPage> {
                           decoration: ThemeHelper().inputBoxDecorationShaddow(),
                         ),
                         SizedBox(height: 20.0),
+                        //email
                         Container(
                           child: TextFormField(
+                            controller: _emailController,
                             decoration: ThemeHelper().textInputDecoration(
                                 "E-mail address", "Enter your email"),
                             keyboardType: TextInputType.emailAddress,
@@ -82,8 +125,10 @@ class _RegistrationPageState extends State<RegistrationPage> {
                           decoration: ThemeHelper().inputBoxDecorationShaddow(),
                         ),
                         SizedBox(height: 20.0),
+                        //pasword
                         Container(
                           child: TextFormField(
+                            controller: _passController,
                             obscureText: true,
                             decoration: ThemeHelper().textInputDecoration(
                                 "Password", "Enter your password"),
@@ -97,8 +142,10 @@ class _RegistrationPageState extends State<RegistrationPage> {
                           decoration: ThemeHelper().inputBoxDecorationShaddow(),
                         ),
                         SizedBox(height: 20.0),
+                        //re password
                         Container(
                           child: TextFormField(
+                            controller: _repassController,
                             obscureText: true,
                             decoration: ThemeHelper().textInputDecoration(
                                 "Re-Password", "Re-Enter your password"),
@@ -129,13 +176,27 @@ class _RegistrationPageState extends State<RegistrationPage> {
                                 ),
                               ),
                             ),
-                            onPressed: () {
+                            onPressed: () async {
                               if (_formKey.currentState!.validate()) {
                                 /*  Navigator.of(context).pushAndRemoveUntil(
                                     MaterialPageRoute(
                                         builder: (context) => ProfilePage()),
                                     (Route<dynamic> route) => false);*/
                               }
+                              await FirebaseAuth.instance
+                                  .createUserWithEmailAndPassword(
+                                      email: _emailController.text.trim(),
+                                      password: _passController.text.trim())
+                                  .then((value) {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => ProfilePage()));
+                              }).onError((error, stackTrace) {
+                                showToastMessage("Error ${error.toString()}");
+                              });
+                              addUserDetails(_nameController.text.trim(),
+                                  _emailController.text.trim());
                             },
                           ),
                         ),
