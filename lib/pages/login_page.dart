@@ -1,6 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:irecycle/common/theme_helper.dart';
 
 import 'profile_page.dart';
@@ -17,6 +19,46 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   double _headerHeight = 180;
   Key _formKey = GlobalKey<FormState>();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passController = TextEditingController();
+
+  void _showDialog() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text(
+              "Empty Fields",
+              style: TextStyle(color: Colors.deepPurple, fontSize: 20),
+            ),
+            content: Text(
+              "Please enter all required fields",
+              style: TextStyle(fontSize: 20),
+            ),
+            actions: <Widget>[
+              TextButton(
+                onPressed: Navigator.of(context).pop,
+                child: const Text(
+                  "OK",
+                  style: TextStyle(fontSize: 20),
+                ),
+              )
+            ],
+          );
+        });
+  }
+
+  void showToastMessage(String message) {
+    Fluttertoast.showToast(
+        msg: message,
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
+        //backgroundColor: Colors.red, //background Color for message
+        textColor: Colors.white,
+        backgroundColor: Colors.red,
+        fontSize: 16.0);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,9 +93,12 @@ class _LoginPageState extends State<LoginPage> {
                           key: _formKey,
                           child: Column(
                             children: [
+                              //email
+
                               SizedBox(height: 30.0),
                               Container(
                                 child: TextFormField(
+                                  controller: _emailController,
                                   decoration: ThemeHelper().textInputDecoration(
                                       'Email', 'Enter your email'),
                                   validator: (val) {
@@ -66,9 +111,13 @@ class _LoginPageState extends State<LoginPage> {
                                 decoration:
                                     ThemeHelper().inputBoxDecorationShaddow(),
                               ),
+
+                              //password
+
                               SizedBox(height: 30.0),
                               Container(
                                 child: TextFormField(
+                                  controller: _passController,
                                   obscureText: true,
                                   decoration: ThemeHelper().textInputDecoration(
                                       "Password", "Enter your password"),
@@ -107,27 +156,52 @@ class _LoginPageState extends State<LoginPage> {
                                 decoration:
                                     ThemeHelper().buttonBoxDecoration(context),
                                 child: ElevatedButton(
-                                  style: ThemeHelper().buttonStyle(),
-                                  child: Padding(
-                                    padding:
-                                        EdgeInsets.fromLTRB(40, 10, 40, 10),
-                                    child: Text(
-                                      'Sign In'.toUpperCase(),
-                                      style: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white),
+                                    style: ThemeHelper().buttonStyle(),
+                                    child: Padding(
+                                      padding:
+                                          EdgeInsets.fromLTRB(40, 10, 40, 10),
+                                      child: Text(
+                                        'Sign In'.toUpperCase(),
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white),
+                                      ),
                                     ),
-                                  ),
-                                  onPressed: () {
-                                    //After successful login
-                                    Navigator.pushReplacement(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                ProfilePage()));
-                                  },
-                                ),
+                                    onPressed: () async {
+                                      if (_emailController.text.isEmpty &&
+                                          _passController.text.isEmpty) {
+                                        _showDialog();
+                                      } else if (_emailController
+                                          .text.isEmpty) {
+                                        showToastMessage(
+                                            'Please enter your email');
+                                      } else if (!_emailController.text
+                                          .contains('@')) {
+                                        showToastMessage(
+                                            'Please enter a valid email');
+                                      } else if (_passController.text.isEmpty) {
+                                        showToastMessage(
+                                            'Please enter your password');
+                                      } else {
+                                        await FirebaseAuth.instance
+                                            .signInWithEmailAndPassword(
+                                                email: _emailController.text
+                                                    .trim(),
+                                                password:
+                                                    _passController.text.trim())
+                                            .then((value) {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      ProfilePage()));
+                                        }).onError((error, stackTrace) {
+                                          showToastMessage(
+                                              "Error ${error.toString()}");
+                                        });
+                                      }
+                                    }),
                               ),
                               Container(
                                 margin: EdgeInsets.fromLTRB(10, 20, 10, 20),

@@ -42,27 +42,47 @@ class _RegistrationPageState extends State<RegistrationPage> {
     });
   }
 
+  void _showDialog() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text(
+              "Empty Fields",
+              style: TextStyle(color: Colors.deepPurple, fontSize: 20),
+            ),
+            content: Text(
+              "Please enter all required fields",
+              style: TextStyle(fontSize: 20),
+            ),
+            actions: <Widget>[
+              TextButton(
+                onPressed: Navigator.of(context).pop,
+                child: const Text(
+                  "OK",
+                  style: TextStyle(fontSize: 20),
+                ),
+              )
+            ],
+          );
+        });
+  }
+
   void showToastMessage(String message) {
-    //raghad
     Fluttertoast.showToast(
-        msg: message, //message to show toast
-        toastLength: Toast.LENGTH_LONG, //duration for message to show
-        gravity: ToastGravity.CENTER, //where you want to show, top, bottom
-        timeInSecForIosWeb: 1, //for iOS only
+        msg: message,
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
         //backgroundColor: Colors.red, //background Color for message
         textColor: Colors.white,
         backgroundColor: Colors.red,
-
-        //message text color
-
-        fontSize: 16.0 //message font size
-        );
+        fontSize: 16.0);
   }
 
   @override
   Widget build(BuildContext context) {
-    print('fuck');
-
+    showToastMessage('hello');
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
@@ -91,6 +111,8 @@ class _RegistrationPageState extends State<RegistrationPage> {
                     key: _formKey,
                     child: Column(
                       children: [
+                        //name
+
                         Container(
                           child: TextFormField(
                             controller: _nameController,
@@ -106,13 +128,16 @@ class _RegistrationPageState extends State<RegistrationPage> {
                           decoration: ThemeHelper().inputBoxDecorationShaddow(),
                         ),
                         SizedBox(height: 20.0),
+
                         //email
+
                         Container(
                           child: TextFormField(
                             controller: _emailController,
                             decoration: ThemeHelper().textInputDecoration(
                                 "E-mail address", "Enter your email"),
                             keyboardType: TextInputType.emailAddress,
+                            /*
                             validator: (val) {
                               if (!(val!.isEmpty) ||
                                   !RegExp(r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$")
@@ -121,40 +146,49 @@ class _RegistrationPageState extends State<RegistrationPage> {
                               }
                               return null;
                             },
+                            */
                           ),
                           decoration: ThemeHelper().inputBoxDecorationShaddow(),
                         ),
                         SizedBox(height: 20.0),
+
                         //pasword
+
                         Container(
                           child: TextFormField(
                             controller: _passController,
                             obscureText: true,
                             decoration: ThemeHelper().textInputDecoration(
                                 "Password", "Enter your password"),
+                            /*
                             validator: (val) {
                               if (val!.isEmpty) {
                                 return "Please enter your password";
                               }
                               return null;
                             },
+                            */
                           ),
                           decoration: ThemeHelper().inputBoxDecorationShaddow(),
                         ),
                         SizedBox(height: 20.0),
+
                         //re password
+
                         Container(
                           child: TextFormField(
                             controller: _repassController,
                             obscureText: true,
                             decoration: ThemeHelper().textInputDecoration(
                                 "Re-Password", "Re-Enter your password"),
+                            /*
                             validator: (val) {
                               if (val!.isEmpty) {
                                 return "Please Re-enter your password";
                               }
                               return null;
                             },
+                            */
                           ),
                           decoration: ThemeHelper().inputBoxDecorationShaddow(),
                         ),
@@ -177,27 +211,47 @@ class _RegistrationPageState extends State<RegistrationPage> {
                               ),
                             ),
                             onPressed: () async {
-                              if (_formKey.currentState!.validate()) {
-                                /*  Navigator.of(context).pushAndRemoveUntil(
-                                    MaterialPageRoute(
-                                        builder: (context) => ProfilePage()),
-                                    (Route<dynamic> route) => false);*/
+                              if (_emailController.text.isEmpty &&
+                                  _passController.text.isEmpty &&
+                                  _repassController.text.isEmpty &&
+                                  _nameController.text.isEmpty) {
+                                _showDialog();
+                              } else if (_nameController.text.isEmpty) {
+                                showToastMessage('Please enter your name');
+                              } else if (_emailController.text.isEmpty) {
+                                showToastMessage('Please enter your email');
+                              } else if (!_emailController.text.contains('@')) {
+                                showToastMessage('Please enter a valid email');
+                              } else if (_passController.text.isEmpty) {
+                                showToastMessage('Please enter your password');
+                              } //else if(!numReg.hasMatch(_passController.text)){
+                              //showToastMessage('كلمة المرور يجب أن تحتوي على أرقام');
+                              //}//else if(!letterReg.hasMatch(_passController.text)){
+                              //showToastMessage('كلمة المرور يجب أن تحتوي على حروف');
+                              //}
+                              else if (_passController.text.length < 6) {
+                                showToastMessage(
+                                    'Password should be no less than 6 numbers');
+                              } else if (_passController.text !=
+                                  _repassController.text) {
+                                showToastMessage(
+                                    'Please reenter your password correctly');
+                              } else {
+                                await FirebaseAuth.instance
+                                    .createUserWithEmailAndPassword(
+                                        email: _emailController.text.trim(),
+                                        password: _passController.text.trim())
+                                    .then((value) {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => ProfilePage()));
+                                }).onError((error, stackTrace) {
+                                  showToastMessage("Error ${error.toString()}");
+                                });
                               }
-                              await FirebaseAuth.instance
-                                  .createUserWithEmailAndPassword(
-                                      email: _emailController.text.trim(),
-                                      password: _passController.text.trim())
-                                  .then((value) {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => ProfilePage()));
-                              }).onError((error, stackTrace) {
-                                showToastMessage("Error ${error.toString()}");
-                              });
-                              addUserDetails("name", 'email');
-                              //_nameController.text.trim(),
-                              //_emailController.text.trim());
+                              addUserDetails(_nameController.text.trim(),
+                                  _emailController.text.trim());
                             },
                           ),
                         ),

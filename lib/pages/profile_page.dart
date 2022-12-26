@@ -1,6 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:irecycle/pages/login_page.dart';
 import 'package:irecycle/pages/splash_screen.dart';
 import 'package:irecycle/pages/widgets/header_widget.dart';
@@ -17,6 +20,85 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   double _drawerIconSize = 24;
   double _drawerFontSize = 17;
+
+  TextEditingController nameController = TextEditingController();
+  TextEditingController _emailController = TextEditingController();
+
+  _getUserDetail() {
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .snapshots()
+        .listen((DocumentSnapshot snapshot) {
+      nameController.text = snapshot.get("firstName");
+      // image = snapshot.get('image');
+      _emailController.text = snapshot.get("email");
+      setState(() {});
+    });
+  }
+
+  Future delete() async {
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .delete();
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (BuildContext context) {
+      return LoginPage();
+    }));
+    showToastMessage("Account deleted successfully");
+  }
+
+  void showToastMessage(String message) {
+    Fluttertoast.showToast(
+        msg: message,
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
+        //backgroundColor: Colors.red, //background Color for message
+        textColor: Colors.white,
+        backgroundColor: Colors.red,
+        fontSize: 16.0);
+  }
+
+  void _showDialog() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          // set up the buttons
+          Widget cancelButton = TextButton(
+            child: Text(
+              "No",
+              style: TextStyle(fontSize: 20, color: Colors.red),
+            ),
+            onPressed: Navigator.of(context).pop,
+          );
+          Widget continueButton = TextButton(
+            child: Text(
+              "Yes",
+              style: TextStyle(fontSize: 20, color: Colors.green),
+            ),
+            onPressed: () {
+              delete();
+            },
+          );
+
+          return AlertDialog(
+            title: Text(
+              'Delete Profile',
+              style: TextStyle(color: Colors.deepPurple, fontSize: 20),
+            ),
+            content: Text(
+              'Are you sure you want to delete your profile ?',
+              style: TextStyle(fontSize: 20),
+            ),
+            actions: [
+              cancelButton,
+              continueButton,
+            ],
+          );
+        });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +121,16 @@ class _ProfilePageState extends State<ProfilePage> {
               ])),
         ),
         actions: [
+          IconButton(
+            icon: Icon(
+              Icons.arrow_forward,
+              color: Colors.white,
+              size: 40,
+            ),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
           Container(
             margin: EdgeInsets.only(
               top: 16,
@@ -342,6 +434,13 @@ class _ProfilePageState extends State<ProfilePage> {
                                           subtitle: Text(
                                               "This is a about me link and you can khow about me in this section."),
                                         ),
+                                        IconButton(
+                                            icon: Icon(Icons.delete),
+                                            color: Colors.red,
+                                            iconSize: 40,
+                                            onPressed: () {
+                                              _showDialog();
+                                            }),
                                       ],
                                     ),
                                   ],
