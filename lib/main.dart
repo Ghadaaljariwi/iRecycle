@@ -7,16 +7,16 @@ import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
 Map<int, Color> color = {
-  50: Colors.lightGreen.shade100,
-  100: Colors.lightGreen.shade200,
-  200: Colors.lightGreen.shade300,
-  300: Colors.lightGreen.shade400,
-  400: Colors.lightGreen.shade500,
-  500: Colors.lightGreen.shade600,
-  600: Colors.lightGreen.shade700,
-  700: Colors.lightGreen.shade800,
-  800: Colors.lightGreen.shade900,
-  900: Colors.lightGreen.shade900
+  50: Color.fromARGB(255, 65, 102, 39),
+  100: Color.fromARGB(255, 65, 102, 39),
+  200: Color.fromARGB(255, 94, 145, 74),
+  300: Color.fromARGB(255, 135, 174, 96),
+  400: Color.fromARGB(255, 169, 221, 126),
+  500: Color.fromARGB(255, 169, 221, 126),
+  600: Color.fromARGB(255, 169, 221, 126),
+  700: Color.fromARGB(255, 135, 174, 96),
+  800: Color.fromARGB(255, 94, 145, 74),
+  900: Color.fromARGB(255, 65, 102, 39),
 };
 
 MaterialColor colorCustom = MaterialColor(0xFF8BC34A, color);
