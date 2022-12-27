@@ -49,7 +49,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
           return AlertDialog(
             title: Text(
               "Empty Fields",
-              style: TextStyle(color: Colors.deepPurple, fontSize: 20),
+              style: TextStyle(color: Colors.lightGreen, fontSize: 20),
             ),
             content: Text(
               "Please enter all required fields",
