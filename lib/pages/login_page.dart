@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:irecycle/common/theme_helper.dart';
 import 'package:irecycle/pages/AdminHome.dart';
+import 'package:irecycle/pages/widgets/forgotPass.dart';
 
 import 'home.dart';
 import 'registration_page.dart';
@@ -145,10 +146,20 @@ class _LoginPageState extends State<LoginPage> {
                                               ForgotPasswordPage()),
                                     ); */
                                   },
-                                  child: Text(
-                                    "Forgot your password?",
-                                    style: TextStyle(
-                                      color: Colors.grey,
+                                  child: TextButton(
+                                    onPressed:() {
+                                                            Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => forgotPass()));
+                                                          },
+
+                                    child: Text(
+                                      "Forgot your password?",
+                                      style: TextStyle(
+                                        color: Colors.grey,
+                                         
+                                      ),
                                     ),
                                   ),
                                 ),
