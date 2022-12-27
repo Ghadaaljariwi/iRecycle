@@ -118,10 +118,7 @@ class _forgotPassState extends State<forgotPass> {
                                   .then((value) {
                                 showToastMessage('Reset password email sent successfully');
 
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => LoginPage()));
+                                Navigator.pop(context);
                               }).onError((error, stackTrace) {
                                 showToastMessage("Error ${error.toString()}");
                               });
