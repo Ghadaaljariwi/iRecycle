@@ -4,8 +4,9 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:irecycle/common/theme_helper.dart';
+import 'package:irecycle/pages/AdminHome.dart';
 
-import 'profile_page.dart';
+import 'home.dart';
 import 'registration_page.dart';
 import 'widgets/header_widget.dart';
 
@@ -183,6 +184,25 @@ class _LoginPageState extends State<LoginPage> {
                                       } else if (_passController.text.isEmpty) {
                                         showToastMessage(
                                             'Please enter your password');
+                                      } else if (_emailController.text
+                                              .toLowerCase() ==
+                                          'admin@gmail.com') {
+                                        await FirebaseAuth.instance
+                                            .signInWithEmailAndPassword(
+                                                email: _emailController.text
+                                                    .trim(),
+                                                password:
+                                                    _passController.text.trim())
+                                            .then((value) {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      AdminHomePage()));
+                                        }).onError((error, stackTrace) {
+                                          showToastMessage(
+                                              "Error ${error.toString()}");
+                                        });
                                       } else {
                                         await FirebaseAuth.instance
                                             .signInWithEmailAndPassword(
@@ -195,7 +215,7 @@ class _LoginPageState extends State<LoginPage> {
                                               context,
                                               MaterialPageRoute(
                                                   builder: (context) =>
-                                                      ProfilePage()));
+                                                      HomePage()));
                                         }).onError((error, stackTrace) {
                                           showToastMessage(
                                               "Error ${error.toString()}");

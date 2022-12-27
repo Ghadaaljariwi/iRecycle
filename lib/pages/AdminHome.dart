@@ -11,14 +11,14 @@ import 'package:irecycle/pages/widgets/header_widget.dart';
 import '../common/theme_helper.dart';
 import 'registration_page.dart';
 
-class HomePage extends StatefulWidget {
+class AdminHomePage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return _HomePageState();
+    return _AdminHomePageState();
   }
 }
 
-class _HomePageState extends State<HomePage> {
+class _AdminHomePageState extends State<AdminHomePage> {
   double _drawerIconSize = 24;
   double _drawerFontSize = 17;
 
@@ -106,7 +106,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "iRecycle",
+          "iRecycle Admin",
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         elevation: 0.5,

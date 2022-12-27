@@ -1,10 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:irecycle/onBording/onbording.dart';
 import 'package:irecycle/pages/splash_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
+Map<int, Color> color = {
+  50: Colors.lightGreen.shade100,
+  100: Colors.lightGreen.shade200,
+  200: Colors.lightGreen.shade300,
+  300: Colors.lightGreen.shade400,
+  400: Colors.lightGreen.shade500,
+  500: Colors.lightGreen.shade600,
+  600: Colors.lightGreen.shade700,
+  700: Colors.lightGreen.shade800,
+  800: Colors.lightGreen.shade900,
+  900: Colors.lightGreen.shade900
+};
+
+MaterialColor colorCustom = MaterialColor(0xFF8BC34A, color);
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -23,9 +38,10 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.lightGreen,
+        primarySwatch: colorCustom,
       ),
-      home: SplashScreen(title: 'Flutter Demo Home Page'),
+      // home: SplashScreen(title: 'Flutter Demo Home Page'),
+      home: OnboardingScreen(),
     );
   }
 }
