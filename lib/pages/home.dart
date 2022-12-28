@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:irecycle/pages/login_page.dart';
 import 'package:irecycle/pages/splash_screen.dart';
+import 'package:irecycle/pages/profile_page.dart';
 import 'package:irecycle/pages/widgets/header_widget.dart';
 
 import '../common/theme_helper.dart';
@@ -181,6 +182,33 @@ class _HomePageState extends State<HomePage> {
                     MaterialPageRoute(
                         builder: (context) => ForgotPasswordPage()),
                   ); */
+                },
+              ),
+              Divider(
+                color: Theme.of(context).primaryColor,
+                height: 1,
+              ),
+              ListTile(
+                leading: Icon(
+                  Icons.account_circle_rounded,
+                  size: _drawerIconSize,
+                  color: Theme.of(context).accentColor,
+                ),
+                title: Text(
+                  'My Profile',
+                  style: TextStyle(
+                      fontSize: _drawerFontSize,
+                      color: Theme.of(context).accentColor),
+                ),
+                onTap: () async {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (BuildContext context) {
+                        return ProfilePage();
+                      },
+                    ),
+                  );
+                  //do
                 },
               ),
               Divider(
