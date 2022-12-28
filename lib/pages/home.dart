@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -7,9 +9,10 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:irecycle/pages/login_page.dart';
 import 'package:irecycle/pages/splash_screen.dart';
 import 'package:irecycle/pages/widgets/header_widget.dart';
-
 import '../common/theme_helper.dart';
 import 'registration_page.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -19,20 +22,27 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  void initState() {
+    // TODO: implement initState
+    _getUserDetail();
+    super.initState();
+  }
+
   double _drawerIconSize = 24;
   double _drawerFontSize = 17;
 
   TextEditingController nameController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
+  File? image;
 
-  _getUserDetail() {
+  _getUserDetail() async {
     FirebaseFirestore.instance
         .collection('users')
         .doc(FirebaseAuth.instance.currentUser!.uid)
         .snapshots()
         .listen((DocumentSnapshot snapshot) {
       nameController.text = snapshot.get("firstName");
-      // image = snapshot.get('image');
+      image = File(snapshot.get('image')) as File?;
       _emailController.text = snapshot.get("email");
       setState(() {});
     });
@@ -56,9 +66,7 @@ class _HomePageState extends State<HomePage> {
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.CENTER,
         timeInSecForIosWeb: 1,
-        //backgroundColor: Colors.red, //background Color for message
         textColor: Colors.white,
-        // backgroundColor: Colors.red,
         fontSize: 16.0);
   }
 
@@ -99,6 +107,36 @@ class _HomePageState extends State<HomePage> {
             ],
           );
         });
+  }
+
+  checkPermission(ImageSource source) async {
+    var cameraStatus = Permission.camera.status;
+    print(cameraStatus);
+    if (await cameraStatus.isGranted) {
+      pickImage(source);
+    } else {
+      showToastMessage("We need to access your camera");
+      await Permission.camera.request();
+    }
+  }
+
+  Future pickImage(ImageSource source) async {
+    try {
+      final image = await ImagePicker().pickImage(source: source);
+      if (image == null) return;
+
+      final ImageTemporary = File(image.path);
+      setState(() {
+        this.image = ImageTemporary;
+      });
+      await FirebaseFirestore.instance
+          .collection("users")
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .set({"image": ImageTemporary.path}, SetOptions(merge: true)).then(
+              (value) {});
+    } on PlatformException catch (e) {
+      print('Failed to pick image: $e');
+    }
   }
 
   @override
@@ -155,7 +193,7 @@ class _HomePageState extends State<HomePage> {
                 child: Container(
                   alignment: Alignment.bottomLeft,
                   child: Text(
-                    "Irecycle",
+                    "iRecycle",
                     style: TextStyle(
                         fontSize: 25,
                         color: Colors.white,
@@ -249,9 +287,32 @@ class _HomePageState extends State<HomePage> {
               padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
               child: Column(
                 children: [
+                  image != null
+                      ? Image.file(
+                          image!,
+                          width: 160,
+                          height: 160,
+                          fit: BoxFit.cover,
+                        )
+                      : SizedBox(
+                          height: 20,
+                        ),
+                  ElevatedButton(
+                      onPressed: (() => checkPermission(ImageSource.gallery)),
+                      child: Text('Pick Gallery')),
+                  ElevatedButton(
+                      onPressed: (() => checkPermission(ImageSource.camera)),
+                      child: Text('Pick Camera')),
                   Text(
                     FirebaseAuth.instance.currentUser!.email.toString(),
                     style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Text(
+                    'Hello ' + nameController.text + '!',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                   SizedBox(
                     height: 20,
