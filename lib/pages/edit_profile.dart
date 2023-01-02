@@ -130,9 +130,7 @@ class _EditProfileState extends State<EditProfile> {
           ),
         ],
       ),
-      body: isLoading
-          ? circularProgress()
-          : ListView(
+      body:  ListView(
               children: <Widget>[
                 Container(
                   child: Column(

@@ -98,9 +98,9 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
           alignment: Alignment.center,
           decoration: BoxDecoration(
-            color: Colors.blue,
+            color: Theme.of(context).primaryColor,
             border: Border.all(
-              color: Colors.blue,
+              color: Theme.of(context).primaryColor,
             ),
             borderRadius: BorderRadius.circular(5.0),
           ),
