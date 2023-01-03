@@ -42,7 +42,8 @@ class MyApp extends StatelessWidget {
         primarySwatch: colorCustom,
       ),
       // home: SplashScreen(title: 'Flutter Demo Home Page'),
-      home: LoginPage(), //OnboardingScreen(),
+      //  home: LoginPage(), //OnboardingScreen(),
+      home: ImageClass(),
     );
   }
 }
