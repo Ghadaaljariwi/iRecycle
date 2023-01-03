@@ -4,12 +4,12 @@ import 'dart:io';
 import 'dart:async';
 import 'package:tflite/tflite.dart';
 
-class HomePage extends StatefulWidget {
+class ImageClass extends StatefulWidget {
   @override
-  _HomePageState createState() => _HomePageState();
+  _ImageClassState createState() => _ImageClassState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _ImageClassState extends State<ImageClass> {
   PickedFile? _image;
   bool _loading = false;
   List<dynamic>? _outputs;
