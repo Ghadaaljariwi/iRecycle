@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'dart:async';
-import 'package:tflite/tflite.dart';
+//import 'package:tflite/tflite.dart';
 
 class ImageClass extends StatefulWidget {
   @override
@@ -17,16 +17,17 @@ class _ImageClassState extends State<ImageClass> {
   void initState() {
     super.initState();
     _loading = true;
-
+/*
     loadModel().then((value) {
       setState(() {
         _loading = false;
       });
-    });
+    }
+    );*/
   }
 
 //Load the Tflite model
-  loadModel() async {
+  /* loadModel() async {
     await Tflite.loadModel(
       model: "assets/model_unquant.tflite",
       labels: "assets/labels.txt",
@@ -46,7 +47,7 @@ class _ImageClassState extends State<ImageClass> {
       //Declare List _outputs in the class which will be used to show the classified classs name and confidence
       _outputs = output;
     });
-  }
+  }*/
 
   Future pickImage() async {
     var image = await _picker.getImage(source: ImageSource.gallery);
@@ -55,7 +56,7 @@ class _ImageClassState extends State<ImageClass> {
       _loading = true;
       _image = image;
     });
-    classifyImage(image);
+    // classifyImage(image);
   }
 
   final ImagePicker _picker = ImagePicker();
@@ -65,7 +66,7 @@ class _ImageClassState extends State<ImageClass> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Image Classification'),
-        backgroundColor: Colors.purple,
+        backgroundColor: Colors.lightGreen,
       ),
       body: _loading
           ? Container(
@@ -97,7 +98,7 @@ class _ImageClassState extends State<ImageClass> {
             ),
       floatingActionButton: FloatingActionButton(
         onPressed: _optiondialogbox,
-        backgroundColor: Colors.purple,
+        backgroundColor: Colors.lightGreen,
         child: Icon(Icons.image),
       ),
     );
@@ -109,7 +110,7 @@ class _ImageClassState extends State<ImageClass> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            backgroundColor: Colors.purple,
+            backgroundColor: Colors.lightGreen,
             content: SingleChildScrollView(
               child: ListBody(
                 children: <Widget>[
@@ -149,6 +150,6 @@ class _ImageClassState extends State<ImageClass> {
     setState(() {
       _image = piture;
     });
-    classifyImage(piture);
+    // classifyImage(piture);
   }
 }
