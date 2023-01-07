@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -5,9 +7,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:irecycle/pages/login_page.dart';
+import 'package:irecycle/pages/mainpage.dart';
 import 'package:irecycle/pages/splash_screen.dart';
 import 'package:irecycle/pages/profile_page.dart';
 import 'package:irecycle/pages/widgets/header_widget.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../common/theme_helper.dart';
 import 'registration_page.dart';
@@ -22,9 +26,12 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   double _drawerIconSize = 24;
   double _drawerFontSize = 17;
+ 
+
 
   TextEditingController nameController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
+  
 
   _getUserDetail() {
     FirebaseFirestore.instance
@@ -38,6 +45,9 @@ class _HomePageState extends State<HomePage> {
       setState(() {});
     });
   }
+
+  
+
 
   Future delete() async {
     await FirebaseFirestore.instance
@@ -177,11 +187,11 @@ class _HomePageState extends State<HomePage> {
                       color: Theme.of(context).accentColor),
                 ),
                 onTap: () {
-                  /*   Navigator.push(
+                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => ForgotPasswordPage()),
-                  ); */
+                        builder: (context) => MainPage()),
+                  ); 
                 },
               ),
               Divider(
