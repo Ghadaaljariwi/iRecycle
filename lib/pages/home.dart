@@ -5,11 +5,16 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:irecycle/pages/Bloc/Post.dart';
 import 'package:irecycle/pages/login_page.dart';
 import 'package:irecycle/pages/splash_screen.dart';
 import 'package:irecycle/pages/widgets/header_widget.dart';
 import '../common/theme_helper.dart';
+import 'Bloc/home_bloc.dart';
+import 'Bloc/home_event.dart';
+import 'Bloc/home_state.dart';
 import 'registration_page.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -22,10 +27,13 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  late HomeBloc bloc;
+
   void initState() {
     // TODO: implement initState
     _getUserDetail();
     super.initState();
+    bloc = context.read<HomeBloc>();
   }
 
   double _drawerIconSize = 24;
@@ -139,195 +147,134 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "iRecycle",
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-        ),
-        elevation: 0.5,
-        iconTheme: IconThemeData(color: Colors.white),
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: <Color>[
-                Theme.of(context).primaryColor,
-                Theme.of(context).accentColor,
-              ])),
-        ),
-        actions: [
-          Container(
-            margin: EdgeInsets.only(
-              top: 16,
-              right: 16,
-            ),
-            child: Stack(
-              children: <Widget>[
-                // Icon(Icons.notifications),
-              ],
-            ),
-          )
-        ],
+  Widget _buildFoodCard(Post post) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 10,
+        vertical: 4,
       ),
-      drawer: Drawer(
-        child: Container(
-          child: ListView(
-            children: [
-              DrawerHeader(
-                decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColor,
-                  gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    stops: [0.0, 1.0],
-                    colors: [
-                      Theme.of(context).primaryColor,
-                      Theme.of(context).accentColor,
-                    ],
-                  ),
-                ),
-                child: Container(
-                  alignment: Alignment.bottomLeft,
-                  child: Text(
-                    "iRecycle",
-                    style: TextStyle(
-                        fontSize: 25,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ),
-              ),
-              ListTile(
-                leading: Icon(
-                  Icons.home_filled,
-                  size: _drawerIconSize,
-                  color: Theme.of(context).accentColor,
-                ),
-                title: Text(
-                  'Home Page',
-                  style: TextStyle(
-                      fontSize: _drawerFontSize,
-                      color: Theme.of(context).accentColor),
-                ),
-                onTap: () {
-                  /*   Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => ForgotPasswordPage()),
-                  ); */
-                },
-              ),
-              Divider(
-                color: Theme.of(context).primaryColor,
-                height: 1,
-              ),
-              ListTile(
-                leading: Icon(
-                  Icons.logout_rounded,
-                  size: _drawerIconSize,
-                  color: Theme.of(context).accentColor,
-                ),
-                title: Text(
-                  'Logout',
-                  style: TextStyle(
-                      fontSize: _drawerFontSize,
-                      color: Theme.of(context).accentColor),
-                ),
-                onTap: () async {
-                  await FirebaseAuth.instance.signOut();
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (BuildContext context) {
-                        return const LoginPage();
-                      },
-                    ),
-                  );
-                  //do
-                  showToastMessage("logout successfully");
-                },
-              ),
-              Divider(
-                color: Theme.of(context).primaryColor,
-                height: 1,
-              ),
-              ListTile(
-                leading: Icon(
-                  Icons.delete,
-                  size: _drawerIconSize,
-                  color: Theme.of(context).accentColor,
-                ),
-                title: Text(
-                  'Delete account',
-                  style: TextStyle(
-                      fontSize: _drawerFontSize,
-                      color: Theme.of(context).accentColor),
-                ),
-                onTap: () {
-                  _showDialog();
-                },
-              ),
-            ],
-          ),
+      child: Card(
+        elevation: 5,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
         ),
-      ),
-      body: SingleChildScrollView(
-        child: Stack(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              height: 100,
-              child: HeaderWidget(100, false, Icons.house_rounded),
+            ClipRRect(
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(5.0),
+                topRight: Radius.circular(5.0),
+              ),
+              child: Image.network(
+                post.thumbnailURL,
+                height: 100,
+                width: double.infinity,
+                fit: BoxFit.cover,
+              ),
             ),
-            Container(
-              alignment: Alignment.center,
-              margin: EdgeInsets.fromLTRB(25, 130, 25, 10),
-              padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 14,
+                vertical: 16,
+              ),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  image != null
-                      ? Image.file(
-                          image!,
-                          width: 160,
-                          height: 160,
-                          fit: BoxFit.cover,
-                        )
-                      : SizedBox(
-                          height: 20,
+                  Text(
+                    post.name,
+                    style: const TextStyle(
+                      fontSize: 14,
+                    ),
+                    maxLines: 1,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 14),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                              right: 8,
+                            ),
+                            child: Text(
+                              post.price,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                          ),
                         ),
-                  ElevatedButton(
-                      onPressed: (() => checkPermission(ImageSource.gallery)),
-                      child: Text('Pick Gallery')),
-                  ElevatedButton(
-                      onPressed: (() => checkPermission(ImageSource.camera)),
-                      child: Text('Pick Camera')),
-                  Text(
-                    FirebaseAuth.instance.currentUser!.email.toString(),
-                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Text(
-                    'Hello ' + nameController.text + '!',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Text(
-                    'login successfully',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
+                        const Expanded(
+                          flex: 0,
+                          child: Icon(
+                            Icons.arrow_forward_ios_rounded,
+                            color: Colors.lightGreen,
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
                 ],
               ),
-            )
+            ),
           ],
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text("iRecycle"),
+          backgroundColor: Colors.lightGreen,
+        ),
+        body: BlocConsumer<HomeBloc, HomeState>(
+          listener: (context, state) {},
+          builder: (context, state) {
+            if (state is HomeLoadingState) {
+              return const CircularProgressIndicator();
+            }
+            if (state is HomeSuccessFetchDataState) {
+              return Center(
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) {
+                    return _buildFoodCard(state.posts[index]);
+                  },
+                  itemCount: state.posts.length,
+                ),
+              );
+            }
+            if (state is HomeErrorFetchDataState) {
+              return Center(
+                child: Column(
+                  children: [
+                    Text(state.errorMessage),
+                    ElevatedButton(
+                      child: const Text("Fetch Data"),
+                      onPressed: () {
+                        bloc.add(FetchDataEvent());
+                      },
+                    ),
+                  ],
+                ),
+              );
+            }
+
+            return Center(
+              child: ElevatedButton(
+                child: const Text("Fetch Data"),
+                onPressed: () {
+                  bloc.add(FetchDataEvent());
+                },
+              ),
+            );
+          },
         ),
       ),
     );

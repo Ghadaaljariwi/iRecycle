@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:irecycle/onBording/onbording.dart';
+import 'package:irecycle/pages/Bloc/home_bloc.dart';
+import 'package:irecycle/pages/home.dart';
 import 'package:irecycle/pages/login_page.dart';
 import 'package:irecycle/pages/splash_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -26,7 +29,12 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const MyApp());
+  runApp(
+    BlocProvider(
+      create: (context) => HomeBloc(),
+      child: HomePage(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
