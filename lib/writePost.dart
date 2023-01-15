@@ -1,12 +1,19 @@
 import 'dart:io';
 import 'dart:math';
 
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:irecycle/common/utils.dart';
+import 'package:irecycle/controllers/FBCloudStore.dart';
+import 'package:irecycle/controllers/FBStorage.dart';
+import 'package:irecycle/pages/home.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
-
+import 'package:cross_file/cross_file.dart';
 
 class WritePost extends StatefulWidget {
+// here data carried
+
   @override
   State<StatefulWidget> createState() => _WritePost();
 }
@@ -16,6 +23,11 @@ class _WritePost extends State<WritePost> {
   final FocusNode _nodeText1 = FocusNode();
   FocusNode writingTextFocus = FocusNode();
   bool _isLoading = false;
+  late File _postImageFile;
+  void initState() {
+    _postImageFile =;
+    super.initState();
+  }
 
   KeyboardActionsConfig _buildConfig(BuildContext context) {
     return KeyboardActionsConfig(
@@ -61,6 +73,28 @@ class _WritePost extends State<WritePost> {
     );
   }
 
+  void _postToFB() async {
+    setState(() {
+      _isLoading = true;
+    });
+    String postID = Utils.getRandomString(8) + Random().nextInt(500).toString();
+    String postImageURL = '';
+
+    postImageURL = (await FBStorage.uploadPostImages(
+        postID: postID, postImageFile: _postImageFile))!;
+
+    FBCloudStore.sendPostInFirebase(
+        postID,
+        writingTextController.text,
+        //widget.myData,
+        postImageURL ?? 'NONE');
+
+    setState(() {
+      _isLoading = false;
+    });
+    Navigator.pop(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -70,9 +104,7 @@ class _WritePost extends State<WritePost> {
         centerTitle: true,
         actions: <Widget>[
           ElevatedButton(
-              onPressed: () {
-                
-              },
+              onPressed: () => _postToFB(),
               child: Text(
                 'Post',
                 style: TextStyle(
@@ -107,10 +139,10 @@ class _WritePost extends State<WritePost> {
                                     width: 40,
                                     height: 40,
                                     child: Image.asset(
-                                        'images/recycling.png')),
+                                        'assets/images/recycling.png')),
                               ),
                               Text(
-                         'name',
+                                'name',
                                 style: TextStyle(
                                     fontSize: 22, fontWeight: FontWeight.bold),
                               ),
@@ -132,7 +164,12 @@ class _WritePost extends State<WritePost> {
                             keyboardType: TextInputType.multiline,
                             maxLines: null,
                           ),
-                          Container(),
+                          _postImageFile != null
+                              ? Image.file(
+                                  _postImageFile,
+                                  fit: BoxFit.fill,
+                                )
+                              : Container(),
                         ],
                       ),
                     )),
@@ -145,17 +182,14 @@ class _WritePost extends State<WritePost> {
   }
 
   Future<void> _getImageAndCrop() async {
-    File imageFileFromGallery =
-        (await ImagePicker().getImage(source: ImageSource.gallery)) as File;
-        
-    if (imageFileFromGallery != null) {
-      File cropImageFile =
-          imageFileFromGallery; //await cropImageFile(imageFileFromGallery);
-      if (cropImageFile != null) {
-        setState(() {
-   
-        });
-      }
-    }
+    final ImagePicker _picker = ImagePicker();
+    final imageFileFromGallery =
+        await _picker.pickImage(source: ImageSource.gallery);
+
+    File cropImageFile = File(imageFileFromGallery!
+        .path); //await cropImageFile(imageFileFromGallery);
+    setState(() {
+      _postImageFile = cropImageFile;
+    });
   }
 }
