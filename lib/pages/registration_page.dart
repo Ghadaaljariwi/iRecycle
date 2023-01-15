@@ -12,6 +12,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+import 'homes.dart';
+
 class RegistrationPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {

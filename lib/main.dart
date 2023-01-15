@@ -7,6 +7,7 @@ import 'package:irecycle/pages/BlocCategories/addCategory.dart';
 import 'package:irecycle/pages/BlocCategories/bloc/category_bloc.dart';
 import 'package:irecycle/pages/BlocCategories/category.dart';
 import 'package:irecycle/pages/home.dart';
+import 'package:irecycle/pages/homes.dart';
 import 'package:irecycle/pages/login_page.dart';
 import 'package:irecycle/pages/splash_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -62,7 +63,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: colorCustom,
       ),
       // home: SplashScreen(title: 'Flutter Demo Home Page'),
-      home: addCategory(), //OnboardingScreen(),
+      home: HomePage(), //OnboardingScreen(),
     );
   }
 }

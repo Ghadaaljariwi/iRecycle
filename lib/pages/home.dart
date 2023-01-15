@@ -19,14 +19,14 @@ import 'registration_page.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-class HomePage extends StatefulWidget {
+class Bloc extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return _HomePageState();
+    return _BlocState();
   }
 }
 
-class _HomePageState extends State<HomePage> {
+class _BlocState extends State<Bloc> {
   late HomeBloc bloc;
 
   void initState() {
