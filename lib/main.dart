@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:irecycle/onBording/onbording.dart';
+import 'package:irecycle/pages/AdminHome.dart';
 import 'package:irecycle/pages/Bloc/home_bloc.dart';
+import 'package:irecycle/pages/BlocCategories/addCategory.dart';
+import 'package:irecycle/pages/BlocCategories/bloc/category_bloc.dart';
+import 'package:irecycle/pages/BlocCategories/category.dart';
 import 'package:irecycle/pages/home.dart';
 import 'package:irecycle/pages/login_page.dart';
 import 'package:irecycle/pages/splash_screen.dart';
@@ -29,12 +33,20 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(
-    BlocProvider(
-      create: (context) => HomeBloc(),
-      child: HomePage(),
-    ),
-  );
+  runApp(MultiBlocProvider(
+    providers: [
+      //const MyApp());
+      BlocProvider(
+        create: (context) => HomeBloc(),
+      ),
+
+      BlocProvider(
+        create: (context) =>
+            CategoryBloc()..add(AddCategory(object: category("name"))),
+      ),
+    ],
+    child: MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -50,7 +62,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: colorCustom,
       ),
       // home: SplashScreen(title: 'Flutter Demo Home Page'),
-      home: LoginPage(), //OnboardingScreen(),
+      home: addCategory(), //OnboardingScreen(),
     );
   }
 }
@@ -72,20 +84,6 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: Center(
         child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[],
         ),
