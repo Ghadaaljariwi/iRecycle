@@ -23,9 +23,8 @@ class _WritePost extends State<WritePost> {
   final FocusNode _nodeText1 = FocusNode();
   FocusNode writingTextFocus = FocusNode();
   bool _isLoading = false;
-  late File _postImageFile;
+  File? _postImageFile;
   void initState() {
-    _postImageFile =;
     super.initState();
   }
 
@@ -77,17 +76,18 @@ class _WritePost extends State<WritePost> {
     setState(() {
       _isLoading = true;
     });
+    
     String postID = Utils.getRandomString(8) + Random().nextInt(500).toString();
     String postImageURL = '';
 
     postImageURL = (await FBStorage.uploadPostImages(
-        postID: postID, postImageFile: _postImageFile))!;
-
+        postID: postID, postImageFile: _postImageFile!));
+   
     FBCloudStore.sendPostInFirebase(
         postID,
         writingTextController.text,
         //widget.myData,
-        postImageURL ?? 'NONE');
+        postImageURL);
 
     setState(() {
       _isLoading = false;
@@ -166,7 +166,7 @@ class _WritePost extends State<WritePost> {
                           ),
                           _postImageFile != null
                               ? Image.file(
-                                  _postImageFile,
+                                  _postImageFile!,
                                   fit: BoxFit.fill,
                                 )
                               : Container(),
@@ -186,8 +186,9 @@ class _WritePost extends State<WritePost> {
     final imageFileFromGallery =
         await _picker.pickImage(source: ImageSource.gallery);
 
-    File cropImageFile = File(imageFileFromGallery!
-        .path); //await cropImageFile(imageFileFromGallery);
+    File? cropImageFile = File(imageFileFromGallery!.path);
+    cropImageFile = await Utils.cropImageFile(
+        cropImageFile); //await cropImageFile(imageFileFromGallery);
     setState(() {
       _postImageFile = cropImageFile;
     });
