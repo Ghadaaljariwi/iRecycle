@@ -6,9 +6,10 @@ import 'package:irecycle/pages/Bloc/home_bloc.dart';
 import 'package:irecycle/pages/BlocCategories/addCategory.dart';
 import 'package:irecycle/pages/BlocCategories/bloc/category_bloc.dart';
 import 'package:irecycle/pages/BlocCategories/category.dart';
-import 'package:irecycle/pages/home.dart';
+
 import 'package:irecycle/pages/homes.dart';
 import 'package:irecycle/pages/login_page.dart';
+import 'package:irecycle/pages/scan_object.dart';
 import 'package:irecycle/pages/splash_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -20,15 +21,15 @@ Map<int, Color> color = {
   100: Color.fromARGB(255, 65, 102, 39),
   200: Color.fromARGB(255, 94, 145, 74),
   300: Color.fromARGB(255, 135, 174, 96),
-  400: Color.fromARGB(255, 169, 221, 126),
-  500: Color.fromARGB(255, 169, 221, 126),
+  400: Color.fromARGB(255, 79, 119, 47),
+  500: Color.fromARGB(255, 84, 130, 46),
   600: Color.fromARGB(255, 169, 221, 126),
   700: Color.fromARGB(255, 135, 174, 96),
   800: Color.fromARGB(255, 94, 145, 74),
   900: Color.fromARGB(255, 65, 102, 39),
 };
 
-MaterialColor colorCustom = MaterialColor(0xFF8BC34A, color);
+MaterialColor colorCustom = MaterialColor(0xFF33691E, color);
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -61,7 +62,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: colorCustom,
       ),
-      home: AdminHomePage(), //OnboardingScreen(),
+      home: HomePage(), //OnboardingScreen(),
     );
   }
 }

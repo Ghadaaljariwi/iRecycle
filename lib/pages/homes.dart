@@ -5,11 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:irecycle/pages/categories.dart';
 import 'package:irecycle/pages/login_page.dart';
+import 'package:irecycle/pages/scan_object.dart';
 import 'package:irecycle/pages/splash_screen.dart';
 import 'package:irecycle/pages/widgets/header_widget.dart';
 
 import '../common/theme_helper.dart';
+import 'TestBloc.dart';
 import 'registration_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -103,9 +106,19 @@ class _HomePageState extends State<HomePage> {
   }
 
   int _selectedIndex = 0;
+  final List<Widget> _pages = [
+    categories(),
+    Bloc(),
+    CameraScreen(),
+    Center(
+      child: Text('profile'),
+    ),
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      body: _pages[_selectedIndex],
       appBar: AppBar(
         title: Text(
           "iRecycle",
@@ -236,7 +249,7 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
-      body: SingleChildScrollView(
+      /* bottomSheet: SingleChildScrollView(
         child: Stack(
           children: [
             Container(
@@ -268,7 +281,7 @@ class _HomePageState extends State<HomePage> {
             ),
           ],
         ),
-      ),
+      ),*/
       bottomNavigationBar: Container(
         color: Theme.of(context).primaryColor,
         child: Padding(
@@ -281,14 +294,12 @@ class _HomePageState extends State<HomePage> {
             iconSize: 30,
             padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
             duration: Duration(milliseconds: 400),
-            tabBackgroundColor: Theme.of(context).primaryColorLight,
+            tabBackgroundColor: Theme.of(context).primaryColorDark,
             color: Colors.white,
             tabs: [
               GButton(
                 icon: Icons.home,
                 text: 'Home',
-                onPressed: () => Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => HomePage())),
               ),
               GButton(
                 icon: Icons.park_sharp,

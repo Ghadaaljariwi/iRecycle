@@ -6,11 +6,14 @@ import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:irecycle/pages/BlocCategories/addCategory.dart';
+
+import 'package:irecycle/pages/homes.dart';
 import 'package:irecycle/pages/login_page.dart';
 import 'package:irecycle/pages/splash_screen.dart';
 import 'package:irecycle/pages/widgets/header_widget.dart';
 
 import '../common/theme_helper.dart';
+import 'TestBloc.dart';
 import 'registration_page.dart';
 
 class AdminHomePage extends StatefulWidget {
@@ -28,6 +31,16 @@ class _AdminHomePageState extends State<AdminHomePage> {
   int _selectedIndex = 0;
   TextEditingController nameController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
+  final List<Widget> _pages = [
+    Center(
+      child: Text('home'),
+    ),
+    Bloc(),
+    addCategory(),
+    Center(
+      child: Text('profile'),
+    ),
+  ];
 
   _getUserDetail() {
     FirebaseFirestore.instance
@@ -108,6 +121,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      body: _pages[_selectedIndex],
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: Text(
@@ -241,7 +255,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
           ),
         ),
       ),
-      body: SingleChildScrollView(
+      bottomSheet: SingleChildScrollView(
         child: Stack(
           children: [
             Container(
@@ -301,8 +315,6 @@ class _AdminHomePageState extends State<AdminHomePage> {
               GButton(
                 icon: Icons.category_outlined,
                 text: 'Categories',
-                onPressed: () => Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => addCategory())),
               ),
               GButton(
                 icon: Icons.person,
@@ -310,14 +322,16 @@ class _AdminHomePageState extends State<AdminHomePage> {
               ),
             ],
             selectedIndex: _selectedIndex,
-            onTabChange: (index) {
-              setState(() {
-                _selectedIndex = index;
-              });
-            },
+            onTabChange: _bottomNav,
           ),
         ),
       ),
     );
+  }
+
+  void _bottomNav(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
   }
 }
