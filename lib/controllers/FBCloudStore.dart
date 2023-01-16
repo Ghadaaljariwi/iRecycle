@@ -28,14 +28,13 @@ class FBCloudStore {
     });
 
     await FirebaseFirestore.instance
-        .collection('users')
-        .doc(FirebaseAuth.instance.currentUser!.uid)
-        .collection('thread')
+       .collection('thread')
         .doc(postID)
         .set({
       'postID': postID,
       'userName': 'name',
       'userThumbnail': 'my photo',
+      'userID' : FirebaseAuth.instance.currentUser!.uid,
       'postContent': postContent,
       'postImage': postImageURL,
       'postLikeCount': 0,

@@ -7,12 +7,11 @@ class ThreadItem extends StatefulWidget {
   final DocumentSnapshot data;
   
   final bool isFromThread;
-  final Function threadItemAction;
   final int commentCount;
   ThreadItem(
       {required this.data,
 
-      required this.threadItemAction,
+     
       required this.isFromThread,
       required this.commentCount,
       required this.parentContext});
@@ -44,9 +43,9 @@ class _ThreadItem extends State<ThreadItem> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               GestureDetector(
-                onTap: () => widget.isFromThread
-                    ? widget.threadItemAction(widget.data)
-                    : null,
+                onTap: () {
+                 
+                },
                 child: Row(
                   children: <Widget>[
                     Padding(
@@ -55,13 +54,15 @@ class _ThreadItem extends State<ThreadItem> {
                           width: 48,
                           height: 48,
                           child: Image.asset(
-                              'images/${widget.data['userThumbnail']}')),
+                                'assets/images/recycling.png')),
                     ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(
-                          widget.data['userName'],
+
+                          widget.data['userName']
+                          ,
                           style: TextStyle(
                               fontSize: 18, fontWeight: FontWeight.bold),
                         ),
@@ -80,9 +81,9 @@ class _ThreadItem extends State<ThreadItem> {
                 ),
               ),
               GestureDetector(
-                onTap: () => widget.isFromThread
-                    ? widget.threadItemAction(widget.data)
-                    : null,
+                onTap: () {
+                  
+                },
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(8, 10, 4, 10),
                   child: Text(
@@ -98,9 +99,8 @@ class _ThreadItem extends State<ThreadItem> {
               ),
               widget.data['postImage'] != 'NONE'
                   ? GestureDetector(
-                      onTap: () => widget.isFromThread
-                          ? widget.threadItemAction(widget.data)
-                          : widget.threadItemAction(),
+                      onTap: () {
+                          },
                       child: Utils.cacheNetworkImageWithEvent(
                           context, widget.data['postImage'], 0, 0))
                   : Container(),

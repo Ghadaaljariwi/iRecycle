@@ -114,70 +114,82 @@ class _WritePost extends State<WritePost> {
               ))
         ],
       ),
-      body: Stack(
-        children: <Widget>[
-          KeyboardActions(
-            config: _buildConfig(context),
-            child: Column(
-              children: <Widget>[
-                Container(
-                    width: size.width,
-                    height: size.height -
-                        MediaQuery.of(context).viewInsets.bottom -
-                        80,
-                    child: Padding(
-                      padding: const EdgeInsets.only(right: 14.0, left: 10.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Container(
-                                    width: 40,
-                                    height: 40,
-                                    child: Image.asset(
-                                        'assets/images/recycling.png')),
-                              ),
-                              Text(
-                                'name',
-                                style: TextStyle(
-                                    fontSize: 22, fontWeight: FontWeight.bold),
-                              ),
-                            ],
-                          ),
-                          Divider(
-                            height: 1,
-                            color: Colors.black,
-                          ),
-                          TextFormField(
-                            autofocus: true,
-                            focusNode: writingTextFocus,
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              hintText: 'Writing anything.',
-                              hintMaxLines: 4,
+      body:  Stack(
+          children: <Widget>[
+            KeyboardActions(
+              config: _buildConfig(context),
+              child: Column(
+                children: <Widget>[
+                 Container(
+                        width: size.width,
+                        height: size.height -
+                            MediaQuery.of(context).viewInsets.bottom -
+                            80,
+                        child: SingleChildScrollView(
+                          child: Padding(
+                            padding: const EdgeInsets.only(right: 14.0, left: 10.0),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min ,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: <Widget>[
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Container(
+                                          width: 40,
+                                          height: 40,
+                                          child: Image.asset(
+                                              'assets/images/recycling.png')),
+                                    ),
+                                    Text(
+                                      'name',
+                                      style: TextStyle(
+                                          fontSize: 22, fontWeight: FontWeight.bold),
+                                    ),
+                                  ],
+                                ),
+                                Divider(
+                                  height: 1,
+                                  color: Colors.black,
+                                ),
+                              
+                               TextFormField(
+                                    autofocus: true,
+                                    focusNode: writingTextFocus,
+                                    decoration: InputDecoration(
+                                      border: InputBorder.none,
+                                      hintText: 'Writing anything.',
+                                      hintMaxLines: 4,
+                                    ),
+                                    controller: writingTextController,
+                                    keyboardType: TextInputType.multiline,
+                                    maxLines: null,
+                                  ),
+                                              
+                                _postImageFile != null
+                                    ?  Image.file(
+                                          _postImageFile!,
+                                          fit: BoxFit.fill,
+                                        )
+                                        
+                                    
+                                    : Container(), 
+                                    
+                              ],
                             ),
-                            controller: writingTextController,
-                            keyboardType: TextInputType.multiline,
-                            maxLines: null,
                           ),
-                          _postImageFile != null
-                              ? Image.file(
-                                  _postImageFile!,
-                                  fit: BoxFit.fill,
-                                )
-                              : Container(),
-                        ],
-                      ),
-                    )),
-              ],
+                        )),
+                  
+
+        
+                ],
+              ),
             ),
-          ),
-        ],
-      ),
+          ],
+        ),
+     
     );
   }
 

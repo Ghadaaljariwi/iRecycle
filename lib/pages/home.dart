@@ -11,6 +11,7 @@ import 'package:irecycle/pages/mainpage.dart';
 import 'package:irecycle/pages/splash_screen.dart';
 import 'package:irecycle/pages/profile_page.dart';
 import 'package:irecycle/pages/widgets/header_widget.dart';
+import 'package:irecycle/pages/widgets/threadMain.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../common/theme_helper.dart';
@@ -190,7 +191,7 @@ class _HomePageState extends State<HomePage> {
                  Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => MainPage()),
+                        builder: (context) => ThreadMain()),
                   ); 
                 },
               ),
