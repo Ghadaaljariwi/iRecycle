@@ -11,7 +11,7 @@ class category extends Equatable {
     required this.name,
     //this.id,
     required this.description,
-    this.image,
+    required this.image,
   });
 
   factory category.fromMap(Map<String, dynamic> data) {
@@ -25,7 +25,7 @@ class category extends Equatable {
 
   Map<String, dynamic> toMap() {
     return {
-      'id': id,
+      //'id': id,
       'name': name,
       'image': image,
       'description': description,
@@ -35,4 +35,16 @@ class category extends Equatable {
   @override
   // TODO: implement props
   List<Object?> get props => [id, name, image, description];
+
+  category.fromJson(Map<String, dynamic> json)
+      : name = json['name'],
+        description = json['description'],
+        image = json['image'];
+
+  Map<String, dynamic> toJson() => {
+        //'id': id,
+        'name': name,
+        'image': image,
+        'description': description,
+      };
 }

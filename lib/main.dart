@@ -1,11 +1,15 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:irecycle/onBording/onbording.dart';
 import 'package:irecycle/pages/AdminHome.dart';
 import 'package:irecycle/pages/Bloc/home_bloc.dart';
 import 'package:irecycle/pages/BlocCategories/addCategory.dart';
 import 'package:irecycle/pages/BlocCategories/bloc/category_bloc.dart';
 import 'package:irecycle/pages/BlocCategories/category.dart';
+import 'package:irecycle/pages/BlocCategories/categoryRepository.dart';
 import 'package:irecycle/pages/home.dart';
 import 'package:irecycle/pages/homes.dart';
 import 'package:irecycle/pages/login_page.dart';
@@ -34,6 +38,18 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+/*
+  final storage = await HydratedStorage.build(
+    storageDirectory: await getApplicationDocumentsDirectory(),
+  );
+  HydratedBlocOverrides.runZoned(
+    () => runApp(RepositoryProvider(
+      create: (context) => CategoryRepository(),
+      child: const MyApp(),
+    )),
+    storage: storage,
+  );
+*/
   runApp(MultiBlocProvider(
     providers: [
       //const MyApp());
@@ -42,7 +58,9 @@ void main() async {
       ),
 
       BlocProvider(
-        create: (context) => CategoryBloc(),
+        create: (context) => CategoryBloc(
+          RepositoryProvider.of<CategoryRepository>(context),
+        ),
       ),
     ],
     child: const MyApp(),
@@ -55,6 +73,13 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    /*
+    return BlocProvider(
+      create: (context) => CategoryBloc(
+        RepositoryProvider.of<CategoryRepository>(context),
+      ),
+      child: 
+      */
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
