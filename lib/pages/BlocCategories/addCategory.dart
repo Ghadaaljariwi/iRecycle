@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:irecycle/pages/BlocCategories/category.dart';
+import 'package:irecycle/pages/BlocCategories/categoryField.dart';
 import 'package:irecycle/pages/login_page.dart';
 import 'package:irecycle/pages/splash_screen.dart';
 import 'package:irecycle/pages/widgets/header_widget.dart';
@@ -23,7 +24,7 @@ class addCategory extends StatefulWidget {
 }
 
 class _addCategoryState extends State<addCategory> {
-  final user = FirebaseAuth.instance.currentUser!;
+  //final user = FirebaseAuth.instance.currentUser!;
   double _drawerIconSize = 24;
   double _drawerFontSize = 17;
   TextEditingController nameController = TextEditingController();
@@ -40,37 +41,6 @@ class _addCategoryState extends State<addCategory> {
         fontSize: 16.0);
   }
 
-  void _addCategory() {
-    showModalBottomSheet(
-      context: context,
-      builder: ((context) => SingleChildScrollView(
-            child: Container(
-                padding: EdgeInsets.only(
-                    bottom: MediaQuery.of(context).viewInsets.bottom),
-                child: Column(
-                  children: [
-                    TextField(
-                      autofocus: true,
-                      controller: nameController,
-                      decoration: ThemeHelper()
-                          .textInputDecoration('Name', 'Enter your name'),
-                    ),
-                    TextButton(
-                        onPressed: (() => Navigator.pop(context)),
-                        child: Text('Cancel')),
-                    TextButton(onPressed: add, child: Text('Add'))
-                  ],
-                )),
-          )),
-    );
-  }
-
-  void add() {
-    var object = category(nameController.text);
-    context.read<CategoryBloc>().add(AddCategory(object: object));
-    Navigator.pop(context);
-  }
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<CategoryBloc, CategoryState>(
@@ -78,10 +48,13 @@ class _addCategoryState extends State<addCategory> {
         List<category> list = state.categoryList;
         return Scaffold(
           appBar: AppBar(
-            title: Text(
-              "iRecycle Admin",
-              style:
-                  TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+            automaticallyImplyLeading: false,
+            title: Center(
+              child: Text(
+                "Categories",
+                style:
+                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+              ),
             ),
             elevation: 0.5,
             iconTheme: IconThemeData(color: Colors.white),
@@ -219,15 +192,6 @@ class _addCategoryState extends State<addCategory> {
                   padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
                   child: Column(
                     children: [
-                      Text(
-                        user.email.toString(),
-                        //'email',
-                        style: TextStyle(
-                            fontSize: 22, fontWeight: FontWeight.bold),
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
                       Container(
                         width: 100,
                         height: 100,
@@ -250,7 +214,7 @@ class _addCategoryState extends State<addCategory> {
                                   ),
                                 ),
                                 subtitle: Text(
-                                  'test',
+                                  list[index].description,
                                   style: TextStyle(fontSize: 20),
                                 ),
                               ),
@@ -262,8 +226,13 @@ class _addCategoryState extends State<addCategory> {
                       SizedBox(
                         height: 20,
                       ),
-                      ElevatedButton(
-                          onPressed: _addCategory, child: Text('Add Catgeory'))
+                      FloatingActionButton(
+                          onPressed: (() => Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                      builder: (BuildContext context) {
+                                return CategoryField();
+                              }))),
+                          child: const Icon(Icons.add)),
                     ],
                   ),
                 )

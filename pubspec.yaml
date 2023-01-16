@@ -49,6 +49,7 @@ dependencies:
   flutter_bloc: ^8.1.1
   equatable: ^2.0.3
   google_nav_bar: ^5.0.6
+  keyboard_actions: ^4.1.0
 
 dev_dependencies:
   flutter_test:

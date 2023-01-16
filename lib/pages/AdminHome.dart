@@ -4,6 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:irecycle/pages/BlocCategories/addCategory.dart';
 import 'package:irecycle/pages/login_page.dart';
 import 'package:irecycle/pages/splash_screen.dart';
 import 'package:irecycle/pages/widgets/header_widget.dart';
@@ -19,9 +21,11 @@ class AdminHomePage extends StatefulWidget {
 }
 
 class _AdminHomePageState extends State<AdminHomePage> {
+  //final user = FirebaseAuth.instance.currentUser!;
+  String email = 'admin@gmail.com';
   double _drawerIconSize = 24;
   double _drawerFontSize = 17;
-
+  int _selectedIndex = 0;
   TextEditingController nameController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
 
@@ -105,6 +109,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text(
           "iRecycle Admin",
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
@@ -250,7 +255,8 @@ class _AdminHomePageState extends State<AdminHomePage> {
               child: Column(
                 children: [
                   Text(
-                    FirebaseAuth.instance.currentUser!.email.toString(),
+                    //FirebaseAuth.instance.currentUser!.email.toString(),
+                    email,
                     style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                   ),
                   SizedBox(
@@ -267,6 +273,49 @@ class _AdminHomePageState extends State<AdminHomePage> {
               ),
             )
           ],
+        ),
+      ),
+      bottomNavigationBar: Container(
+        color: Theme.of(context).primaryColor,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 15),
+          child: GNav(
+            rippleColor: Colors.grey[300]!,
+            hoverColor: Colors.grey[100]!,
+            gap: 8,
+            activeColor: Colors.white,
+            iconSize: 30,
+            padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+            duration: Duration(milliseconds: 400),
+            tabBackgroundColor: Theme.of(context).primaryColorLight,
+            color: Colors.white,
+            tabs: [
+              GButton(
+                icon: Icons.home,
+                text: 'Home',
+              ),
+              GButton(
+                icon: Icons.park_sharp,
+                text: 'community',
+              ),
+              GButton(
+                icon: Icons.category_outlined,
+                text: 'Categories',
+                onPressed: () => Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => addCategory())),
+              ),
+              GButton(
+                icon: Icons.person,
+                text: 'Profile',
+              ),
+            ],
+            selectedIndex: _selectedIndex,
+            onTabChange: (index) {
+              setState(() {
+                _selectedIndex = index;
+              });
+            },
+          ),
         ),
       ),
     );

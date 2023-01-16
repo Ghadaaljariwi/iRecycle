@@ -1,23 +1,26 @@
+import 'dart:io';
 import 'package:equatable/equatable.dart';
 
 class category extends Equatable {
   late String id;
   late String name;
-  late String image;
+  late File? image;
   late String description;
 
-  category(
-    this.name,
+  category({
+    required this.name,
     //this.id,
-    //this.description,
-    // this.image,
-  );
+    required this.description,
+    this.image,
+  });
 
-  category.fromMap(Map<String, dynamic> data) {
-    id = data["id"];
-    name = data['name'];
-    image = data['image'];
-    description = data['description'];
+  factory category.fromMap(Map<String, dynamic> data) {
+    return category(
+      //id = data["id"];
+      name: data['name'],
+      image: data['image'],
+      description: data['description'],
+    );
   }
 
   Map<String, dynamic> toMap() {

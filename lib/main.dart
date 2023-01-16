@@ -42,11 +42,10 @@ void main() async {
       ),
 
       BlocProvider(
-        create: (context) =>
-            CategoryBloc()..add(AddCategory(object: category("name"))),
+        create: (context) => CategoryBloc(),
       ),
     ],
-    child: MyApp(),
+    child: const MyApp(),
   ));
 }
 
@@ -62,8 +61,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: colorCustom,
       ),
-      // home: SplashScreen(title: 'Flutter Demo Home Page'),
-      home: HomePage(), //OnboardingScreen(),
+      home: AdminHomePage(), //OnboardingScreen(),
     );
   }
 }
