@@ -123,7 +123,11 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: Text(
           "iRecycle",
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            fontSize: 28,
+          ),
         ),
         elevation: 0.5,
         iconTheme: IconThemeData(color: Colors.white),
@@ -300,12 +304,12 @@ class _HomePageState extends State<HomePage> {
             tabs: [
               GButton(
                 icon: Icons.home,
-                 iconSize: 25,
+                iconSize: 25,
                 text: 'Home',
               ),
               GButton(
                 icon: Icons.park_sharp,
-                 iconSize: 25,
+                iconSize: 25,
                 text: 'community',
               ),
               GButton(
@@ -315,7 +319,7 @@ class _HomePageState extends State<HomePage> {
               ),
               GButton(
                 icon: Icons.person,
-                 iconSize: 25,
+                iconSize: 25,
                 text: 'Profile',
               ),
             ],
