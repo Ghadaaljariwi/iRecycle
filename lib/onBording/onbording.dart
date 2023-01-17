@@ -107,7 +107,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                             ),
                             SizedBox(height: 30.0),
                             Text(
-                              'Start Recycle with us!',
+                              'Start Recycling with us!',
                               style: kTitleStyle,
                             ),
                             SizedBox(height: 15.0),

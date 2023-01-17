@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:irecycle/common/theme_helper.dart';
 import 'package:irecycle/pages/AdminHome.dart';
+import 'package:irecycle/pages/forgoPass.dart';
 
 import 'homes.dart';
 import 'registration_page.dart';
@@ -138,12 +139,12 @@ class _LoginPageState extends State<LoginPage> {
                                 alignment: Alignment.topRight,
                                 child: GestureDetector(
                                   onTap: () {
-                                    /*   Navigator.push(
+                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                              ForgotPasswordPage()),
-                                    ); */
+                                              forgotPass()),
+                                    );
                                   },
                                   child: Text(
                                     "Forgot your password?",
