@@ -10,6 +10,7 @@ import 'package:irecycle/pages/login_page.dart';
 import 'package:irecycle/pages/scan_object.dart';
 import 'package:irecycle/pages/splash_screen.dart';
 import 'package:irecycle/pages/widgets/header_widget.dart';
+import 'package:irecycle/pages/widgets/threadMain.dart';
 
 import '../common/theme_helper.dart';
 import 'TestBloc.dart';
@@ -108,7 +109,7 @@ class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
   final List<Widget> _pages = [
     categories(),
-    Bloc(),
+    ThreadMain(),
     CameraScreen(),
     Center(
       child: Text('profile'),
