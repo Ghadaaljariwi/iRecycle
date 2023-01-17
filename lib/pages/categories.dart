@@ -47,23 +47,57 @@ class _categoriesState extends State<categories> {
               scrollDirection: Axis.horizontal,
               children: [
                 MyCard(
-                  category: 'A',
-                  color: Theme.of(context).primaryColor,
-                  // img: 'assets/images/recycling (2).png',
+                  category: 'Plastic',
+                  color: Color.fromARGB(255, 189, 232, 152),
+                  img: 'assets/images/8BABA77D-4D45-4455-B2AA-E7346F29DB8A.png',
                 ),
                 MyCard(
-                  category: 'B',
-                  color: Colors.lightGreen,
-                  //   img: 'assets/images/recycling (2).png',
+                  category: 'Can',
+                  color: Color.fromARGB(255, 249, 215, 255),
+                  img: 'assets/images/B1F516F5-24C3-49A0-9C73-DFB9C53B8A49.png',
                 ),
                 MyCard(
-                  category: 'C',
-                  color: Color.fromARGB(255, 217, 255, 176),
-                  //   img: 'assets/images/recycling (2).png',
+                  category: 'Paper',
+                  color: Color.fromARGB(255, 255, 221, 176),
+                  img: 'assets/images/6A85129E-9AC5-4A37-9F66-CD59E22D356A.png',
+                ),
+                MyCard(
+                  category: 'Glass',
+                  color: Color.fromARGB(255, 189, 232, 152),
+                  img: 'assets/images/35293533-33CB-4941-80FE-EB4D7279E30C.png',
+                ),
+                MyCard(
+                  category: 'Box',
+                  color: Color.fromARGB(255, 176, 230, 255),
+                  img: 'assets/images/11879CE4-9519-47BE-AF87-7A21DD315EED.png',
                 ),
               ],
             ),
-          )
+          ),
+          SizedBox(
+            height: 25,
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 25),
+            child: Row(
+              //  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Recycling',
+                  style: TextStyle(
+                    fontSize: 28,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Text(
+                  ' Tips',
+                  style: TextStyle(
+                    fontSize: 28,
+                  ),
+                ),
+              ],
+            ),
+          ),
         ]),
       ),
     );

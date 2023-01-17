@@ -22,11 +22,20 @@ class MyCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(
-              height: 10,
+            Center(
+              child: Image(
+                image: AssetImage(
+                  img,
+                ),
+                height: 100,
+                width: 100,
+              ),
             ),
-            Text(
-              category.toString(),
+            Center(
+              child: Text(
+                category.toString(),
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+              ),
             ),
           ],
         ),
