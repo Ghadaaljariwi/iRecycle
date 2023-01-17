@@ -12,8 +12,7 @@ class CameraScreen extends StatefulWidget {
 
 class _CameraScreenState extends State<CameraScreen> {
   final imagePicker = ImagePicker();
-  final apiKey =
-      'https://console.cloud.google.com/iam-admin/serviceaccounts/details/110654529031264593730;edit=true?previousPage=%2Fapis%2Fapi%2Fvision.googleapis.com%2Fcredentials%3Fproject%3Dsacred-analyst-373515&project=sacred-analyst-373515';
+  final apiKey = 'AIzaSyDvdqwITHh09sYJE7kq0R4MPLf7OoObSCo';
   String result = '';
 
   Future<void> _getPermission() async {
@@ -94,7 +93,7 @@ class _CameraScreenState extends State<CameraScreen> {
     return Scaffold(
       body: Center(
         child: Container(
-          height: 200,
+          height: 100,
           width: 100,
           color: Colors.yellow,
           child: ElevatedButton(
