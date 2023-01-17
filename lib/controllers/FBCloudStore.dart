@@ -7,34 +7,19 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class FBCloudStore {
   static Future<void> sendPostInFirebase(
-      String postID, String postContent, String postImageURL) async {
-    print(postContent);
-
-    print(postID);
-    print(postImageURL);
-    print("can you see");
-
-    print("here");
-    String name;
-    await FirebaseFirestore.instance
-        .collection('users')
-        .doc(FirebaseAuth.instance.currentUser!.uid)
-        .snapshots()
-        .listen((DocumentSnapshot snapshot) {
-     name = snapshot.get("firstname");
-     
-      // image = snapshot.get('image');
-      
-    });
+      String postID, String name ,String postContent, String postImageURL) async {
+  
 
     await FirebaseFirestore.instance
        .collection('thread')
         .doc(postID)
         .set({
       'postID': postID,
-      'userName': 'name',
+      'userName': name,
       'userThumbnail': 'my photo',
       'userID' : FirebaseAuth.instance.currentUser!.uid,
+      'postTimeStamp':DateTime.now().millisecondsSinceEpoch,
+
       'postContent': postContent,
       'postImage': postImageURL,
       'postLikeCount': 0,

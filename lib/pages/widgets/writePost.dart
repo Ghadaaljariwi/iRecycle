@@ -79,50 +79,52 @@ class _WritePost extends State<WritePost> {
       _isLoading = true;
     });
     if (writingTextController.text.isEmpty) {
-
-        showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: Text(
-              "Empty Fields",
-              style: TextStyle(color: Colors.lightGreen, fontSize: 20),
-            ),
-            content: Text(
-              "Please enter all required fields",
-              style: TextStyle(fontSize: 20),
-            ),
-            actions: <Widget>[
-              TextButton(
-                onPressed: Navigator.of(context).pop,
-                child: const Text(
-                  "OK",
-                  style: TextStyle(fontSize: 20),
-                ),
-              )
-            ],
-          );
-        });
+      showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: Text(
+                "Empty Fields",
+                style: TextStyle(color: Colors.lightGreen, fontSize: 20),
+              ),
+              content: Text(
+                "Please enter required fields",
+                style: TextStyle(fontSize: 20),
+              ),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: Navigator.of(context).pop,
+                  child: const Text(
+                    "OK",
+                    style: TextStyle(fontSize: 20),
+                  ),
+                )
+              ],
+            );
+          });
     } else {
-
       Navigator.pop(context);
       String postID =
           Utils.getRandomString(8) + Random().nextInt(500).toString();
       String postImageURL = '';
+      if (_postImageFile != null) {
 
-      postImageURL = (await FBStorage.uploadPostImages(
+        postImageURL = (await FBStorage.uploadPostImages(
           postID: postID, postImageFile: _postImageFile!));
-
+      }
+    else{
       FBCloudStore.sendPostInFirebase(
           postID,
+          name,
           writingTextController.text,
           //widget.myData,
-          postImageURL);
+          postImageURL
+          );
+          }
 
       setState(() {
         _isLoading = false;
       });
-      
     }
   }
 

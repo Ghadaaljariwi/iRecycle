@@ -37,6 +37,7 @@ class _ThreadMain extends State<ThreadMain> {
           stream: FirebaseFirestore.instance
            
               .collection('thread')
+               .orderBy('postTimeStamp', descending: true)
               .snapshots(),
           builder: (context, snapshot) {
             if (!snapshot.hasData) return LinearProgressIndicator();
