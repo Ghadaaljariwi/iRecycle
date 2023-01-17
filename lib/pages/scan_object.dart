@@ -57,8 +57,13 @@ class _CameraScreenState extends State<CameraScreen> {
       }),
     );
     final decodedResponse = jsonDecode(response.body);
-    result = decodedResponse['responses'][0]['localizedObjectAnnotations'][0]
-        ['name'];
+    if (type == 'OBJECT_LOCALIZATION') {
+      result = decodedResponse['responses'][0]['localizedObjectAnnotations'][0]
+          ['name'];
+    } else if (type == 'TEXT_DETECTION') {
+      result =
+          decodedResponse['responses'][0]['textAnnotations'][0]['description'];
+    }
     _showResult();
   }
 
