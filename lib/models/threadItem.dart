@@ -53,7 +53,9 @@ class _ThreadItem extends State<ThreadItem> {
                       child: Container(
                           width: 48,
                           height: 48,
-                          child: Image.asset(
+                          child: 
+                          
+                          Image.asset(
                                 'assets/images/recycling.png')),
                     ),
                     Column(

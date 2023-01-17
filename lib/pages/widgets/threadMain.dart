@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:irecycle/models/threadItem.dart';
-import 'package:irecycle/writePost.dart';
+import 'package:irecycle/pages/widgets/writePost.dart';
 
 import 'package:irecycle/common/utils.dart';
 

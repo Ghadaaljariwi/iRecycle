@@ -300,18 +300,22 @@ class _HomePageState extends State<HomePage> {
             tabs: [
               GButton(
                 icon: Icons.home,
+                 iconSize: 25,
                 text: 'Home',
               ),
               GButton(
                 icon: Icons.park_sharp,
+                 iconSize: 25,
                 text: 'community',
               ),
               GButton(
                 icon: Icons.document_scanner_outlined,
+                iconSize: 25,
                 text: 'classifier',
               ),
               GButton(
                 icon: Icons.person,
+                 iconSize: 25,
                 text: 'Profile',
               ),
             ],
