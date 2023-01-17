@@ -14,7 +14,6 @@ class _CameraScreenState extends State<CameraScreen> {
   final imagePicker = ImagePicker();
   final apiKey = 'AIzaSyDvdqwITHh09sYJE7kq0R4MPLf7OoObSCo';
   String result = '';
-  String type = '';
 
   Future<void> _getPermission() async {
     var status = await Permission.camera.status;
@@ -48,7 +47,7 @@ class _CameraScreenState extends State<CameraScreen> {
             },
             'features': [
               {
-                'type': type,
+                'type': 'TEXT_DETECTION',
                 'maxResults': 1,
               },
             ],
@@ -68,7 +67,7 @@ class _CameraScreenState extends State<CameraScreen> {
       barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Result'),
+          title: Text('Result'),
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
@@ -78,7 +77,7 @@ class _CameraScreenState extends State<CameraScreen> {
           ),
           actions: <Widget>[
             ElevatedButton(
-              child: const Text('OK'),
+              child: Text('OK'),
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -93,26 +92,18 @@ class _CameraScreenState extends State<CameraScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: new Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              ElevatedButton(
-                child: Text('Scan Object'),
-                onPressed: () {
-                  _getPermission();
-                  _pickImage();
-                  type = 'OBJECT_LOCALIZATION';
-                },
-              ),
-              ElevatedButton(
-                child: Text('Scan Text'),
-                onPressed: () {
-                  _getPermission();
-                  _pickImage();
-                  type = 'TEXT_DETECTION';
-                },
-              ),
-            ]),
+        child: Container(
+          height: 100,
+          width: 100,
+          color: Colors.yellow,
+          child: ElevatedButton(
+            child: Text('Take Picture'),
+            onPressed: () {
+              _getPermission();
+              _pickImage();
+            },
+          ),
+        ),
       ),
     );
   }
