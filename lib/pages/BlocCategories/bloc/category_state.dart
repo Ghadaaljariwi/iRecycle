@@ -1,23 +1,26 @@
 part of 'category_bloc.dart';
 
-class CategoryState extends Equatable {
+abstract class CategoryState extends Equatable {
+  /*
   final List<category> categoryList;
-  const CategoryState({
+  const CategoryState(List<category> categoryList, {
     this.categoryList = const <category>[],
   });
-
+*/
+  const CategoryState();
   @override
-  List<Object> get props => [categoryList];
+  List<Object> get props => [];
 
   Map<String, dynamic>? toJson() {}
 }
 
+/*
 class CategoryInitial extends CategoryState {
   Map<String, dynamic> toJson() {
     return {'category': categoryList};
   }
 }
-
+*/
 class CategoryLoaded extends CategoryState {
   final List<category> categoryList;
 

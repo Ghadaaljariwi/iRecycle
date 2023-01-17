@@ -45,7 +45,10 @@ class _addCategoryState extends State<addCategory> {
   Widget build(BuildContext context) {
     return BlocBuilder<CategoryBloc, CategoryState>(
       builder: (context, state) {
-        List<category> list = state.categoryList;
+        List<category> list = [];
+        if (state is CategoryLoaded) {
+          list = state.categoryList;
+        }
         return Scaffold(
           appBar: AppBar(
             automaticallyImplyLeading: false,

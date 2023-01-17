@@ -9,7 +9,7 @@ class CategoryRepository {
   final uuid = const Uuid();
   List<category> categoryList = [];
 
-  List<category> addCategory(String name, String description, File? image) {
+  List<category> addCategory(String name, String description, String image) {
     var toAdd = category(name: name, description: description, image: image);
     categoryList.add(toAdd);
     return categoryList;

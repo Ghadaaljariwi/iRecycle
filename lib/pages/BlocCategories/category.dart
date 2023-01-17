@@ -4,7 +4,7 @@ import 'package:equatable/equatable.dart';
 class category extends Equatable {
   late String id;
   late String name;
-  late File? image;
+  late String image;
   late String description;
 
   category({
@@ -27,8 +27,8 @@ class category extends Equatable {
     return {
       //'id': id,
       'name': name,
-      'image': image,
       'description': description,
+      'image': image,
     };
   }
 
@@ -44,7 +44,7 @@ class category extends Equatable {
   Map<String, dynamic> toJson() => {
         //'id': id,
         'name': name,
-        'image': image,
         'description': description,
+        'image': image,
       };
 }

@@ -1,5 +1,5 @@
 import 'dart:io';
-
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
@@ -18,6 +18,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:flutter_background_service/flutter_background_service.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:path_provider_android/path_provider_android.dart';
+import 'package:path_provider_ios/path_provider_ios.dart';
 
 Map<int, Color> color = {
   50: Color.fromARGB(255, 65, 102, 39),
@@ -33,12 +38,36 @@ Map<int, Color> color = {
 };
 
 MaterialColor colorCustom = MaterialColor(0xFF8BC34A, color);
+/*
+ Future<Directory> getApplicationSupportDirectory() async {
+  if (Platform.isAndroid) {
+    PathProviderAndroid.registerWith();
+  } else if (Platform.isIOS) {
+    PathProviderIOS.registerWith();
+  }
+  final String? path = await _platform.getApplicationSupportPath();
+  if (path == null) {
+    throw MissingPlatformDirectoryException(
+        'Unable to get application support directory');
+  }
+
+  return Directory(path);
+}
+*/
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  /*
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-/*
+*/
+  //await Hive.initFlutter();
+  if (Platform.isAndroid) {
+    PathProviderAndroid.registerWith();
+  } else if (Platform.isIOS) {
+    PathProviderIOS.registerWith();
+  }
   final storage = await HydratedStorage.build(
     storageDirectory: await getApplicationDocumentsDirectory(),
   );
@@ -49,7 +78,7 @@ void main() async {
     )),
     storage: storage,
   );
-*/
+/*
   runApp(MultiBlocProvider(
     providers: [
       //const MyApp());
@@ -65,6 +94,7 @@ void main() async {
     ],
     child: const MyApp(),
   ));
+  */
 }
 
 class MyApp extends StatelessWidget {
@@ -73,20 +103,18 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    /*
     return BlocProvider(
       create: (context) => CategoryBloc(
         RepositoryProvider.of<CategoryRepository>(context),
       ),
-      child: 
-      */
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: colorCustom,
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          primarySwatch: colorCustom,
+        ),
+        home: AdminHomePage(), //OnboardingScreen(),
       ),
-      home: AdminHomePage(), //OnboardingScreen(),
     );
   }
 }

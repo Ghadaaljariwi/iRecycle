@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
@@ -9,16 +11,17 @@ part 'category_state.dart';
 
 class CategoryBloc extends Bloc<CategoryEvent, CategoryState>
     with HydratedMixin {
-  late final CategoryRepository repository;
-  CategoryBloc(repository) : super(CategoryState()) {
+  final CategoryRepository repository;
+  CategoryBloc(this.repository)
+      : super(CategoryLoaded(repository.categoryList)) {
     on<AddCategory>(onAddCategory);
   }
 
-  void onAddCategory(AddCategory event, Emitter<CategoryState> emit) {
+  void onAddCategory(event, emit) async {
     final state = this.state;
-    emit(CategoryState(
-      categoryList: List.from(state.categoryList)..add(event.object),
-    ));
+    final updatedList = repository.addCategory(
+        event.object.name, event.object.description, event.object.image);
+    emit(CategoryLoaded(updatedList));
   }
 
   @override
@@ -31,7 +34,7 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState>
 
       repository.categoryList =
           listOfCategories; //<-- This is IMPORTANT. You must assign the todoList defined in the TodoRepository to the locally stored `listOfTodo` to keep it up to date.
-      return CategoryState();
+      return CategoryLoaded(listOfCategories);
     } catch (e) {
       return null;
     }

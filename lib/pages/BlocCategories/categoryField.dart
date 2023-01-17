@@ -30,7 +30,7 @@ class _CategoryFieldState extends State<CategoryField> {
   TextEditingController DescriptionController = TextEditingController();
   final FocusNode _nodeText1 = FocusNode();
   FocusNode writingTextFocus = FocusNode();
-  File? image;
+  String image = '';
 
   void add() {
     var object = category(
@@ -44,7 +44,7 @@ class _CategoryFieldState extends State<CategoryField> {
   void validate() {
     if (NameController.text.isEmpty ||
         DescriptionController.text.isEmpty ||
-        image == null) {
+        image == '') {
       showToastMessage("Please fill all the required fields");
     } else {
       add();
@@ -79,7 +79,7 @@ class _CategoryFieldState extends State<CategoryField> {
 
       final ImageTemporary = File(img.path);
       setState(() {
-        image = ImageTemporary;
+        image = ImageTemporary.path;
       });
     } on PlatformException catch (e) {
       print('Failed to pick image: $e');
@@ -173,10 +173,10 @@ class _CategoryFieldState extends State<CategoryField> {
                           height: 1,
                           color: Colors.black,
                         ),
-                        image != null
+                        image != ''
                             ? Center(
                                 child: Image.file(
-                                  image!,
+                                  File(image),
                                   width: 160,
                                   height: 160,
                                   fit: BoxFit.cover,
