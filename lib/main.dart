@@ -62,7 +62,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: colorCustom,
       ),
-      home: HomePage(), //OnboardingScreen(),
+      home: OnboardingScreen(),
     );
   }
 }

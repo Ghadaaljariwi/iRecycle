@@ -13,7 +13,9 @@ import 'package:irecycle/pages/splash_screen.dart';
 import 'package:irecycle/pages/widgets/header_widget.dart';
 
 import '../../common/theme_helper.dart';
+import '../Mycard.dart';
 import 'bloc/category_bloc.dart';
+import 'cat.dart';
 import 'category.dart';
 
 class addCategory extends StatefulWidget {
@@ -28,6 +30,7 @@ class _addCategoryState extends State<addCategory> {
   double _drawerIconSize = 24;
   double _drawerFontSize = 17;
   TextEditingController nameController = TextEditingController();
+  List<category> list = [];
 
   void showToastMessage(String message) {
     Fluttertoast.showToast(
@@ -41,206 +44,273 @@ class _addCategoryState extends State<addCategory> {
         fontSize: 16.0);
   }
 
+  void please() {
+    FirebaseFirestore.instance
+        .collection("categories")
+        .doc()
+        .snapshots()
+        .listen((snapshot) {
+      String name = snapshot.get('name');
+      String des = snapshot.get('description');
+      String img = snapshot.get('image');
+      showToastMessage(name + des + img);
+    });
+/*
+                      if (snapshot.data!.docs.isEmpty) {
+                        showToastMessage('empty');
+                        print('empty');
+                        // return const LinearProgressIndicator();
+                      }
+                      for (var obj in snapshot.data!.docs) {
+                        String name = obj.get('name');
+                        String des = obj.get('description');
+                        category toadd = category(name: name, description: des);
+                        print(name + des);
+                        showToastMessage(name + des);
+                        list.add(toadd);
+                      }
+                      */
+  }
+
+/*
+  Future _getUserDetail() async {
+    Map<String, dynamic> snapshot =
+        (await FirebaseFirestore.instance.collection('users').get() ) as Map<String, dynamic> ;
+
+    snapshot.docs.forEach((document) {
+      category obj = category.fromMap(document.data() as Map<String, dynamic>);
+      list.add(obj);
+    });
+  }
+*/
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CategoryBloc, CategoryState>(
-      builder: (context, state) {
-        List<category> list = state.categoryList;
-        return Scaffold(
-          appBar: AppBar(
-            automaticallyImplyLeading: false,
-            title: Center(
-              child: Text(
-                "Categories",
-                style:
-                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-              ),
+    // please();
+    //_getUserDetail();
+    // showToastMessage(list.first.name);
+
+    //  return BlocBuilder<CategoryBloc, CategoryState>(
+    //  builder: (context, state) {
+    // List<category> list = state.categoryList;
+    return Scaffold(
+      appBar: AppBar(
+        //automaticallyImplyLeading: false,
+        title: Center(
+          child: Text(
+            "Categories",
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          ),
+        ),
+        elevation: 0.5,
+        iconTheme: IconThemeData(color: Colors.white),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: <Color>[
+                Theme.of(context).primaryColor,
+                Theme.of(context).colorScheme.secondary,
+              ])),
+        ),
+        actions: [
+          Container(
+            margin: EdgeInsets.only(
+              top: 16,
+              right: 16,
             ),
-            elevation: 0.5,
-            iconTheme: IconThemeData(color: Colors.white),
-            flexibleSpace: Container(
-              decoration: BoxDecoration(
+            child: Stack(
+              children: <Widget>[
+                // Icon(Icons.notifications),
+              ],
+            ),
+          )
+        ],
+      ),
+      drawer: Drawer(
+        child: Container(
+          child: ListView(
+            children: [
+              DrawerHeader(
+                /*
+                decoration: BoxDecoration(
+                  color: Theme.of(context).primaryColor,
                   gradient: LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors: <Color>[
-                    Theme.of(context).primaryColor,
-                    Theme.of(context).colorScheme.secondary,
-                  ])),
-            ),
-            actions: [
-              Container(
-                margin: EdgeInsets.only(
-                  top: 16,
-                  right: 16,
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    stops: [0.0, 1.0],
+                    colors: [
+                      Theme.of(context).primaryColor,
+                      Theme.of(context).colorScheme.secondary,
+                    ],
+                  ),
                 ),
-                child: Stack(
-                  children: <Widget>[
-                    // Icon(Icons.notifications),
-                  ],
+                */
+                child: Container(
+                  alignment: Alignment.bottomLeft,
+                  child: Text(
+                    "iRecycle",
+                    style: TextStyle(
+                        fontSize: 25,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold),
+                  ),
                 ),
-              )
+              ),
+              ListTile(
+                leading: Icon(
+                  Icons.home_filled,
+                  size: _drawerIconSize,
+                  color: Theme.of(context).colorScheme.secondary,
+                ),
+                title: Text(
+                  'Home Page',
+                  style: TextStyle(
+                      fontSize: _drawerFontSize,
+                      color: Theme.of(context).colorScheme.secondary),
+                ),
+                onTap: () {
+                  Navigator.pop(context);
+                },
+              ),
+              Divider(
+                color: Theme.of(context).primaryColor,
+                height: 1,
+              ),
+              ListTile(
+                leading: Icon(
+                  Icons.logout_rounded,
+                  size: _drawerIconSize,
+                  color: Theme.of(context).accentColor,
+                ),
+                title: Text(
+                  'Logout',
+                  style: TextStyle(
+                      fontSize: _drawerFontSize,
+                      color: Theme.of(context).accentColor),
+                ),
+                onTap: () async {
+                  await FirebaseAuth.instance.signOut();
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (BuildContext context) {
+                        return const LoginPage();
+                      },
+                    ),
+                  );
+                  //do
+                  showToastMessage("logout successfully");
+                },
+              ),
+              Divider(
+                color: Theme.of(context).primaryColor,
+                height: 1,
+              ),
+              ListTile(
+                leading: Icon(
+                  Icons.delete,
+                  size: _drawerIconSize,
+                  color: Theme.of(context).accentColor,
+                ),
+                title: Text(
+                  'Delete account',
+                  style: TextStyle(
+                      fontSize: _drawerFontSize,
+                      color: Theme.of(context).accentColor),
+                ),
+                onTap: () {
+                  // _showDialog();
+                },
+              ),
             ],
           ),
-          drawer: Drawer(
-            child: Container(
-              child: ListView(
+        ),
+      ),
+      body: SingleChildScrollView(
+        child: Stack(
+          children: [
+            Container(
+              height: 100,
+              child: HeaderWidget(100, false, Icons.house_rounded),
+            ),
+            Container(
+              alignment: Alignment.center,
+              margin: EdgeInsets.fromLTRB(25, 130, 25, 10),
+              padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+              child: Column(
                 children: [
-                  DrawerHeader(
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).primaryColor,
-                      gradient: LinearGradient(
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                        stops: [0.0, 1.0],
-                        colors: [
-                          Theme.of(context).primaryColor,
-                          Theme.of(context).colorScheme.secondary,
-                        ],
-                      ),
-                    ),
-                    child: Container(
-                      alignment: Alignment.bottomLeft,
-                      child: Text(
-                        "Irecycle",
-                        style: TextStyle(
-                            fontSize: 25,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ),
+                  Container(
+                    width: 100,
+                    height: 100,
+                    child: StreamBuilder<QuerySnapshot>(
+                        stream: FirebaseFirestore.instance
+                            .collection('categories')
+                            .snapshots(),
+                        builder: (context, snapshot) {
+                          if (!snapshot.hasData) {
+                            return const LinearProgressIndicator();
+                          }
+
+                          return Stack(
+                            children: [
+                              snapshot.hasData
+                                  ? ListView(
+                                      shrinkWrap: true,
+                                      children: snapshot.data!.docs
+                                          .map((DocumentSnapshot data) {
+                                        return Cat(
+                                          //id = data["id"];
+                                          name: data['name'],
+                                          description: data['description'],
+                                          image: data['image'],
+                                        );
+                                      }).toList(),
+                                    )
+                                  : Container(
+                                      child: Center(
+                                          child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: <Widget>[
+                                          Icon(
+                                            Icons.error,
+                                            color: Colors.grey[700],
+                                            size: 64,
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.all(14.0),
+                                            child: Text(
+                                              'There is no post',
+                                              style: TextStyle(
+                                                  fontSize: 16,
+                                                  color: Colors.grey[700]),
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          ),
+                                        ],
+                                      )),
+                                    ),
+                              // Utils.loadingCircle(_isLoading),
+                            ],
+                          );
+                        }),
                   ),
-                  ListTile(
-                    leading: Icon(
-                      Icons.home_filled,
-                      size: _drawerIconSize,
-                      color: Theme.of(context).colorScheme.secondary,
-                    ),
-                    title: Text(
-                      'Home Page',
-                      style: TextStyle(
-                          fontSize: _drawerFontSize,
-                          color: Theme.of(context).colorScheme.secondary),
-                    ),
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
+                  SizedBox(
+                    height: 20,
                   ),
-                  Divider(
-                    color: Theme.of(context).primaryColor,
-                    height: 1,
-                  ),
-                  ListTile(
-                    leading: Icon(
-                      Icons.logout_rounded,
-                      size: _drawerIconSize,
-                      color: Theme.of(context).accentColor,
-                    ),
-                    title: Text(
-                      'Logout',
-                      style: TextStyle(
-                          fontSize: _drawerFontSize,
-                          color: Theme.of(context).accentColor),
-                    ),
-                    onTap: () async {
-                      await FirebaseAuth.instance.signOut();
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (BuildContext context) {
-                            return const LoginPage();
-                          },
-                        ),
-                      );
-                      //do
-                      showToastMessage("logout successfully");
-                    },
-                  ),
-                  Divider(
-                    color: Theme.of(context).primaryColor,
-                    height: 1,
-                  ),
-                  ListTile(
-                    leading: Icon(
-                      Icons.delete,
-                      size: _drawerIconSize,
-                      color: Theme.of(context).accentColor,
-                    ),
-                    title: Text(
-                      'Delete account',
-                      style: TextStyle(
-                          fontSize: _drawerFontSize,
-                          color: Theme.of(context).accentColor),
-                    ),
-                    onTap: () {
-                      // _showDialog();
-                    },
-                  ),
+                  FloatingActionButton(
+                      onPressed: (() => Navigator.of(context).push(
+                              MaterialPageRoute(
+                                  builder: (BuildContext context) {
+                            return CategoryField();
+                          }))),
+                      child: const Icon(Icons.add)),
                 ],
               ),
             ),
-          ),
-          body: SingleChildScrollView(
-            child: Stack(
-              children: [
-                Container(
-                  height: 100,
-                  child: HeaderWidget(100, false, Icons.house_rounded),
-                ),
-                Container(
-                  alignment: Alignment.center,
-                  margin: EdgeInsets.fromLTRB(25, 130, 25, 10),
-                  padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                  child: Column(
-                    children: [
-                      Container(
-                        width: 100,
-                        height: 100,
-                        child: ListView.builder(
-                          itemBuilder: (ctx, index) {
-                            IconData iconData;
-                            Color iconColor;
-                            return Card(
-                              elevation: 5,
-                              margin: EdgeInsets.symmetric(
-                                vertical: 8,
-                                horizontal: 5,
-                              ),
-                              child: new ListTile(
-                                title: Text(
-                                  list[index].name,
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 22,
-                                  ),
-                                ),
-                                subtitle: Text(
-                                  list[index].description,
-                                  style: TextStyle(fontSize: 20),
-                                ),
-                              ),
-                            );
-                          },
-                          itemCount: list.length,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      FloatingActionButton(
-                          onPressed: (() => Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                      builder: (BuildContext context) {
-                                return CategoryField();
-                              }))),
-                          child: const Icon(Icons.add)),
-                    ],
-                  ),
-                )
-              ],
-            ),
-          ),
-        );
-      },
+          ],
+        ),
+      ),
     );
   }
 }

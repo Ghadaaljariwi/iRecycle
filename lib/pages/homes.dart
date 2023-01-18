@@ -174,7 +174,7 @@ class _HomePageState extends State<HomePage> {
               child: Container(
                 alignment: Alignment.bottomLeft,
                 child: Text(
-                  "Irecycle",
+                  "iRecycle",
                   style: TextStyle(
                       fontSize: 25,
                       color: Colors.white,

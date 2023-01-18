@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -13,6 +14,7 @@ import 'package:irecycle/pages/splash_screen.dart';
 import 'package:irecycle/pages/widgets/header_widget.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+import '../../common/utils.dart';
 import 'bloc/category_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -31,14 +33,28 @@ class _CategoryFieldState extends State<CategoryField> {
   final FocusNode _nodeText1 = FocusNode();
   FocusNode writingTextFocus = FocusNode();
   File? image;
+  String cid = Utils.getRandomString(8) + Random().nextInt(500).toString();
 
   void add() {
+    /*
     var object = category(
-        name: NameController.text,
-        description: DescriptionController.text,
-        image: image);
-    context.read<CategoryBloc>().add(AddCategory(object: object));
+      name: NameController.text,
+      description: DescriptionController.text,
+      // image: image
+    );
+    //context.read<CategoryBloc>().add(AddCategory(object: object));
+*/
+    addCategoryDB(NameController.text, DescriptionController.text, image);
     Navigator.pop(context);
+  }
+
+  Future addCategoryDB(String name, String description, File? image) async {
+    final firebaseUser = await FirebaseAuth.instance.currentUser!;
+    await FirebaseFirestore.instance.collection('categories').doc().set({
+      'name': name,
+      'description': description,
+      'image': image!.path,
+    });
   }
 
   void validate() {
@@ -88,140 +104,139 @@ class _CategoryFieldState extends State<CategoryField> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CategoryBloc, CategoryState>(
-      builder: (context, state) {
-        return Scaffold(
-          appBar: AppBar(
-            automaticallyImplyLeading: false,
-            actions: <Widget>[
-              IconButton(
-                icon: Icon(
-                  Icons.arrow_forward,
-                  color: Colors.white,
-                  size: 40,
-                ),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              )
-            ],
-            title: Center(
-              child: Text(
-                "Adding Category",
-                style:
-                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-              ),
+    //return BlocBuilder<CategoryBloc, CategoryState>(
+    //builder: (context, state) {
+    return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(
+              Icons.arrow_forward,
+              color: Colors.white,
+              size: 40,
             ),
-            elevation: 0.5,
-            iconTheme: IconThemeData(color: Colors.white),
-            flexibleSpace: Container(
-              decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors: <Color>[
-                    Theme.of(context).primaryColor,
-                    Theme.of(context).colorScheme.secondary,
-                  ])),
-            ),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          )
+        ],
+        title: Center(
+          child: Text(
+            "Adding Category",
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
           ),
-          body: Stack(
+        ),
+        elevation: 0.5,
+        iconTheme: IconThemeData(color: Colors.white),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: <Color>[
+                Theme.of(context).primaryColor,
+                Theme.of(context).colorScheme.secondary,
+              ])),
+        ),
+      ),
+      body: Stack(
+        children: <Widget>[
+          //KeyboardActions(
+          //config: _buildConfig(context),
+          Column(
             children: <Widget>[
-              //KeyboardActions(
-              //config: _buildConfig(context),
-              Column(
-                children: <Widget>[
-                  Container(
-                      //    width: size.width,
-                      //  height: size.height -
-                      //    MediaQuery.of(context).viewInsets.bottom -
-                      //  80,
-                      child: Padding(
-                    padding: const EdgeInsets.only(right: 14.0, left: 10.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        TextFormField(
-                          autofocus: mounted,
-                          focusNode: writingTextFocus,
-                          decoration: InputDecoration(
-                            border: InputBorder.none,
-                            hintText: 'Category Name',
-                            hintMaxLines: 4,
+              Container(
+                  //    width: size.width,
+                  //  height: size.height -
+                  //    MediaQuery.of(context).viewInsets.bottom -
+                  //  80,
+                  child: Padding(
+                padding: const EdgeInsets.only(right: 14.0, left: 10.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    TextFormField(
+                      autofocus: mounted,
+                      focusNode: writingTextFocus,
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                        hintText: 'Category Name',
+                        hintMaxLines: 4,
+                      ),
+                      controller: NameController,
+                      keyboardType: TextInputType.multiline,
+                      maxLines: null,
+                    ),
+                    Divider(
+                      height: 1,
+                      color: Colors.black,
+                    ),
+                    TextFormField(
+                      //autofocus: mounted,
+                      //focusNode: writingTextFocus,
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                        hintText: 'Category Description',
+                        hintMaxLines: 10,
+                      ),
+                      controller: DescriptionController,
+                      keyboardType: TextInputType.multiline,
+                      maxLines: null,
+                    ),
+                    Divider(
+                      height: 1,
+                      color: Colors.black,
+                    ),
+                    image != null
+                        ? Center(
+                            child: Image.file(
+                              image!,
+                              width: 160,
+                              height: 160,
+                              fit: BoxFit.cover,
+                            ),
+                          )
+                        : SizedBox(
+                            height: 20,
                           ),
-                          controller: NameController,
-                          keyboardType: TextInputType.multiline,
-                          maxLines: null,
-                        ),
-                        Divider(
-                          height: 1,
-                          color: Colors.black,
-                        ),
-                        TextFormField(
-                          //autofocus: mounted,
-                          //focusNode: writingTextFocus,
-                          decoration: InputDecoration(
-                            border: InputBorder.none,
-                            hintText: 'Category Description',
-                            hintMaxLines: 10,
-                          ),
-                          controller: DescriptionController,
-                          keyboardType: TextInputType.multiline,
-                          maxLines: null,
-                        ),
-                        Divider(
-                          height: 1,
-                          color: Colors.black,
-                        ),
-                        image != null
-                            ? Center(
-                                child: Image.file(
-                                  image!,
-                                  width: 160,
-                                  height: 160,
-                                  fit: BoxFit.cover,
-                                ),
-                              )
-                            : SizedBox(
-                                height: 20,
-                              ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            ElevatedButton(
-                                onPressed: (() =>
-                                    checkPermission(ImageSource.gallery)),
-                                child: Text('Pick Gallery')),
-                            ElevatedButton(
-                                onPressed: (() =>
-                                    checkPermission(ImageSource.camera)),
-                                child: Text('Pick Camera')),
-                          ],
-                        ),
-                        Divider(
-                          height: 1,
-                          color: Colors.black,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            FloatingActionButton(
-                              onPressed: validate,
-                              child: Text('Add'),
-                            )
-                          ],
-                        ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ElevatedButton(
+                            onPressed: (() =>
+                                checkPermission(ImageSource.gallery)),
+                            child: Text('Pick Gallery')),
+                        ElevatedButton(
+                            onPressed: (() =>
+                                checkPermission(ImageSource.camera)),
+                            child: Text('Pick Camera')),
                       ],
                     ),
-                  )),
-                ],
-              ),
-              //),
+                    Divider(
+                      height: 1,
+                      color: Colors.black,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        FloatingActionButton(
+                          onPressed: validate,
+                          child: Text('Add'),
+                        )
+                      ],
+                    ),
+                  ],
+                ),
+              )),
             ],
           ),
-        );
-      },
+          //),
+        ],
+      ),
     );
+    // },
+    //);
   }
 }

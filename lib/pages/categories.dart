@@ -1,7 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'BlocCategories/bloc/category_bloc.dart';
+import 'BlocCategories/cat.dart';
+import 'BlocCategories/category.dart';
 import 'Mycard.dart';
 
 class categories extends StatefulWidget {
@@ -14,6 +19,8 @@ class categories extends StatefulWidget {
 class _categoriesState extends State<categories> {
   final _controller = PageController();
   final _controller2 = PageController();
+
+  var name;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -165,9 +172,69 @@ class _categoriesState extends State<categories> {
                 ),
               ],
             ),
+
+/*
+            child: Container(
+              width: 100,
+              height: 100,
+              child: StreamBuilder<QuerySnapshot>(
+                  stream: FirebaseFirestore.instance
+                      .collection('categories')
+                      .snapshots(),
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData) {
+                      return const LinearProgressIndicator();
+                    }
+
+                    return Stack(
+                      children: [
+                        snapshot.hasData
+                            ? ListView(
+                                shrinkWrap: true,
+                                children: snapshot.data!.docs
+                                    .map((DocumentSnapshot data) {
+                                  return Cat(
+                                    //id = data["id"];
+                                    name: data['name'],
+                                    description: data['description'],
+                                    image: data['image'],
+                                  );
+                                }).toList(),
+                              )
+                            : Container(
+                                child: Center(
+                                    child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    Icon(
+                                      Icons.error,
+                                      color: Colors.grey[700],
+                                      size: 64,
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(14.0),
+                                      child: Text(
+                                        'There is no post',
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            color: Colors.grey[700]),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                  ],
+                                )),
+                              ),
+                        // Utils.loadingCircle(_isLoading),
+                      ],
+                    );
+                  }),
+                  
+            ),
+            */
           ),
         ]),
       ),
     );
+    /////});
   }
 }
