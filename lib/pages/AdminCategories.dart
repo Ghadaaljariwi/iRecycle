@@ -4,14 +4,14 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'Mycard.dart';
 
-class categories extends StatefulWidget {
-  const categories({super.key});
+class AdminCategories extends StatefulWidget {
+  const AdminCategories({super.key});
 
   @override
-  State<categories> createState() => _categoriesState();
+  State<AdminCategories> createState() => _AdminCategoriesState();
 }
 
-class _categoriesState extends State<categories> {
+class _AdminCategoriesState extends State<AdminCategories> {
   final _controller = PageController();
   final _controller2 = PageController();
   @override
@@ -19,75 +19,6 @@ class _categoriesState extends State<categories> {
     return Scaffold(
       body: SafeArea(
         child: Column(children: [
-          SizedBox(
-            height: 25,
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 25),
-            child: Row(
-              //  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Recycling',
-                  style: TextStyle(
-                    fontSize: 28,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                Text(
-                  ' Tips',
-                  style: TextStyle(
-                    fontSize: 28,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Container(
-            height: 250,
-            child: ListView(
-              scrollDirection: Axis.horizontal,
-              controller: _controller,
-              children: [
-                MyCard(
-                  category: '',
-                  color: Theme.of(context).primaryColorLight,
-                  width: 390,
-                  img: 'assets/images/B0F2B673-2CD0-476D-9475-55670A28B2E6.png',
-                  h: 150,
-                  w: 700,
-                  f: 15,
-                ),
-                MyCard(
-                  category: '',
-                  color: Theme.of(context).primaryColorLight,
-                  width: 390,
-                  img: 'assets/images/B65DAAEE-5E2D-4CD4-B1FF-F054E957747C.png',
-                  h: 150,
-                  w: 700,
-                  f: 15,
-                ),
-                MyCard(
-                  category: '',
-                  color: Theme.of(context).primaryColorLight,
-                  width: 390,
-                  img: 'assets/images/C2796A0C-48A4-4089-B959-7B1E6935738C.png',
-                  h: 150,
-                  w: 700,
-                  f: 15,
-                ),
-              ],
-            ),
-          ),
-          SmoothPageIndicator(
-              controller: _controller, // PageController
-              count: 3,
-              effect: WormEffect(
-                dotColor: Colors.grey,
-                activeDotColor: Theme.of(context).primaryColorDark,
-              ),
-              // your preferred effect
-              onDotClicked: (index) {}),
           SizedBox(
             height: 25,
           ),

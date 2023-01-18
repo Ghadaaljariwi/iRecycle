@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:irecycle/pages/AdminCategories.dart';
 import 'package:irecycle/pages/BlocCategories/addCategory.dart';
 
 import 'package:irecycle/pages/homes.dart';
@@ -32,9 +33,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
   TextEditingController nameController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
   final List<Widget> _pages = [
-    Center(
-      child: Text('home'),
-    ),
+    AdminCategories(),
     Bloc(),
     addCategory(),
     Center(
@@ -253,40 +252,6 @@ class _AdminHomePageState extends State<AdminHomePage> {
               ),
             ],
           ),
-        ),
-      ),
-      bottomSheet: SingleChildScrollView(
-        child: Stack(
-          children: [
-            Container(
-              height: 100,
-              child: HeaderWidget(100, false, Icons.house_rounded),
-            ),
-            Container(
-              alignment: Alignment.center,
-              margin: EdgeInsets.fromLTRB(25, 130, 25, 10),
-              padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-              child: Column(
-                children: [
-                  Text(
-                    //FirebaseAuth.instance.currentUser!.email.toString(),
-                    email,
-                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Text(
-                    'login successfully',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                ],
-              ),
-            )
-          ],
         ),
       ),
       bottomNavigationBar: Container(

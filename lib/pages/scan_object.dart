@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:irecycle/pages/ImageResult.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:io';
+
+import 'Mycard.dart';
 
 class CameraScreen extends StatefulWidget {
   @override
@@ -64,7 +67,14 @@ class _CameraScreenState extends State<CameraScreen> {
       result =
           decodedResponse['responses'][0]['textAnnotations'][0]['description'];
     }
-    _showResult();
+    //_showResult();
+
+    Navigator.of(context).push(PageRouteBuilder(
+      //fullscreenDialog: true,
+      pageBuilder: (BuildContext context, _, __) => ImageResult(
+        result: result,
+      ),
+    ));
   }
 
   Future<void> _showResult() async {

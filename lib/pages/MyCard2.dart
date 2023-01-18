@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
-class MyCard extends StatelessWidget {
+class MyCard2 extends StatelessWidget {
   final String category;
   final color;
   final img;
@@ -10,7 +10,7 @@ class MyCard extends StatelessWidget {
   final double h;
   final double w;
   final double f;
-  const MyCard(
+  const MyCard2(
       {super.key,
       required this.category,
       this.color,
@@ -34,6 +34,9 @@ class MyCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            SizedBox(
+              height: 25,
+            ),
             Center(
               child: Image(
                 image: AssetImage(
@@ -43,10 +46,17 @@ class MyCard extends StatelessWidget {
                 width: w,
               ),
             ),
+            SizedBox(
+              height: 25,
+            ),
             Center(
               child: Text(
                 category.toString(),
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: f),
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: f,
+                    color: Colors.white),
               ),
             ),
           ],
