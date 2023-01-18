@@ -9,6 +9,7 @@ import 'package:irecycle/pages/categories.dart';
 import 'package:irecycle/pages/login_page.dart';
 import 'package:irecycle/pages/scan_object.dart';
 import 'package:irecycle/pages/splash_screen.dart';
+import 'package:irecycle/pages/profile_page.dart';
 import 'package:irecycle/pages/widgets/header_widget.dart';
 import 'package:irecycle/pages/widgets/threadMain.dart';
 
@@ -111,9 +112,9 @@ class _HomePageState extends State<HomePage> {
     categories(),
     ThreadMain(),
     CameraScreen(),
-    Center(
-      child: Text('profile'),
-    ),
+    ProfilePage()
+      ,
+    
   ];
 
   @override
