@@ -56,17 +56,20 @@ class _ThreadItem extends State<ThreadItem> {
                           child: 
                           
                           Image.asset(
-                                'assets/images/recycling.png')),
+                                'assets/images/download.png')),
                     ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text(
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(0,20,0,0),
+                          child: Text(
 
-                          widget.data['userName']
-                          ,
-                          style: TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.bold),
+                            widget.data['userName']
+                            ,
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.bold),
+                          ),
                         ),
                         Padding(
                           padding: const EdgeInsets.all(2.0),
@@ -99,7 +102,7 @@ class _ThreadItem extends State<ThreadItem> {
                   ),
                 ),
               ),
-              widget.data['postImage'] != 'NONE'
+              widget.data['postImage'] != ''
                   ? GestureDetector(
                       onTap: () {
                           },
@@ -127,7 +130,7 @@ class _ThreadItem extends State<ThreadItem> {
                           Padding(
                             padding: const EdgeInsets.only(left: 8.0),
                             child: Text(
-                              '600',
+                              '0',
                               style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,

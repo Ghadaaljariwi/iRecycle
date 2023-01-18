@@ -106,21 +106,23 @@ class _WritePost extends State<WritePost> {
       Navigator.pop(context);
       String postID =
           Utils.getRandomString(8) + Random().nextInt(500).toString();
+
+
       String postImageURL = '';
       if (_postImageFile != null) {
 
         postImageURL = (await FBStorage.uploadPostImages(
           postID: postID, postImageFile: _postImageFile!));
       }
-    else{
-      FBCloudStore.sendPostInFirebase(
+   
+                FBCloudStore.sendPostInFirebase(
           postID,
           name,
           writingTextController.text,
           //widget.myData,
           postImageURL
           );
-          }
+          
 
       setState(() {
         _isLoading = false;
