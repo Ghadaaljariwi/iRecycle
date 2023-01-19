@@ -94,7 +94,7 @@ class _addCategoryState extends State<addCategory> {
     // List<category> list = state.categoryList;
     return Scaffold(
       appBar: AppBar(
-        //automaticallyImplyLeading: false,
+        automaticallyImplyLeading: false,
         title: Center(
           child: Text(
             "Categories",
@@ -230,18 +230,14 @@ class _addCategoryState extends State<addCategory> {
         child: Stack(
           children: [
             Container(
-              height: 100,
-              child: HeaderWidget(100, false, Icons.house_rounded),
-            ),
-            Container(
               alignment: Alignment.center,
-              margin: EdgeInsets.fromLTRB(25, 130, 25, 10),
+              margin: EdgeInsets.fromLTRB(25, 10, 25, 10),
               padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
               child: Column(
                 children: [
                   Container(
-                    width: 100,
-                    height: 100,
+                    width: 150,
+                    //height: 150,
                     child: StreamBuilder<QuerySnapshot>(
                         stream: FirebaseFirestore.instance
                             .collection('categories')

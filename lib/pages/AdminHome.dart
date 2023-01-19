@@ -36,10 +36,13 @@ class _AdminHomePageState extends State<AdminHomePage> {
     AdminCategories(),
     Bloc(),
     addCategory(),
-    Center(
-      child: Text('profile'),
-    ),
   ];
+
+  void _bottomNav(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
 
   _getUserDetail() {
     FirebaseFirestore.instance
@@ -122,7 +125,6 @@ class _AdminHomePageState extends State<AdminHomePage> {
     return Scaffold(
       body: _pages[_selectedIndex],
       appBar: AppBar(
-        automaticallyImplyLeading: false,
         title: Text(
           "iRecycle Admin",
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
@@ -173,7 +175,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
                 child: Container(
                   alignment: Alignment.bottomLeft,
                   child: Text(
-                    "Irecycle",
+                    "iRecycle",
                     style: TextStyle(
                         fontSize: 25,
                         color: Colors.white,
@@ -281,10 +283,6 @@ class _AdminHomePageState extends State<AdminHomePage> {
                 icon: Icons.category_outlined,
                 text: 'Categories',
               ),
-              GButton(
-                icon: Icons.person,
-                text: 'Profile',
-              ),
             ],
             selectedIndex: _selectedIndex,
             onTabChange: _bottomNav,
@@ -292,11 +290,5 @@ class _AdminHomePageState extends State<AdminHomePage> {
         ),
       ),
     );
-  }
-
-  void _bottomNav(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
   }
 }
