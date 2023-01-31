@@ -13,7 +13,9 @@ import 'package:irecycle/pages/login_page.dart';
 import 'package:irecycle/pages/splash_screen.dart';
 import 'package:irecycle/pages/widgets/header_widget.dart';
 import 'package:permission_handler/permission_handler.dart';
-
+import 'package:uuid/uuid.dart';
+import 'package:intl/intl.dart';
+import 'dart:ui' as ui;
 import '../../common/utils.dart';
 import 'bloc/category_bloc.dart';
 import 'package:image_picker/image_picker.dart';
@@ -50,12 +52,16 @@ class _CategoryFieldState extends State<CategoryField> {
 
   Future addCategoryDB(String name, String description, File? image) async {
     final firebaseUser = await FirebaseAuth.instance.currentUser!;
-    await FirebaseFirestore.instance.collection('categories').doc().set({
+     var uuid = Uuid();
+    String u = uuid.v4();
+    await FirebaseFirestore.instance.collection('categories').doc( u.substring(0, 8) ).set({
+      'id':  u.substring(0, 8) ,
       'name': name,
       'description': description,
       'image': image!.path,
     });
   }
+
 
   void validate() {
     if (NameController.text.isEmpty ||
@@ -79,6 +85,7 @@ class _CategoryFieldState extends State<CategoryField> {
 
   checkPermission(ImageSource source) async {
     var cameraStatus = Permission.camera.status;
+      pickImage(source);
     print(cameraStatus);
     if (await cameraStatus.isGranted) {
       pickImage(source);

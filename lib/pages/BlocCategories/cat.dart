@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../Mycard.dart';
@@ -12,11 +14,22 @@ class Cat extends StatelessWidget {
 
   Cat(
       {required this.name,
-      //this.id,
+      required this.id,
       required this.description,
       required this.image,
       Key? key});
+        void delete() {
+  
+  deleteCategoryDB(id);
+  
+  }
 
+Future deleteCategoryDB(String id) async {
+    final firebaseUser = await FirebaseAuth.instance.currentUser!;
+  
+    await FirebaseFirestore.instance.collection('categories').doc( id ).delete();
+    
+  }
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -43,6 +56,16 @@ class Cat extends StatelessWidget {
                 name.toString(),
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
               ),
+            ),
+             Center(
+              child: IconButton(
+                icon: const Icon(
+                  Icons.delete,
+                  size: 20,
+                  color: Color.fromARGB(255, 139, 2, 2),
+                ),
+                onPressed: delete,
+                ),
             ),
           ],
         ),

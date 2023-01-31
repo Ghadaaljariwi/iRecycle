@@ -251,11 +251,12 @@ class _addCategoryState extends State<addCategory> {
                             children: [
                               snapshot.hasData
                                   ? ListView(
+
                                       shrinkWrap: true,
                                       children: snapshot.data!.docs
                                           .map((DocumentSnapshot data) {
                                         return Cat(
-                                          //id = data["id"];
+                                          id : data["id"],
                                           name: data['name'],
                                           description: data['description'],
                                           image: data['image'],

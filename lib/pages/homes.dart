@@ -183,30 +183,7 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             ),
-            ListTile(
-              leading: Icon(
-                Icons.home_filled,
-                size: _drawerIconSize,
-                color: Theme.of(context).accentColor,
-              ),
-              title: Text(
-                'Home Page',
-                style: TextStyle(
-                    fontSize: _drawerFontSize,
-                    color: Theme.of(context).accentColor),
-              ),
-              onTap: () {
-                /*   Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => ForgotPasswordPage()),
-                  ); */
-              },
-            ),
-            Divider(
-              color: Theme.of(context).primaryColor,
-              height: 1,
-            ),
+           
             ListTile(
               leading: Icon(
                 Icons.logout_rounded,
