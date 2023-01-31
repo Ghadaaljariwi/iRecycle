@@ -14,23 +14,36 @@ import 'package:keyboard_actions/keyboard_actions.dart';
 import 'package:cross_file/cross_file.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-class WritePost extends StatefulWidget {
-// here data carried
+final String postId = '';
 
+class EditPost extends StatefulWidget {
+// here data carried
+  EditPost({required postId});
   @override
-  State<StatefulWidget> createState() => _WritePost();
+  State<StatefulWidget> createState() => _EditPost();
 }
 
-class _WritePost extends State<WritePost> {
+class _EditPost extends State<EditPost> {
   TextEditingController writingTextController = TextEditingController();
   final FocusNode _nodeText1 = FocusNode();
   FocusNode writingTextFocus = FocusNode();
   bool _isLoading = false;
+
   File? _postImageFile;
   String name = '';
   void initState() {
     _getUserDetail();
     super.initState();
+  }
+
+  void showToastMessage(String message) {
+    Fluttertoast.showToast(
+        msg: message,
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 10,
+        textColor: Colors.white,
+        fontSize: 16.0);
   }
 
   KeyboardActionsConfig _buildConfig(BuildContext context) {
@@ -107,21 +120,15 @@ class _WritePost extends State<WritePost> {
           });
     } else {
       Navigator.pop(context);
-      String postID =
-          Utils.getRandomString(8) + Random().nextInt(500).toString();
 
       String postImageURL = '';
       if (_postImageFile != null) {
         postImageURL = (await FBStorage.uploadPostImages(
-            postID: postID, postImageFile: _postImageFile!));
+            postID: postId, postImageFile: _postImageFile!));
       }
 
-      FBCloudStore.sendPostInFirebase(
-          postID,
-          name,
-          writingTextController.text,
-          //widget.myData,
-          postImageURL);
+      FBCloudStore.updatePostInFirebase(
+          postId, writingTextController.text, postImageURL);
 
       setState(() {
         _isLoading = false;
@@ -131,16 +138,19 @@ class _WritePost extends State<WritePost> {
 
   @override
   Widget build(BuildContext context) {
+    print(postId);
+    showToastMessage(postId);
+    showToastMessage('test editing');
     final size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        title: Text('Write Post'),
+        title: Text('Edit Post'),
         centerTitle: true,
         actions: <Widget>[
           ElevatedButton(
               onPressed: () => _postToFB(),
               child: Text(
-                'Post',
+                'Save',
                 style: TextStyle(
                     fontSize: 20,
                     color: Colors.white,
@@ -261,16 +271,6 @@ class _WritePost extends State<WritePost> {
       showToastMessage("We need to access your camera");
       await Permission.camera.request();
     }
-  }
-
-  void showToastMessage(String message) {
-    Fluttertoast.showToast(
-        msg: message,
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.CENTER,
-        timeInSecForIosWeb: 1,
-        textColor: Colors.white,
-        fontSize: 16.0);
   }
 
   _getUserDetail() {

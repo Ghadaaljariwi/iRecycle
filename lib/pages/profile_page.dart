@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -12,6 +14,9 @@ import 'package:flutter/cupertino.dart';
 
 import '../common/theme_helper.dart';
 import 'package:flutter/material.dart';
+import '../common/utils.dart';
+import '../models/profileThreadItem.dart';
+import '../models/threadItem.dart';
 import 'registration_page.dart';
 import 'package:irecycle/pages/edit_profile.dart';
 
@@ -27,6 +32,10 @@ class _ProfilePageState extends State<ProfilePage> {
   TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   bool _isEditing = false;
+  bool _isLoading = false;
+  String uid = FirebaseAuth.instance.currentUser!.uid;
+  String userName = '';
+  String userImage = '';
 
   void _cancelEdit() {
     setState(() {
@@ -41,6 +50,19 @@ class _ProfilePageState extends State<ProfilePage> {
 
     setState(() {
       _isEditing = false;
+    });
+  }
+
+  _getUserDetail() {
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .snapshots()
+        .listen((DocumentSnapshot snapshot) {
+      uid = FirebaseAuth.instance.currentUser!.uid;
+      userName = snapshot.get("firstName");
+      userImage = snapshot.get('image');
+      setState(() {});
     });
   }
 
@@ -124,14 +146,13 @@ class _ProfilePageState extends State<ProfilePage> {
             children: <Widget>[
               Row(
                 children: <Widget>[
-                   CircleAvatar(
+                  CircleAvatar(
                     radius: 40.0,
                     backgroundColor: Colors.grey,
-                    backgroundImage: AssetImage(
-                                  'assets/images/download.png',
-                                ), ),
-                 
-             
+                    backgroundImage: NetworkImage(
+                      userImage,
+                    ),
+                  ),
                   Expanded(
                     flex: 1,
                     child: Column(
@@ -177,6 +198,65 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                 ),
               ),
+              Divider(
+                height: 1,
+                color: Colors.black,
+              ),
+              Container(
+                child: StreamBuilder<QuerySnapshot>(
+                    stream: FirebaseFirestore.instance
+                        .collection('thread')
+                        .orderBy('postTimeStamp', descending: true)
+                        .snapshots(),
+                    builder: (context, snapshot) {
+                      if (!snapshot.hasData) return LinearProgressIndicator();
+                      return Stack(
+                        children: <Widget>[
+                          snapshot.hasData
+                              ? ListView(
+                                  shrinkWrap: true,
+                                  children: snapshot.data!.docs
+                                      .map((DocumentSnapshot data) {
+                                    if (uid == data['userID']) {
+                                      return ProfileThreadItem(
+                                        data: data,
+                                        isFromThread: true,
+                                        commentCount: data['postCommentCount'],
+                                        parentContext: context,
+                                      );
+                                    } else {
+                                      return Utils.loadingCircle(_isLoading);
+                                    }
+                                  }).toList(),
+                                )
+                              : Container(
+                                  child: Center(
+                                      child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      Icon(
+                                        Icons.error,
+                                        color: Colors.grey[700],
+                                        size: 64,
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(14.0),
+                                        child: Text(
+                                          'There is no post',
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              color: Colors.grey[700]),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ),
+                                    ],
+                                  )),
+                                ),
+                          Utils.loadingCircle(_isLoading),
+                        ],
+                      );
+                    }),
+              ),
             ],
           ),
         );
@@ -187,7 +267,6 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-   
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[buildProfileHeader()],

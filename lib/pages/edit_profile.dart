@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import "package:flutter/material.dart";
+import 'package:image_picker/image_picker.dart';
 import 'package:irecycle/main.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -12,8 +15,11 @@ import 'package:irecycle/pages/login_page.dart';
 import 'package:irecycle/pages/splash_screen.dart';
 import 'package:irecycle/pages/profile_page.dart';
 import 'package:irecycle/pages/widgets/header_widget.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '../common/theme_helper.dart';
+import '../common/utils.dart';
+import '../controllers/FBStorage.dart';
 import 'registration_page.dart';
 
 class EditProfile extends StatefulWidget {
@@ -30,6 +36,7 @@ class _EditProfileState extends State<EditProfile> {
   bool isLoading = false;
   TextEditingController nameController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
+  File? image;
   //User user;
 
   _getUserDetail() {
@@ -39,7 +46,7 @@ class _EditProfileState extends State<EditProfile> {
         .snapshots()
         .listen((DocumentSnapshot snapshot) {
       nameController.text = snapshot.get("firstName");
-      // image = snapshot.get('image');
+      image = File(snapshot.get('image'));
       _emailController.text = snapshot.get("email");
       setState(() {});
     });
@@ -48,6 +55,7 @@ class _EditProfileState extends State<EditProfile> {
   @override
   void initState() {
     super.initState();
+    _getUserDetail();
     getUser();
   }
 
@@ -62,6 +70,94 @@ class _EditProfileState extends State<EditProfile> {
     setState(() {
       isLoading = false;
     });
+  }
+
+  void showToastMessage(String message) {
+    Fluttertoast.showToast(
+        msg: message,
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
+        textColor: Colors.white,
+        fontSize: 16.0);
+  }
+
+  checkPermission(ImageSource source) async {
+    var cameraStatus = Permission.camera.status;
+    print(cameraStatus);
+    if (await cameraStatus.isGranted) {
+      pickImage(source);
+    } else {
+      showToastMessage("We need to access your camera");
+      await Permission.camera.request();
+    }
+  }
+
+  Future pickImage(ImageSource source) async {
+    try {
+      final img = await ImagePicker().pickImage(source: source);
+      if (img == null) return;
+
+      final ImageTemporary = File(img.path);
+      setState(() {
+        image = ImageTemporary;
+      });
+      String postImageURL = (await FBStorage.uploadPostImages(
+          postID: FirebaseAuth.instance.currentUser!.uid,
+          postImageFile: image as File));
+      await FirebaseFirestore.instance
+          .collection("users")
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .set({"image": ImageTemporary.path}, SetOptions(merge: true)).then(
+              (value) {});
+    } on PlatformException catch (e) {
+      print('Failed to pick image: $e');
+    }
+  }
+
+  Column buildPictureField() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        image != null
+            ? Center(
+                child: CircleAvatar(
+                    radius: 40.0,
+                    backgroundColor: Colors.grey,
+                    backgroundImage: NetworkImage(
+                      image!.path,
+                    )),
+              )
+            : const CircleAvatar(
+                radius: 40.0,
+                backgroundColor: Colors.grey,
+                backgroundImage: NetworkImage(
+                  'assets/images/download.png',
+                )
+                /*
+                Utils.cacheNetworkImageWithEvent(context, image, 500, 0),
+                AssetImage(
+                  'assets/images/download.png',
+                ),
+                */
+                ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ElevatedButton(
+                onPressed: (() => pickImage(ImageSource.gallery)),
+                child: Text('Pick Gallery')),
+            ElevatedButton(
+                onPressed: (() => pickImage(ImageSource.camera)),
+                child: Text('Pick Camera')),
+          ],
+        ),
+        Divider(
+          height: 1,
+          color: Colors.black,
+        ),
+      ],
+    );
   }
 
   Column buildDisplayNameField() {
@@ -127,51 +223,50 @@ class _EditProfileState extends State<EditProfile> {
         ],
       ),
       body:
-      //  isLoading
-      //     ? circularProgress()
-      //    : 
+          //  isLoading
+          //     ? circularProgress()
+          //    :
           ListView(
+        children: <Widget>[
+          Container(
+            child: Column(
               children: <Widget>[
-                Container(
+                Padding(
+                  padding: EdgeInsets.only(
+                    top: 16.0,
+                    bottom: 8.0,
+                  ),
+                  // child: CircleAvatar(
+                  //   radius: 50.0,
+                  //   backgroundImage: ("url.url"),
+                  // ),
+                ),
+                Padding(
+                  padding: EdgeInsets.all(16.0),
                   child: Column(
                     children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.only(
-                          top: 16.0,
-                          bottom: 8.0,
-                        ),
-                        // child: CircleAvatar(
-                        //   radius: 50.0,
-                        //   backgroundImage: ("url.url"),
-                        // ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(16.0),
-                        child: Column(
-                          children: <Widget>[
-                            buildDisplayNameField(),
-                            buildBioField(),
-                          ],
-                        ),
-                      ),
-                      ElevatedButton(
-                    
-                        onPressed: () => print('update profile data'),
-                        child: Text(
-                          "Update Profile",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 20.0,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    
+                      buildPictureField(),
+                      buildDisplayNameField(),
+                      buildBioField(),
                     ],
+                  ),
+                ),
+                ElevatedButton(
+                  onPressed: () => print('update profile data'),
+                  child: Text(
+                    "Update Profile",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
               ],
             ),
+          ),
+        ],
+      ),
     );
   }
 }

@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import '../../common/utils.dart';
 import '../Mycard.dart';
 
 class Cat extends StatelessWidget {
@@ -18,38 +19,41 @@ class Cat extends StatelessWidget {
       required this.description,
       required this.image,
       Key? key});
-        void delete() {
-  
-  deleteCategoryDB(id);
-  
+  void delete() {
+    deleteCategoryDB(id);
   }
 
-Future deleteCategoryDB(String id) async {
+  Future deleteCategoryDB(String id) async {
     final firebaseUser = await FirebaseAuth.instance.currentUser!;
-  
-    await FirebaseFirestore.instance.collection('categories').doc( id ).delete();
-    
+
+    await FirebaseFirestore.instance.collection('categories').doc(id).delete();
   }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(20),
       child: Container(
-        width: 150,
+        width: 200,
         padding: EdgeInsets.all(20),
         decoration: BoxDecoration(
           color: Color.fromARGB(255, 189, 232, 152),
           borderRadius: BorderRadius.circular(16),
         ),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          //crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Center(
-              child: Image.file(
+              widthFactor: 100,
+              child: Utils.cacheNetworkImageWithEvent(context, image, 500, 0),
+              /*
+              Image.file(
                 File(image),
                 height: 100,
                 width: 100,
               ),
+              */
             ),
             Center(
               child: Text(
@@ -57,7 +61,7 @@ Future deleteCategoryDB(String id) async {
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
               ),
             ),
-             Center(
+            Center(
               child: IconButton(
                 icon: const Icon(
                   Icons.delete,
@@ -65,7 +69,7 @@ Future deleteCategoryDB(String id) async {
                   color: Color.fromARGB(255, 139, 2, 2),
                 ),
                 onPressed: delete,
-                ),
+              ),
             ),
           ],
         ),

@@ -6,28 +6,31 @@ import 'package:irecycle/common/utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class FBCloudStore {
-  static Future<void> sendPostInFirebase(
-      String postID, String name ,String postContent, String postImageURL) async {
-  
-
-    await FirebaseFirestore.instance
-       .collection('thread')
-        .doc(postID)
-        .set({
+  static Future<void> sendPostInFirebase(String postID, String name,
+      String postContent, String postImageURL) async {
+    await FirebaseFirestore.instance.collection('thread').doc(postID).set({
       'postID': postID,
       'userName': name,
       'userThumbnail': 'my photo',
-      'userID' : FirebaseAuth.instance.currentUser!.uid,
-      'postTimeStamp':DateTime.now().millisecondsSinceEpoch,
-
+      'userID': FirebaseAuth.instance.currentUser!.uid,
+      'postTimeStamp': DateTime.now().millisecondsSinceEpoch,
       'postContent': postContent,
       'postImage': postImageURL,
       'postLikeCount': 0,
       'postCommentCount': 0,
     });
-    
+
     print("good");
   }
 
-  
+  static Future<void> updatePostInFirebase(
+      String postID, String postContent, String postImageURL) async {
+    await FirebaseFirestore.instance.collection('thread').doc(postID).set({
+      'postTimeStamp': DateTime.now().millisecondsSinceEpoch,
+      'postContent': postContent,
+      //'postImage': postImageURL,
+    });
+
+    print("good");
+  }
 }

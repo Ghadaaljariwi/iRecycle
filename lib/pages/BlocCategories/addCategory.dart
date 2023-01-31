@@ -31,6 +31,7 @@ class _addCategoryState extends State<addCategory> {
   double _drawerFontSize = 17;
   TextEditingController nameController = TextEditingController();
   List<category> list = [];
+  final _controller = PageController();
 
   void showToastMessage(String message) {
     Fluttertoast.showToast(
@@ -237,7 +238,7 @@ class _addCategoryState extends State<addCategory> {
                 children: [
                   Container(
                     width: 150,
-                    //height: 150,
+                    height: 500,
                     child: StreamBuilder<QuerySnapshot>(
                         stream: FirebaseFirestore.instance
                             .collection('categories')
@@ -251,12 +252,13 @@ class _addCategoryState extends State<addCategory> {
                             children: [
                               snapshot.hasData
                                   ? ListView(
-
+                                      //scrollDirection: Axis.vertical,
+                                      //controller: _controller,
                                       shrinkWrap: true,
                                       children: snapshot.data!.docs
                                           .map((DocumentSnapshot data) {
                                         return Cat(
-                                          id : data["id"],
+                                          id: data["id"],
                                           name: data['name'],
                                           description: data['description'],
                                           image: data['image'],

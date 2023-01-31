@@ -17,6 +17,7 @@ import 'package:uuid/uuid.dart';
 import 'package:intl/intl.dart';
 import 'dart:ui' as ui;
 import '../../common/utils.dart';
+import '../../controllers/FBStorage.dart';
 import 'bloc/category_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -51,17 +52,25 @@ class _CategoryFieldState extends State<CategoryField> {
   }
 
   Future addCategoryDB(String name, String description, File? image) async {
-    final firebaseUser = await FirebaseAuth.instance.currentUser!;
-     var uuid = Uuid();
+    var uuid = Uuid();
     String u = uuid.v4();
-    await FirebaseFirestore.instance.collection('categories').doc( u.substring(0, 8) ).set({
-      'id':  u.substring(0, 8) ,
+    String postImageURL = '';
+    if (image != null) {
+      postImageURL = (await FBStorage.uploadPostImages(
+          postID: u.substring(0, 8), postImageFile: image));
+    }
+    final firebaseUser = await FirebaseAuth.instance.currentUser!;
+
+    await FirebaseFirestore.instance
+        .collection('categories')
+        .doc(u.substring(0, 8))
+        .set({
+      'id': u.substring(0, 8),
       'name': name,
       'description': description,
-      'image': image!.path,
+      'image': postImageURL,
     });
   }
-
 
   void validate() {
     if (NameController.text.isEmpty ||
@@ -85,7 +94,7 @@ class _CategoryFieldState extends State<CategoryField> {
 
   checkPermission(ImageSource source) async {
     var cameraStatus = Permission.camera.status;
-      pickImage(source);
+    pickImage(source);
     print(cameraStatus);
     if (await cameraStatus.isGranted) {
       pickImage(source);
@@ -96,6 +105,17 @@ class _CategoryFieldState extends State<CategoryField> {
   }
 
   Future pickImage(ImageSource source) async {
+    if (Platform.isAndroid) {
+      var cameraStatus = Permission.camera.status;
+      pickImage(source);
+      print(cameraStatus);
+      if (await cameraStatus.isGranted) {
+        pickImage(source);
+      } else {
+        showToastMessage("We need to access your camera");
+        await Permission.camera.request();
+      }
+    }
     try {
       final img = await ImagePicker().pickImage(source: source);
       if (img == null) return;
