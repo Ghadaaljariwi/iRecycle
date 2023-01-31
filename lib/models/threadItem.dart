@@ -1,17 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:irecycle/common/utils.dart';
+import 'package:irecycle/models/Comments.dart';
 
 class ThreadItem extends StatefulWidget {
   final BuildContext parentContext;
   final DocumentSnapshot data;
-  
+
   final bool isFromThread;
   final int commentCount;
   ThreadItem(
       {required this.data,
-
-     
       required this.isFromThread,
       required this.commentCount,
       required this.parentContext});
@@ -21,16 +20,11 @@ class ThreadItem extends StatefulWidget {
 }
 
 class _ThreadItem extends State<ThreadItem> {
- 
-
   @override
   void initState() {
- 
-   
     super.initState();
   }
 
-  
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -43,9 +37,7 @@ class _ThreadItem extends State<ThreadItem> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               GestureDetector(
-                onTap: () {
-                 
-                },
+                onTap: () {},
                 child: Row(
                   children: <Widget>[
                     Padding(
@@ -53,20 +45,15 @@ class _ThreadItem extends State<ThreadItem> {
                       child: Container(
                           width: 48,
                           height: 48,
-                          child: 
-                          
-                          Image.asset(
-                                'assets/images/download.png')),
+                          child: Image.asset('assets/images/download.png')),
                     ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Padding(
-                          padding: const EdgeInsets.fromLTRB(0,20,0,0),
+                          padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
                           child: Text(
-
-                            widget.data['userName']
-                            ,
+                            widget.data['userName'],
                             style: TextStyle(
                                 fontSize: 18, fontWeight: FontWeight.bold),
                           ),
@@ -82,13 +69,11 @@ class _ThreadItem extends State<ThreadItem> {
                       ],
                     ),
                     Spacer(),
-                   ],
+                  ],
                 ),
               ),
               GestureDetector(
-                onTap: () {
-                  
-                },
+                onTap: () {},
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(8, 10, 4, 10),
                   child: Text(
@@ -104,8 +89,7 @@ class _ThreadItem extends State<ThreadItem> {
               ),
               widget.data['postImage'] != ''
                   ? GestureDetector(
-                      onTap: () {
-                          },
+                      onTap: () {},
                       child: Utils.cacheNetworkImageWithEvent(
                           context, widget.data['postImage'], 0, 0))
                   : Container(),
@@ -119,14 +103,10 @@ class _ThreadItem extends State<ThreadItem> {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
                     GestureDetector(
-                      onTap: () {
-                        
-                      },
+                      onTap: () {},
                       child: Row(
                         children: <Widget>[
-                          Icon(Icons.thumb_up,
-                              size: 18,
-                              color:  Colors.black),
+                          Icon(Icons.thumb_up, size: 18, color: Colors.black),
                           Padding(
                             padding: const EdgeInsets.only(left: 8.0),
                             child: Text(
@@ -141,12 +121,27 @@ class _ThreadItem extends State<ThreadItem> {
                       ),
                     ),
                     GestureDetector(
-                      onTap: () {
-                      
-                      },
+                      onTap: () {},
                       child: Row(
                         children: <Widget>[
-                          Icon(Icons.mode_comment, size: 18),
+                          GestureDetector(
+                            /* onTap:() => showComments(
+context,
+postId: widget.data['postID'],
+ownerId: widget.data['userID'],
+),*/
+                            onTap: () {
+                              Navigator.of(context).push(PageRouteBuilder(
+                                //fullscreenDialog: true,
+                                pageBuilder: (BuildContext context, _, __) =>
+                                    Comments(
+                                  postID: widget.data['postID'],
+                                  userID: widget.data['userID'],
+                                ),
+                              ));
+                            },
+                            child: Icon(Icons.mode_comment, size: 18),
+                          ),
                           Padding(
                             padding: const EdgeInsets.only(left: 8.0),
                             child: Text(
