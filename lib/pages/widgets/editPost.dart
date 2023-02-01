@@ -127,8 +127,8 @@ class _EditPost extends State<EditPost> {
             postID: postId, postImageFile: _postImageFile!));
       }
 
-      FBCloudStore.updatePostInFirebase(
-          postId, writingTextController.text, postImageURL);
+      FBCloudStore.sendPostInFirebase(
+          postId, '', writingTextController.text, postImageURL);
 
       setState(() {
         _isLoading = false;

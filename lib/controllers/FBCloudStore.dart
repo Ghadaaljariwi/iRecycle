@@ -22,15 +22,4 @@ class FBCloudStore {
 
     print("good");
   }
-
-  static Future<void> updatePostInFirebase(
-      String postID, String postContent, String postImageURL) async {
-    await FirebaseFirestore.instance.collection('thread').doc(postID).set({
-      'postTimeStamp': DateTime.now().millisecondsSinceEpoch,
-      'postContent': postContent,
-      //'postImage': postImageURL,
-    });
-
-    print("good");
-  }
 }

@@ -82,6 +82,7 @@ class _EditProfileState extends State<EditProfile> {
         fontSize: 16.0);
   }
 
+/*
   checkPermission(ImageSource source) async {
     var cameraStatus = Permission.camera.status;
     print(cameraStatus);
@@ -114,32 +115,23 @@ class _EditProfileState extends State<EditProfile> {
       print('Failed to pick image: $e');
     }
   }
-
+*/
   Column buildPictureField() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        image != null
-            ? Center(
-                child: CircleAvatar(
-                    radius: 40.0,
-                    backgroundColor: Colors.grey,
-                    backgroundImage: NetworkImage(
-                      image!.path,
-                    )),
-              )
-            : const CircleAvatar(
-                radius: 40.0,
-                backgroundColor: Colors.grey,
-                backgroundImage: NetworkImage(
-                  'assets/images/download.png',
-                )
-                /*
+        const CircleAvatar(
+            radius: 40.0,
+            backgroundColor: Colors.grey,
+            backgroundImage: NetworkImage(
+              'assets/images/download.png',
+            )
+            /*
                 Utils.cacheNetworkImageWithEvent(context, image, 500, 0),
                 AssetImage(
                   'assets/images/download.png',
                 ),
-                */
+                
                 ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -151,7 +143,8 @@ class _EditProfileState extends State<EditProfile> {
                 onPressed: (() => pickImage(ImageSource.camera)),
                 child: Text('Pick Camera')),
           ],
-        ),
+          */
+            ), //
         Divider(
           height: 1,
           color: Colors.black,
