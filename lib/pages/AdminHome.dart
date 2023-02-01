@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:irecycle/pages/AdminCategories.dart';
+import 'package:irecycle/pages/AdminViewPost/AdminMaintread.dart';
 import 'package:irecycle/pages/BlocCategories/addCategory.dart';
 
 import 'package:irecycle/pages/homes.dart';
@@ -34,7 +35,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
   TextEditingController _emailController = TextEditingController();
   final List<Widget> _pages = [
     AdminCategories(),
-    Bloc(),
+    AdminThreadMain(),
     addCategory(),
   ];
 
