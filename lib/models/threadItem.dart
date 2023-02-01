@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:irecycle/common/utils.dart';
 import 'package:irecycle/models/Comments.dart';
@@ -23,6 +24,17 @@ class _ThreadItem extends State<ThreadItem> {
   @override
   void initState() {
     super.initState();
+  }
+
+  follow(data) {
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .collection('following')
+        .add({
+      "userName": data,
+      "userId": FirebaseAuth.instance.currentUser!.uid,
+    });
   }
 
   @override
@@ -50,13 +62,36 @@ class _ThreadItem extends State<ThreadItem> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
-                          child: Text(
-                            widget.data['userName'],
-                            style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold),
-                          ),
+                        Row(
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
+                              child: Text(
+                                widget.data['userName'],
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            if (widget.data['userID'] !=
+                                FirebaseAuth.instance.currentUser!.uid)
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
+                                child: TextButton(
+                                  onPressed: () {
+                                    follow(widget.data['userName']);
+                                  },
+                                  child: Text(
+                                    'follow',
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                        decoration: TextDecoration.underline),
+                                  ),
+                                ),
+                              ),
+                          ],
                         ),
                         Padding(
                           padding: const EdgeInsets.all(2.0),
