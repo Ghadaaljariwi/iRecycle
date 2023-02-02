@@ -10,24 +10,23 @@ class ThreadMain extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _ThreadMain();
 }
-String userName='';
-String userPP='';
+
+String userName = '';
+String userPP = '';
+
 class _ThreadMain extends State<ThreadMain> {
   bool _isLoading = false;
-@override
+  @override
   void initState() {
     super.initState();
     _getUserDetail();
-  
 
     // getToken();
   }
+
   void _writePost() {
     Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => WritePost(
-                )));
+        context, MaterialPageRoute(builder: (context) => WritePost()));
   }
 
   @override
@@ -35,22 +34,21 @@ class _ThreadMain extends State<ThreadMain> {
     return Scaffold(
       body: StreamBuilder<QuerySnapshot>(
           stream: FirebaseFirestore.instance
-           
               .collection('thread')
-               .orderBy('postTimeStamp', descending: true)
+              .where('state', isEqualTo: 'True')
+              .orderBy('postTimeStamp', descending: true)
               .snapshots(),
           builder: (context, snapshot) {
             if (!snapshot.hasData) return LinearProgressIndicator();
             return Stack(
               children: <Widget>[
-               snapshot.data!.docs.length>0
+                snapshot.data!.docs.length > 0
                     ? ListView(
                         shrinkWrap: true,
-                        children: snapshot.data!.docs
-                            .map((DocumentSnapshot data) {
+                        children:
+                            snapshot.data!.docs.map((DocumentSnapshot data) {
                           return ThreadItem(
                             data: data,
-                           
                             isFromThread: true,
                             commentCount: data['postCommentCount'],
                             parentContext: context,
@@ -70,7 +68,7 @@ class _ThreadMain extends State<ThreadMain> {
                             Padding(
                               padding: const EdgeInsets.all(14.0),
                               child: Text(
-                                'There is no post',
+                                'There are no posts',
                                 style: TextStyle(
                                     fontSize: 16, color: Colors.grey[700]),
                                 textAlign: TextAlign.center,
@@ -90,7 +88,8 @@ class _ThreadMain extends State<ThreadMain> {
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
-_getUserDetail() {
+
+  _getUserDetail() {
     FirebaseFirestore.instance
         .collection('users')
         .doc(FirebaseAuth.instance.currentUser!.uid)
@@ -101,13 +100,13 @@ _getUserDetail() {
       setState(() {});
     });
   }
+
   void _moveToContentDetail(DocumentSnapshot data) {
     // Navigator.push(
     //     context,
     //     MaterialPageRoute(
     //         builder: (context) => ContentDetail(
-    //          
+    //
     //             )));
   }
 }
-
