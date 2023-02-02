@@ -105,6 +105,7 @@ class _CategoryFieldState extends State<CategoryField> {
   }
 
   Future pickImage(ImageSource source) async {
+    /*
     if (Platform.isAndroid) {
       var cameraStatus = Permission.camera.status;
       pickImage(source);
@@ -116,6 +117,7 @@ class _CategoryFieldState extends State<CategoryField> {
         await Permission.camera.request();
       }
     }
+    */
     try {
       final img = await ImagePicker().pickImage(source: source);
       if (img == null) return;

@@ -227,6 +227,7 @@ class _WritePost extends State<WritePost> {
   }
 
   Future<void> _getImageAndCrop() async {
+    /*
     if (Platform.isAndroid) {
       var cameraStatus = Permission.camera.status;
       print(cameraStatus);
@@ -237,6 +238,7 @@ class _WritePost extends State<WritePost> {
         await Permission.camera.request();
       }
     }
+    */
     try {
       final ImagePicker _picker = ImagePicker();
       final imageFileFromGallery =

@@ -33,7 +33,6 @@ class _ThreadItem extends State<ThreadItem> {
         .doc(FirebaseAuth.instance.currentUser!.uid)
         .collection('following')
         .add({
-
       "userName": data,
       "userId": FirebaseAuth.instance.currentUser!.uid,
     });
@@ -41,17 +40,15 @@ class _ThreadItem extends State<ThreadItem> {
 
   @override
   Widget build(BuildContext context) {
-      return GestureDetector(
-                       
-                       
-                          onTap: () => widget.isFromThread
-                      ?  Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => ContentDetail(
-                    postData: widget.data,
-                  )))
-                      : null, 
+    return GestureDetector(
+      onTap: () => widget.isFromThread
+          ? Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => ContentDetail(
+                        postData: widget.data,
+                      )))
+          : null,
       child: Padding(
         padding: const EdgeInsets.fromLTRB(2.0, 2.0, 2.0, 6),
         child: Card(
@@ -62,22 +59,21 @@ class _ThreadItem extends State<ThreadItem> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 GestureDetector(
-                  onTap:  () => widget.isFromThread
-                      ?  Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => ContentDetail(
-                    postData: widget.data,
-                  )))
-                      : null,     child: Row(
+                  onTap: () => widget.isFromThread
+                      ? Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ContentDetail(
+                                    postData: widget.data,
+                                  )))
+                      : null,
+                  child: Row(
                     children: <Widget>[
                       Padding(
-                        
                         padding: const EdgeInsets.fromLTRB(6.0, 2.0, 10.0, 2.0),
                         child: Container(
-    
-                            width: 48,
-                            height: 48,
+                            width: 48, // MediaQuery.of(context).size.width,
+                            height: 48, //MediaQuery.of(context).size.height,
                             child: Image.asset('assets/images/download.png')),
                       ),
                       Column(
@@ -98,7 +94,8 @@ class _ThreadItem extends State<ThreadItem> {
                               if (widget.data['userID'] !=
                                   FirebaseAuth.instance.currentUser!.uid)
                                 Padding(
-                                  padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
+                                  padding:
+                                      const EdgeInsets.fromLTRB(0, 20, 0, 0),
                                   child: TextButton(
                                     onPressed: () {
                                       follow(widget.data['userName']);
@@ -118,8 +115,8 @@ class _ThreadItem extends State<ThreadItem> {
                             padding: const EdgeInsets.all(2.0),
                             child: Text(
                               "",
-                              style:
-                                  TextStyle(fontSize: 16, color: Colors.black87),
+                              style: TextStyle(
+                                  fontSize: 16, color: Colors.black87),
                             ),
                           ),
                         ],
@@ -129,20 +126,15 @@ class _ThreadItem extends State<ThreadItem> {
                   ),
                 ),
                 GestureDetector(
-                       
-                       
-                          onTap: () => widget.isFromThread
-                      ?  Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => ContentDetail(
-                    postData: widget.data,
-                  )))
-                      : null, 
-                       
-                       
-                       
-                         child: Padding(
+                  onTap: () => widget.isFromThread
+                      ? Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ContentDetail(
+                                    postData: widget.data,
+                                  )))
+                      : null,
+                  child: Padding(
                     padding: const EdgeInsets.fromLTRB(8, 10, 4, 10),
                     child: Text(
                       (widget.data['postContent'] as String).length > 200
@@ -157,14 +149,14 @@ class _ThreadItem extends State<ThreadItem> {
                 ),
                 widget.data['postImage'] != ''
                     ? GestureDetector(
-                        onTap:    () => widget.isFromThread
-                      ?  Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => ContentDetail(
-                    postData: widget.data,
-                  )))
-                      : null, 
+                        onTap: () => widget.isFromThread
+                            ? Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ContentDetail(
+                                          postData: widget.data,
+                                        )))
+                            : null,
                         child: Utils.cacheNetworkImageWithEvent(
                             context, widget.data['postImage'], 0, 0))
                     : Container(),
@@ -178,14 +170,15 @@ class _ThreadItem extends State<ThreadItem> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: <Widget>[
                       GestureDetector(
-                       onTap: () => widget.isFromThread
-                      ?  Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => ContentDetail(
-                    postData: widget.data,
-                  )))
-                      : null,   child: Row(
+                        onTap: () => widget.isFromThread
+                            ? Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ContentDetail(
+                                          postData: widget.data,
+                                        )))
+                            : null,
+                        child: Row(
                           children: <Widget>[
                             Icon(Icons.thumb_up, size: 18, color: Colors.black),
                             Padding(
@@ -203,14 +196,14 @@ class _ThreadItem extends State<ThreadItem> {
                       ),
                       GestureDetector(
                         onTap: () {
-                            // Navigator.of(context).push(PageRouteBuilder(
-                            //       //fullscreenDialog: true,
-                            //       pageBuilder: (BuildContext context, _, __) =>
-                            //           Comments(
-                            //         postID: widget.data['postID'],
-                            //         userID: widget.data['userID'],
-                            //       ),
-                            //     ));
+                          // Navigator.of(context).push(PageRouteBuilder(
+                          //       //fullscreenDialog: true,
+                          //       pageBuilder: (BuildContext context, _, __) =>
+                          //           Comments(
+                          //         postID: widget.data['postID'],
+                          //         userID: widget.data['userID'],
+                          //       ),
+                          //     ));
                         },
                         child: Row(
                           children: <Widget>[
@@ -220,15 +213,13 @@ class _ThreadItem extends State<ThreadItem> {
     postId: widget.data['postID'],
     ownerId: widget.data['userID'],
     ),*/
-                              onTap: () {
-                              
-                              },
+                              onTap: () {},
                               child: Icon(Icons.mode_comment, size: 18),
                             ),
                             Padding(
                               padding: const EdgeInsets.only(left: 8.0),
                               child: Text(
-                             'Comment ( ${widget.commentCount} )',
+                                'Comment ( ${widget.commentCount} )',
                                 style: TextStyle(
                                     fontSize: 16, fontWeight: FontWeight.bold),
                               ),
