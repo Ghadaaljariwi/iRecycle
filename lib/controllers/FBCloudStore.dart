@@ -18,6 +18,7 @@ class FBCloudStore {
       'postImage': postImageURL,
       'postLikeCount': 0,
       'postCommentCount': 0,
+      'state': false,
     });
 
     print("good");

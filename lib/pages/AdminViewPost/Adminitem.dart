@@ -37,6 +37,10 @@ class _AdminThreadItem extends State<AdminThreadItem> {
     });
   }
 
+  _updateState(state) {
+    widget.data.reference.update({'state': state});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -121,7 +125,7 @@ class _AdminThreadItem extends State<AdminThreadItem> {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () => _updateState('False'),
                       child: Row(
                         children: <Widget>[
                           Icon(Icons.disabled_by_default_outlined,
@@ -149,13 +153,13 @@ context,
 postId: widget.data['postID'],
 ownerId: widget.data['userID'],
 ),*/
-                            onTap: () {},
+                            onTap: () => _updateState('True'),
                             child: Icon(Icons.done_outlined, size: 18),
                           ),
                           Padding(
                             padding: const EdgeInsets.only(left: 8.0),
                             child: Text(
-                              'accept ',
+                              'Accept ',
                               style: TextStyle(
                                   fontSize: 16, fontWeight: FontWeight.bold),
                             ),
