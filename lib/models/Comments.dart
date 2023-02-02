@@ -1,111 +1,94 @@
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+import 'package:irecycle/common/utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
-class Comments extends StatelessWidget {
-  final String postID;
-  final String userID;
+class Comments extends StatefulWidget{
+  final DocumentSnapshot data;
+  final Size size;
+  Comments({ required this.data,required this.size});
+  @override State<StatefulWidget> createState() => _Comments();
+}
 
-  Comments({super.key, required this.postID, required this.userID});
-  TextEditingController commentController = TextEditingController();
-  buildComments() {
-    return StreamBuilder(
-      stream: FirebaseFirestore.instance
-          .collection('thread')
-          .doc(postID)
-          .collection('comments')
-          .snapshots(),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) {
-          return Text('no comment');
-        }
-        List<Comment> comments = [];
+class _Comments extends State<Comments>{
 
-        snapshot.data!.docs.forEach((doc) {
-          comments.add(Comment.fromDocument(doc));
-        });
-        return ListView(
-          children: comments,
-        );
-      },
-    );
+  @override
+  void initState() {
+    super.initState();
   }
 
-  addComment() {
-    FirebaseFirestore.instance
-        .collection('thread')
-        .doc(postID)
-        .collection('comments')
-        .add({
-      "userName": FirebaseAuth.instance.currentUser!.email,
-      "comment": commentController.text,
-      "userId": FirebaseAuth.instance.currentUser!.uid,
-    });
-    commentController.clear();
-  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Comments"),
+    return Padding(
+      padding:  EdgeInsets.all(8.0) ,
+      child: Stack(
+        children: <Widget>[
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.fromLTRB(6.0,2.0,10.0,2.0),
+                child: Container(
+                    width:  48,
+                    height:  48 ,
+                    child:  Image.asset('assets/images/download.png')
+                ),
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Container(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.all(4.0),
+                            child: Text(widget.data['userName'],style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold),),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left:4.0),
+                            child: Text(widget.data['comment'],maxLines: null,) 
+                          ),
+                        ],
+                      ),
+                    ),
+                    width: widget.size.width-  90 ,
+                    decoration: BoxDecoration(
+                      color: Colors.grey[300],
+                      borderRadius: BorderRadius.all(
+                          Radius.circular(15.0)
+                      ),
+                    ),
+                  ),
+              
+                ],
+              ),
+            ],
+          ),
+
+      Container(),
+        ],
       ),
-      body: Column(children: <Widget>[
-        Expanded(child: buildComments()),
-        Divider(),
-        ListTile(
-          title: TextFormField(
-            controller: commentController,
-            decoration: InputDecoration(labelText: "Write a comment..."),
-          ),
-          trailing: OutlinedButton(
-              onPressed: () {
-                addComment();
-              },
-              child: Text("post")),
-        )
-      ]),
     );
   }
 }
 
-class Comment extends StatelessWidget {
-  final String userName;
-  final String comment;
-  final String userID;
-  Comment({
-    required this.comment,
-    required this.userID,
-    required this.userName,
-  });
 
-  factory Comment.fromDocument(DocumentSnapshot doc) {
-    return Comment(
-      comment: doc['comment'],
-      userID: doc['userId'],
-      userName: doc['userName'],
-    );
-  }
 
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        ListTile(
-          title: Text(comment),
-          leading: Padding(
-            padding: const EdgeInsets.fromLTRB(6.0, 2.0, 10.0, 2.0),
-            child: Container(
-                width: 48,
-                height: 48,
-                child: Image.asset('assets/images/download.png')),
-          ),
-          subtitle: Text(""),
-        ),
-        Divider(),
-      ],
-    );
-  }
-}
+
+  
+
+ 
+
+
+ 
+  
+

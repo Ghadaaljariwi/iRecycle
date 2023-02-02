@@ -43,7 +43,7 @@ class _ThreadMain extends State<ThreadMain> {
             if (!snapshot.hasData) return LinearProgressIndicator();
             return Stack(
               children: <Widget>[
-                snapshot.hasData 
+               snapshot.data!.docs.length>0
                     ? ListView(
                         shrinkWrap: true,
                         children: snapshot.data!.docs
