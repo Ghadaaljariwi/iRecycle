@@ -39,6 +39,7 @@ class _ContentDetail extends State<ContentDetail> {
                 .collection('thread')
                 .doc(widget.postData['postID'])
                 .collection('comments')
+                .orderBy('commentTimeStamp', descending: true)
                 .snapshots(),
             builder: (context, snapshot) {
               if (!snapshot.hasData) return LinearProgressIndicator();
@@ -128,8 +129,6 @@ class _ContentDetail extends State<ContentDetail> {
   }
 
   Future<void> _handleSubmitted(String text) async {
-  
-
     try {
       FirebaseFirestore.instance
           .collection('thread')
@@ -137,6 +136,7 @@ class _ContentDetail extends State<ContentDetail> {
           .collection('comments')
           .add({
         "userName": userName,
+        "commentTimeStamp": DateTime.now().millisecondsSinceEpoch,
         "comment": _msgTextController.text,
         "userId": FirebaseAuth.instance.currentUser!.uid,
       });
