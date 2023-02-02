@@ -31,6 +31,16 @@ class ProfileThreadItem extends StatefulWidget {
   State<StatefulWidget> createState() => _ProfileThreadItem();
 }
 
+void showToastMessage(String message) {
+  Fluttertoast.showToast(
+      msg: message,
+      toastLength: Toast.LENGTH_LONG,
+      gravity: ToastGravity.CENTER,
+      timeInSecForIosWeb: 10,
+      textColor: Colors.white,
+      fontSize: 16.0);
+}
+
 class _ProfileThreadItem extends State<ProfileThreadItem> {
   @override
   void initState() {
@@ -61,11 +71,11 @@ class _ProfileThreadItem extends State<ProfileThreadItem> {
 
           return AlertDialog(
             title: Text(
-              'Delete Profile',
+              'Delete Post',
               style: TextStyle(color: Colors.deepPurple, fontSize: 20),
             ),
             content: Text(
-              'Are you sure you want to delete your profile ?',
+              'Are you sure you want to delete this post ?',
               style: TextStyle(fontSize: 20),
             ),
             actions: [
@@ -89,9 +99,6 @@ class _ProfileThreadItem extends State<ProfileThreadItem> {
 
   @override
   Widget build(BuildContext context) {
-    postId = widget.data['postID'];
-    showToastMessage(postId);
-
     return Padding(
       padding: const EdgeInsets.fromLTRB(2.0, 2.0, 2.0, 6),
       child: Card(
@@ -251,18 +258,6 @@ class _ProfileThreadItem extends State<ProfileThreadItem> {
   }
 }
 
-late String postId;
-
-void showToastMessage(String message) {
-  Fluttertoast.showToast(
-      msg: message,
-      toastLength: Toast.LENGTH_LONG,
-      gravity: ToastGravity.CENTER,
-      timeInSecForIosWeb: 10,
-      textColor: Colors.white,
-      fontSize: 16.0);
-}
-
 class EditPost extends StatefulWidget {
   final DocumentSnapshot data;
 // here data carried
@@ -279,7 +274,7 @@ class _EditPost extends State<EditPost> {
   String postId = '';
   String name = '';
   String postContet = '';
-
+  String post = '';
   File? _postImageFile;
 
   void initState() {
@@ -369,7 +364,7 @@ class _EditPost extends State<EditPost> {
       }
 
       FBCloudStore.sendPostInFirebase(
-          postId, name, writingTextController.text, postImageURL);
+          postId, name, writingTextController.text, post);
 
       setState(() {
         _isLoading = false;
@@ -382,6 +377,7 @@ class _EditPost extends State<EditPost> {
     postId = widget.data['postID'];
     name = widget.data['userName'];
     //_postImageFile = File(widget.data['postImage']);
+    post = widget.data['postImage'];
     writingTextController.text = widget.data['postContent'];
     showToastMessage(postId);
     showToastMessage('test editing');

@@ -37,6 +37,13 @@ class _ProfilePageState extends State<ProfilePage> {
   String userName = '';
   String userImage = '';
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _getUserDetail();
+  }
+
   void _cancelEdit() {
     setState(() {
       _isEditing = false;
@@ -192,7 +199,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 alignment: Alignment.centerLeft,
                 padding: EdgeInsets.only(top: 4.0),
                 child: Text(
-                  FirebaseAuth.instance.currentUser!.displayName.toString(),
+                  userName,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                   ),
@@ -203,6 +210,8 @@ class _ProfilePageState extends State<ProfilePage> {
                 color: Colors.black,
               ),
               Container(
+                alignment: Alignment.centerLeft,
+                padding: const EdgeInsets.only(top: 4.0),
                 child: StreamBuilder<QuerySnapshot>(
                     stream: FirebaseFirestore.instance
                         .collection('thread')

@@ -139,11 +139,10 @@ class _LoginPageState extends State<LoginPage> {
                                 alignment: Alignment.topRight,
                                 child: GestureDetector(
                                   onTap: () {
-                                     Navigator.push(
+                                    Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) =>
-                                              forgotPass()),
+                                          builder: (context) => forgotPass()),
                                     );
                                   },
                                   child: Text(
@@ -202,7 +201,8 @@ class _LoginPageState extends State<LoginPage> {
                                                       AdminHomePage()));
                                         }).onError((error, stackTrace) {
                                           showToastMessage(
-                                              "Error ${error.toString()}");
+                                              "You have entered a wrong email or password, please try again");
+                                          // "Error ${error.toString()}");
                                         });
                                       } else {
                                         await FirebaseAuth.instance
@@ -219,7 +219,7 @@ class _LoginPageState extends State<LoginPage> {
                                                       HomePage()));
                                         }).onError((error, stackTrace) {
                                           showToastMessage(
-                                              "Error ${error.toString()}");
+                                              "You have entered a wrong email or password, please try again");
                                         });
                                       }
                                     }),
