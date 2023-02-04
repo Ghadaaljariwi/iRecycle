@@ -61,9 +61,11 @@ class _categoriesState extends State<categories> {
                   color: Theme.of(context).primaryColorLight,
                   width: 390,
                   img: 'assets/images/B0F2B673-2CD0-476D-9475-55670A28B2E6.png',
-                  h: 150,
+                  h: 160,
                   w: 700,
                   f: 15,
+                  link:
+                      'https://www.google.com/search?q=starbucks&npsic=0&rflfq=1&rldoc=1&rllag=24689410,46679714,585&tbm=lcl&sa=X&ved=2ahUKEwicv6W85vv8AhXURKQEHSfUBGAQtgN6BAgNEAE&biw=500&bih=565&dpr=1.5#rlfi=hd:;si:;mv:[[24.7191586,46.7049831],[24.6607563,46.647582299999996]];tbs:lrf:!1m4!1u3!2m2!3m1!1e1!2m1!1e3!3sIAE,lf:1,lf_ui:4',
                 ),
                 MyCard(
                   category: '',
@@ -73,6 +75,7 @@ class _categoriesState extends State<categories> {
                   h: 150,
                   w: 700,
                   f: 15,
+                  link: 'google.com',
                 ),
                 MyCard(
                   category: '',
@@ -82,6 +85,7 @@ class _categoriesState extends State<categories> {
                   h: 150,
                   w: 700,
                   f: 15,
+                  link: '',
                 ),
               ],
             ),
@@ -133,6 +137,8 @@ class _categoriesState extends State<categories> {
                   h: 100,
                   w: 100,
                   f: 15,
+                  link: '',
+                  showLocationIcon: false,
                 ),
                 MyCard(
                   category: 'Can',
@@ -142,6 +148,8 @@ class _categoriesState extends State<categories> {
                   h: 100,
                   w: 100,
                   f: 15,
+                  link: '',
+                  showLocationIcon: false,
                 ),
                 MyCard(
                   category: 'Paper',
@@ -151,6 +159,8 @@ class _categoriesState extends State<categories> {
                   h: 100,
                   w: 100,
                   f: 15,
+                  link: '',
+                  showLocationIcon: false,
                 ),
                 MyCard(
                   category: 'Glass',
@@ -160,6 +170,8 @@ class _categoriesState extends State<categories> {
                   h: 100,
                   w: 100,
                   f: 15,
+                  link: '',
+                  showLocationIcon: false,
                 ),
                 MyCard(
                   category: 'Box',
@@ -169,6 +181,8 @@ class _categoriesState extends State<categories> {
                   h: 100,
                   w: 100,
                   f: 15,
+                  link: '',
+                  showLocationIcon: false,
                 ),
               ],
             ),
