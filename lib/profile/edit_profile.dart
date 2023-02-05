@@ -13,14 +13,14 @@ import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:irecycle/pages/login_page.dart';
 import 'package:irecycle/pages/splash_screen.dart';
-import 'package:irecycle/pages/profile_page.dart';
+import 'package:irecycle/profile/profile_page.dart';
 import 'package:irecycle/pages/widgets/header_widget.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../common/theme_helper.dart';
 import '../common/utils.dart';
 import '../controllers/FBStorage.dart';
-import 'registration_page.dart';
+import '../pages/registration_page.dart';
 
 class EditProfile extends StatefulWidget {
   final String currentUserId = FirebaseAuth.instance.currentUser!.uid;

@@ -17,8 +17,8 @@ import 'package:flutter/material.dart';
 import '../common/utils.dart';
 import '../models/profileThreadItem.dart';
 import '../models/threadItem.dart';
-import 'registration_page.dart';
-import 'package:irecycle/pages/edit_profile.dart';
+import '../pages/registration_page.dart';
+import 'package:irecycle/profile/edit_profile.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -221,7 +221,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       if (!snapshot.hasData) return LinearProgressIndicator();
                       return Stack(
                         children: <Widget>[
-                          snapshot.hasData
+                          snapshot.data!.docs.length > 0
                               ? ListView(
                                   shrinkWrap: true,
                                   children: snapshot.data!.docs
@@ -230,6 +230,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                       return ProfileThreadItem(
                                         data: data,
                                         isFromThread: true,
+                                        likeCount: data['postLikeCount'],
                                         commentCount: data['postCommentCount'],
                                         parentContext: context,
                                       );
@@ -271,6 +272,63 @@ class _ProfilePageState extends State<ProfilePage> {
         );
       },
     );
+  }
+
+  Scaffold streamBuild() {
+    return Scaffold(
+        body: StreamBuilder<QuerySnapshot>(
+            stream: FirebaseFirestore.instance
+                .collection('thread')
+                .orderBy('postTimeStamp', descending: true)
+                .snapshots(),
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) return LinearProgressIndicator();
+              return Stack(
+                children: <Widget>[
+                  snapshot.data!.docs.length > 0
+                      ? ListView(
+                          shrinkWrap: true,
+                          children:
+                              snapshot.data!.docs.map((DocumentSnapshot data) {
+                            if (uid == data['userID']) {
+                              return ProfileThreadItem(
+                                data: data,
+                                isFromThread: true,
+                                likeCount: data['postLikeCount'],
+                                commentCount: data['postCommentCount'],
+                                parentContext: context,
+                              );
+                            } else {
+                              return Utils.loadingCircle(_isLoading);
+                            }
+                          }).toList(),
+                        )
+                      : Container(
+                          child: Center(
+                              child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Icon(
+                                Icons.error,
+                                color: Colors.grey[700],
+                                size: 64,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(14.0),
+                                child: Text(
+                                  'There is no post',
+                                  style: TextStyle(
+                                      fontSize: 16, color: Colors.grey[700]),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            ],
+                          )),
+                        ),
+                  Utils.loadingCircle(_isLoading),
+                ],
+              );
+            }));
   }
 
   @override
