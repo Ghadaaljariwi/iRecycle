@@ -50,6 +50,7 @@ class _ThreadMain extends State<ThreadMain> {
                           return ThreadItem(
                             data: data,
                             isFromThread: true,
+                            likeCount: data['postLikeCount'],
                             commentCount: data['postCommentCount'],
                             parentContext: context,
                           );

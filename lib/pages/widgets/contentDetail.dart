@@ -57,8 +57,10 @@ class _ContentDetail extends State<ContentDetail> {
                               children: <Widget>[
                                 ThreadItem(
                                   data: widget.postData,
-                                  isFromThread: false,
+                                  isFromThread: false, 
+                                likeCount:0 ,
                                   commentCount: snapshot.data!.docs.length,
+                                 
                                   parentContext: context,
                                 ),
                                 snapshot.data!.docs.length > 0
