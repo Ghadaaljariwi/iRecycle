@@ -31,6 +31,8 @@ class _RegistrationPageState extends State<RegistrationPage> {
   final TextEditingController _nameController = TextEditingController();
 
   Future addUserDetails(String name, String email) async {
+        List<String> likeList= [];
+
     final firebaseUser = await FirebaseAuth.instance.currentUser!;
     await FirebaseFirestore.instance
         .collection('users')
@@ -38,6 +40,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
         .set({
       'firstName': name,
       'email': email,
+      'likeList': likeList,
       'image': '',
       'uid': firebaseUser.uid,
     });

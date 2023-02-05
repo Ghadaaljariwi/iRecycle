@@ -11,20 +11,40 @@ class ThreadItem extends StatefulWidget {
 
   final bool isFromThread;
   final int commentCount;
+  final int likeCount;
   ThreadItem(
       {required this.data,
       required this.isFromThread,
+      required this.likeCount,
       required this.commentCount,
       required this.parentContext});
 
   @override
   State<StatefulWidget> createState() => _ThreadItem();
-}
-
+} 
+ List pubLikeList = [];
 class _ThreadItem extends State<ThreadItem> {
   @override
+  late int _likeCount;
+
+   
+
   void initState() {
+    _likeCount = widget.data['postLikeCount'];
+  //  _getUserDetail();
     super.initState();
+  }
+
+  _getUserDetail() {
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .snapshots()
+        .listen((DocumentSnapshot snapshot) {
+      pubLikeList = snapshot.get("likeList");
+      // image = snapshot.get('image');
+      setState(() {});
+    });
   }
 
   follow(data) {
@@ -35,6 +55,59 @@ class _ThreadItem extends State<ThreadItem> {
         .add({
       "userName": data,
       "userId": FirebaseAuth.instance.currentUser!.uid,
+    });
+  }
+
+  void _updateLikeCount(bool isLikePost) async {
+
+ 
+
+    if (isLikePost) {
+      setState(() {
+        pubLikeList.remove(widget.data['postID']);
+        print(pubLikeList);
+      });
+      FirebaseFirestore.instance
+          .collection('users')
+          .doc(widget.data['userID'])
+          .update({'likeList': pubLikeList});
+
+      DocumentReference likeReference = FirebaseFirestore.instance
+          .collection('thread')
+          .doc(widget.data['postID'])
+          .collection('like')
+          .doc(widget.data['userID']);
+
+      await FirebaseFirestore.instance
+          .runTransaction((Transaction myTransaction) async {
+        await myTransaction.delete(likeReference);
+      });
+    } else {
+      setState(() {
+        pubLikeList.add(widget.data['postID']);
+        print(pubLikeList);
+      });
+      FirebaseFirestore.instance
+          .collection('users')
+          .doc(widget.data['userID'])
+          .update({'likeList': pubLikeList});
+      await FirebaseFirestore.instance
+          .collection('thread')
+          .doc(widget.data['postID'])
+          .collection('like')
+          .doc(widget.data['userID'])
+          .set({
+        'userName': widget.data['userID'],
+      });
+    }
+
+    FirebaseFirestore.instance
+        .collection('thread')
+        .doc(widget.data['postID'])
+        .update({'postLikeCount': FieldValue.increment(isLikePost ? -1 : 1)});
+
+    setState(() {
+      isLikePost ? _likeCount-- : _likeCount++;
     });
   }
 
@@ -170,25 +243,21 @@ class _ThreadItem extends State<ThreadItem> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: <Widget>[
                       GestureDetector(
-                        onTap: () => widget.isFromThread
-                            ? Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => ContentDetail(
-                                          postData: widget.data,
-                                        )))
-                            : null,
+                        onTap: () => _updateLikeCount(pubLikeList != null &&
+                                pubLikeList.contains(widget.data['postID'])
+                            ? true
+                            : false),
                         child: Row(
                           children: <Widget>[
-                            Icon(Icons.thumb_up, size: 18, color: Colors.black),
+                            Icon(Icons.thumb_up, size: 18, color:pubLikeList.contains(widget.data['postID']) ? Colors.blue[900] : Colors.black ),
                             Padding(
                               padding: const EdgeInsets.only(left: 8.0),
                               child: Text(
-                                'Like ( 0 )',
+                                'Like ( ${_likeCount} )',
                                 style: TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,
-                                    color: Colors.black),
+                                    color: pubLikeList.contains(widget.data['postID']) ? Colors.blue[900] : Colors.black),
                               ),
                             ),
                           ],
