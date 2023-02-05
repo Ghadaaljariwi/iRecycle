@@ -15,15 +15,20 @@ import 'package:permission_handler/permission_handler.dart';
 import '../controllers/FBCloudStore.dart';
 import '../controllers/FBStorage.dart';
 
+List pubLikeList = [];
+
 class ProfileThreadItem extends StatefulWidget {
   final BuildContext parentContext;
   final DocumentSnapshot data;
 
   final bool isFromThread;
   final int commentCount;
+  final int likeCount;
+
   ProfileThreadItem(
       {required this.data,
       required this.isFromThread,
+      required this.likeCount,
       required this.commentCount,
       required this.parentContext});
 
@@ -43,8 +48,60 @@ void showToastMessage(String message) {
 
 class _ProfileThreadItem extends State<ProfileThreadItem> {
   @override
+  late int _likeCount;
   void initState() {
+    _likeCount = widget.data['postLikeCount'];
     super.initState();
+  }
+
+  void _updateLikeCount(bool isLikePost) async {
+    if (isLikePost) {
+      setState(() {
+        pubLikeList.remove(widget.data['postID']);
+        print(pubLikeList);
+      });
+      FirebaseFirestore.instance
+          .collection('users')
+          .doc(widget.data['userID'])
+          .update({'likeList': pubLikeList});
+
+      DocumentReference likeReference = FirebaseFirestore.instance
+          .collection('thread')
+          .doc(widget.data['postID'])
+          .collection('like')
+          .doc(widget.data['userID']);
+
+      await FirebaseFirestore.instance
+          .runTransaction((Transaction myTransaction) async {
+        await myTransaction.delete(likeReference);
+      });
+    } else {
+      setState(() {
+        pubLikeList.add(widget.data['postID']);
+        print(pubLikeList);
+      });
+      FirebaseFirestore.instance
+          .collection('users')
+          .doc(widget.data['userID'])
+          .update({'likeList': pubLikeList});
+      await FirebaseFirestore.instance
+          .collection('thread')
+          .doc(widget.data['postID'])
+          .collection('like')
+          .doc(widget.data['userID'])
+          .set({
+        'userName': widget.data['userID'],
+      });
+    }
+
+    FirebaseFirestore.instance
+        .collection('thread')
+        .doc(widget.data['postID'])
+        .update({'postLikeCount': FieldValue.increment(isLikePost ? -1 : 1)});
+
+    setState(() {
+      isLikePost ? _likeCount-- : _likeCount++;
+    });
   }
 
   void _showDialog() {
@@ -144,6 +201,8 @@ class _ProfileThreadItem extends State<ProfileThreadItem> {
                   ],
                 ),
               ),
+              /////////////////
+              //contnet
               GestureDetector(
                 onTap: () {},
                 child: Padding(
@@ -174,6 +233,8 @@ class _ProfileThreadItem extends State<ProfileThreadItem> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
+                    //likes
+                    /*
                     GestureDetector(
                       onTap: () {},
                       child: Row(
@@ -192,6 +253,7 @@ class _ProfileThreadItem extends State<ProfileThreadItem> {
                         ],
                       ),
                     ),
+                    //comments
                     GestureDetector(
                       onTap: () {},
                       child: Row(
@@ -208,6 +270,79 @@ class _ProfileThreadItem extends State<ProfileThreadItem> {
                         ],
                       ),
                     ),
+                    */
+                    Padding(
+                      padding: const EdgeInsets.only(top: 6.0, bottom: 2.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: <Widget>[
+                          GestureDetector(
+                            onTap: () => _updateLikeCount(pubLikeList != null &&
+                                    pubLikeList.contains(widget.data['postID'])
+                                ? true
+                                : false),
+                            child: Row(
+                              children: <Widget>[
+                                Icon(Icons.thumb_up,
+                                    size: 18,
+                                    color: pubLikeList
+                                            .contains(widget.data['postID'])
+                                        ? Colors.blue[900]
+                                        : Colors.black),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 8.0),
+                                  child: Text(
+                                    'Like ( ${_likeCount} )',
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        color: pubLikeList
+                                                .contains(widget.data['postID'])
+                                            ? Colors.blue[900]
+                                            : Colors.black),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              // Navigator.of(context).push(PageRouteBuilder(
+                              //       //fullscreenDialog: true,
+                              //       pageBuilder: (BuildContext context, _, __) =>
+                              //           Comments(
+                              //         postID: widget.data['postID'],
+                              //         userID: widget.data['userID'],
+                              //       ),
+                              //     ));
+                            },
+                            child: Row(
+                              children: <Widget>[
+                                GestureDetector(
+                                  /* onTap:() => showComments(
+    context,
+    postId: widget.data['postID'],
+    ownerId: widget.data['userID'],
+    ),*/
+                                  onTap: () {},
+                                  child: Icon(Icons.mode_comment, size: 18),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 8.0),
+                                  child: Text(
+                                    'Comment ( ${widget.commentCount} )',
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    /////
                     GestureDetector(
                       onTap: () {},
                       child: Row(
@@ -520,6 +655,7 @@ class _EditPost extends State<EditPost> {
         .doc(FirebaseAuth.instance.currentUser!.uid)
         .snapshots()
         .listen((DocumentSnapshot snapshot) {
+      pubLikeList = snapshot.get("likeList");
       name = snapshot.get("firstName");
       // image = snapshot.get('image');
       setState(() {});
