@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:irecycle/common/utils.dart';
+import 'package:irecycle/pages/widgets/contentDetailProfile.dart';
 import 'package:irecycle/pages/widgets/editPost.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
 import 'package:keyboard_actions/keyboard_actions_config.dart';
@@ -156,85 +157,94 @@ class _ProfileThreadItem extends State<ProfileThreadItem> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(2.0, 2.0, 2.0, 6),
-      child: Card(
-        elevation: 2.0,
-        child: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              GestureDetector(
-                onTap: () {},
-                child: Row(
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(6.0, 2.0, 10.0, 2.0),
-                      child: Container(
-                          width: 48,
-                          height: 48,
-                          child: Image.asset('assets/images/download.png')),
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
-                          child: Text(
-                            widget.data['userName'],
-                            style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold),
+    return GestureDetector(
+      onTap: () => widget.isFromThread
+          ? Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => ContentDetailProfile(
+                        postData: widget.data,
+                      )))
+          : null,
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(2.0, 2.0, 2.0, 6),
+        child: Card(
+          elevation: 2.0,
+          child: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                GestureDetector(
+                  onTap: () {},
+                  child: Row(
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(6.0, 2.0, 10.0, 2.0),
+                        child: Container(
+                            width: 48,
+                            height: 48,
+                            child: Image.asset('assets/images/download.png')),
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
+                            child: Text(
+                              widget.data['userName'],
+                              style: TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.bold),
+                            ),
                           ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(2.0),
-                          child: Text(
-                            "",
-                            style:
-                                TextStyle(fontSize: 16, color: Colors.black87),
+                          Padding(
+                            padding: const EdgeInsets.all(2.0),
+                            child: Text(
+                              "",
+                              style: TextStyle(
+                                  fontSize: 16, color: Colors.black87),
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                    Spacer(),
-                  ],
-                ),
-              ),
-              /////////////////
-              //contnet
-              GestureDetector(
-                onTap: () {},
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(8, 10, 4, 10),
-                  child: Text(
-                    (widget.data['postContent'] as String).length > 200
-                        ? '${widget.data['postContent'].substring(0, 132)} ...'
-                        : widget.data['postContent'],
-                    style: TextStyle(
-                      fontSize: 16,
-                    ),
-                    maxLines: 3,
+                        ],
+                      ),
+                      Spacer(),
+                    ],
                   ),
                 ),
-              ),
-              widget.data['postImage'] != ''
-                  ? GestureDetector(
-                      onTap: () {},
-                      child: Utils.cacheNetworkImageWithEvent(
-                          context, widget.data['postImage'], 0, 0))
-                  : Container(),
-              Divider(
-                height: 2,
-                color: Colors.black,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 6.0, bottom: 2.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: <Widget>[
-                    //likes
-                    /*
+                /////////////////
+                //contnet
+                GestureDetector(
+                  onTap: () {},
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(8, 10, 4, 10),
+                    child: Text(
+                      (widget.data['postContent'] as String).length > 200
+                          ? '${widget.data['postContent'].substring(0, 132)} ...'
+                          : widget.data['postContent'],
+                      style: TextStyle(
+                        fontSize: 16,
+                      ),
+                      maxLines: 3,
+                    ),
+                  ),
+                ),
+                widget.data['postImage'] != ''
+                    ? GestureDetector(
+                        onTap: () {},
+                        child: Utils.cacheNetworkImageWithEvent(
+                            context, widget.data['postImage'], 0, 0))
+                    : Container(),
+                Divider(
+                  height: 2,
+                  color: Colors.black,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 6.0, bottom: 2.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: <Widget>[
+                      //likes
+                      /*
                     GestureDetector(
                       onTap: () {},
                       child: Row(
@@ -271,121 +281,134 @@ class _ProfileThreadItem extends State<ProfileThreadItem> {
                       ),
                     ),
                     */
-                    Padding(
-                      padding: const EdgeInsets.only(top: 6.0, bottom: 2.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: <Widget>[
-                          GestureDetector(
-                            onTap: () => _updateLikeCount(pubLikeList != null &&
-                                    pubLikeList.contains(widget.data['postID'])
-                                ? true
-                                : false),
-                            child: Row(
-                              children: <Widget>[
-                                Icon(Icons.thumb_up,
-                                    size: 18,
-                                    color: pubLikeList
-                                            .contains(widget.data['postID'])
-                                        ? Colors.blue[900]
-                                        : Colors.black),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 8.0),
-                                  child: Text(
-                                    'Like ( ${_likeCount} )',
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                        color: pubLikeList
-                                                .contains(widget.data['postID'])
-                                            ? Colors.blue[900]
-                                            : Colors.black),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 6.0, bottom: 2.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: <Widget>[
+                            GestureDetector(
+                              onTap: () => _updateLikeCount(
+                                  pubLikeList != null &&
+                                          pubLikeList
+                                              .contains(widget.data['postID'])
+                                      ? true
+                                      : false),
+                              child: Row(
+                                children: <Widget>[
+                                  Padding(
+                                      padding: const EdgeInsets.only(left: 4)),
+                                  Icon(Icons.thumb_up,
+                                      size: 18,
+                                      color: pubLikeList
+                                              .contains(widget.data['postID'])
+                                          ? Colors.blue[900]
+                                          : Colors.black),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 4),
+                                    child: Text(
+                                      '(${_likeCount})',
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                          color: pubLikeList.contains(
+                                                  widget.data['postID'])
+                                              ? Colors.blue[900]
+                                              : Colors.black),
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              // Navigator.of(context).push(PageRouteBuilder(
-                              //       //fullscreenDialog: true,
-                              //       pageBuilder: (BuildContext context, _, __) =>
-                              //           Comments(
-                              //         postID: widget.data['postID'],
-                              //         userID: widget.data['userID'],
-                              //       ),
-                              //     ));
-                            },
-                            child: Row(
-                              children: <Widget>[
-                                GestureDetector(
-                                  /* onTap:() => showComments(
+                            GestureDetector(
+                              onTap: () {
+                                // Navigator.of(context).push(PageRouteBuilder(
+                                //       //fullscreenDialog: true,
+                                //       pageBuilder: (BuildContext context, _, __) =>
+                                //           Comments(
+                                //         postID: widget.data['postID'],
+                                //         userID: widget.data['userID'],
+                                //       ),
+                                //     ));
+                              },
+                              child: Row(
+                                children: <Widget>[
+                                  Padding(
+                                      padding: const EdgeInsets.only(left: 4)),
+                                  GestureDetector(
+                                    /* onTap:() => showComments(
     context,
     postId: widget.data['postID'],
     ownerId: widget.data['userID'],
     ),*/
-                                  onTap: () {},
-                                  child: Icon(Icons.mode_comment, size: 18),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 8.0),
-                                  child: Text(
-                                    'Comment ( ${widget.commentCount} )',
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold),
+                                    onTap: () {},
+                                    child: Icon(Icons.mode_comment, size: 18),
                                   ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    /////
-                    GestureDetector(
-                      onTap: () {},
-                      child: Row(
-                        children: <Widget>[
-                          IconButton(
-                            onPressed: _showDialog,
-                            icon: Icon(
-                              Icons.delete,
-                              size: 20,
-                              color: Color.fromARGB(255, 139, 2, 2),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {},
-                      child: Row(
-                        children: <Widget>[
-                          IconButton(
-                            onPressed: (() => Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (BuildContext context) {
-                                      return EditPost(
-                                        data: widget.data,
-                                      );
-                                    },
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 4),
+                                    child: Text(
+                                      '(${widget.commentCount})',
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold),
+                                    ),
                                   ),
-                                )),
-                            icon: Icon(
-                              Icons.edit,
-                              size: 20,
-                              color: Color.fromARGB(255, 139, 2, 2),
+                                ],
+                              ),
                             ),
-                          )
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                      /////
+                      GestureDetector(
+                        onTap: () {},
+                        child: Row(
+                          children: <Widget>[
+                            IconButton(
+                              onPressed: _showDialog,
+                              icon: Icon(
+                                Icons.delete,
+                                size: 18,
+                                color: Color.fromARGB(255, 139, 2, 2),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 4),
+                            ),
+                          ],
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {},
+                        child: Row(
+                          children: <Widget>[
+                            IconButton(
+                              onPressed: (() => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (BuildContext context) {
+                                        return EditPost(
+                                          data: widget.data,
+                                        );
+                                      },
+                                    ),
+                                  )),
+                              icon: Icon(
+                                Icons.edit,
+                                size: 20,
+                                color: Color.fromARGB(255, 139, 2, 2),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 4),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
