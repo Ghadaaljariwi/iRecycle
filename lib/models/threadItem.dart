@@ -5,6 +5,8 @@ import 'package:irecycle/common/utils.dart';
 import 'package:irecycle/models/Comments.dart';
 import 'package:irecycle/pages/widgets/contentDetail.dart';
 
+import '../pages/widgets/contentDetailProfile.dart';
+
 class ThreadItem extends StatefulWidget {
   final BuildContext parentContext;
   final DocumentSnapshot data;
@@ -21,17 +23,18 @@ class ThreadItem extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() => _ThreadItem();
-} 
- List pubLikeList = [];
+}
+
+List pubLikeList = [];
+
 class _ThreadItem extends State<ThreadItem> {
   @override
   late int _likeCount;
-
-   
+  String uid = FirebaseAuth.instance.currentUser!.uid;
 
   void initState() {
     _likeCount = widget.data['postLikeCount'];
-  //  _getUserDetail();
+    //  _getUserDetail();
     super.initState();
   }
 
@@ -59,9 +62,6 @@ class _ThreadItem extends State<ThreadItem> {
   }
 
   void _updateLikeCount(bool isLikePost) async {
-
- 
-
     if (isLikePost) {
       setState(() {
         pubLikeList.remove(widget.data['postID']);
@@ -111,16 +111,24 @@ class _ThreadItem extends State<ThreadItem> {
     });
   }
 
+  Widget page() {
+    if (uid == widget.data['userID']) {
+      return ContentDetailProfile(
+        postData: widget.data,
+      );
+    } else {
+      return ContentDetail(
+        postData: widget.data,
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => widget.isFromThread
           ? Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => ContentDetail(
-                        postData: widget.data,
-                      )))
+              context, MaterialPageRoute(builder: (context) => page()))
           : null,
       child: Padding(
         padding: const EdgeInsets.fromLTRB(2.0, 2.0, 2.0, 6),
@@ -249,7 +257,12 @@ class _ThreadItem extends State<ThreadItem> {
                             : false),
                         child: Row(
                           children: <Widget>[
-                            Icon(Icons.thumb_up, size: 18, color:pubLikeList.contains(widget.data['postID']) ? Colors.blue[900] : Colors.black ),
+                            Icon(Icons.thumb_up,
+                                size: 18,
+                                color:
+                                    pubLikeList.contains(widget.data['postID'])
+                                        ? Colors.blue[900]
+                                        : Colors.black),
                             Padding(
                               padding: const EdgeInsets.only(left: 8.0),
                               child: Text(
@@ -257,7 +270,10 @@ class _ThreadItem extends State<ThreadItem> {
                                 style: TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,
-                                    color: pubLikeList.contains(widget.data['postID']) ? Colors.blue[900] : Colors.black),
+                                    color: pubLikeList
+                                            .contains(widget.data['postID'])
+                                        ? Colors.blue[900]
+                                        : Colors.black),
                               ),
                             ),
                           ],
