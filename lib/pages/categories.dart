@@ -61,7 +61,7 @@ class _categoriesState extends State<categories> {
                   color: Theme.of(context).primaryColorLight,
                   width: 390,
                   img: 'assets/images/B0F2B673-2CD0-476D-9475-55670A28B2E6.png',
-                  h: 160,
+                  h: 150,
                   w: 700,
                   f: 15,
                   showLocationIcon: false,
@@ -125,7 +125,7 @@ class _categoriesState extends State<categories> {
             ),
           ),
           Container(
-            height: 250,
+            height: 300,
             child: ListView(
               scrollDirection: Axis.horizontal,
               controller: _controller,
@@ -135,7 +135,7 @@ class _categoriesState extends State<categories> {
                   color: Theme.of(context).primaryColorLight,
                   width: 390,
                   img: 'assets/images/starbucks.png',
-                  h: 160,
+                  h: 150,
                   w: 700,
                   f: 15,
                   showLocationIcon: true,
