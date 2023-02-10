@@ -64,6 +64,7 @@ class _categoriesState extends State<categories> {
                   h: 160,
                   w: 700,
                   f: 15,
+                  showLocationIcon: false,
                   link:
                       'https://www.google.com/search?q=starbucks&npsic=0&rflfq=1&rldoc=1&rllag=24689410,46679714,585&tbm=lcl&sa=X&ved=2ahUKEwicv6W85vv8AhXURKQEHSfUBGAQtgN6BAgNEAE&biw=500&bih=565&dpr=1.5#rlfi=hd:;si:;mv:[[24.7191586,46.7049831],[24.6607563,46.647582299999996]];tbs:lrf:!1m4!1u3!2m2!3m1!1e1!2m1!1e3!3sIAE,lf:1,lf_ui:4',
                 ),
@@ -108,84 +109,162 @@ class _categoriesState extends State<categories> {
               //  mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Matrial',
+                  'Eco-Friendly Places',
                   style: TextStyle(
-                    fontSize: 28,
+                    fontSize: 22,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 Text(
-                  ' Categories',
+                  ' To Check Out!',
                   style: TextStyle(
-                    fontSize: 28,
+                    fontSize: 22,
                   ),
                 ),
               ],
             ),
           ),
           Container(
-            height: 200,
+            height: 250,
             child: ListView(
               scrollDirection: Axis.horizontal,
-              controller: _controller2,
+              controller: _controller,
               children: [
                 MyCard(
-                  category: 'Plastic',
-                  color: Color.fromARGB(255, 189, 232, 152),
-                  width: 150,
-                  img: 'assets/images/8BABA77D-4D45-4455-B2AA-E7346F29DB8A.png',
-                  h: 100,
-                  w: 100,
+                  category: '',
+                  color: Theme.of(context).primaryColorLight,
+                  width: 390,
+                  img: 'assets/images/starbucks.png',
+                  h: 160,
+                  w: 700,
                   f: 15,
-                  link: '',
-                  showLocationIcon: false,
+                  showLocationIcon: true,
+                  link:
+                      'https://www.google.com/search?q=starbucks&npsic=0&rflfq=1&rldoc=1&rllag=24689410,46679714,585&tbm=lcl&sa=X&ved=2ahUKEwicv6W85vv8AhXURKQEHSfUBGAQtgN6BAgNEAE&biw=500&bih=565&dpr=1.5#rlfi=hd:;si:;mv:[[24.7191586,46.7049831],[24.6607563,46.647582299999996]];tbs:lrf:!1m4!1u3!2m2!3m1!1e1!2m1!1e3!3sIAE,lf:1,lf_ui:4',
                 ),
                 MyCard(
-                  category: 'Can',
-                  color: Color.fromARGB(255, 249, 215, 255),
-                  width: 150,
-                  img: 'assets/images/B1F516F5-24C3-49A0-9C73-DFB9C53B8A49.png',
-                  h: 100,
-                  w: 100,
+                  category: '',
+                  color: Theme.of(context).primaryColorLight,
+                  width: 390,
+                  img: 'assets/images/EmbeddedImage.png',
+                  h: 150,
+                  w: 700,
                   f: 15,
-                  link: '',
-                  showLocationIcon: false,
+                  showLocationIcon: true,
+                  link:
+                      'https://www.google.com/maps/place/Respire+Lounge/@24.7961687,46.6511105,15z/data=!4m6!3m5!1s0x3e2ee33c22766fe7:0xa08f10c1f63bd285!8m2!3d24.7961687!4d46.6511105!16s%2Fg%2F11qpw03pb7?hl=en',
                 ),
                 MyCard(
-                  category: 'Paper',
-                  color: Color.fromARGB(255, 255, 221, 176),
-                  width: 150,
-                  img: 'assets/images/6A85129E-9AC5-4A37-9F66-CD59E22D356A.png',
-                  h: 100,
-                  w: 100,
+                  category: '',
+                  color: Theme.of(context).primaryColorLight,
+                  width: 390,
+                  img: 'assets/images/1ae763f7-79dc-4044-b07d-01ab9214b830.png',
+                  h: 150,
+                  w: 700,
                   f: 15,
-                  link: '',
-                  showLocationIcon: false,
-                ),
-                MyCard(
-                  category: 'Glass',
-                  color: Color.fromARGB(255, 189, 232, 152),
-                  width: 150,
-                  img: 'assets/images/35293533-33CB-4941-80FE-EB4D7279E30C.png',
-                  h: 100,
-                  w: 100,
-                  f: 15,
-                  link: '',
-                  showLocationIcon: false,
-                ),
-                MyCard(
-                  category: 'Box',
-                  color: Color.fromARGB(255, 176, 230, 255),
-                  width: 150,
-                  img: 'assets/images/11879CE4-9519-47BE-AF87-7A21DD315EED.png',
-                  h: 100,
-                  w: 100,
-                  f: 15,
-                  link: '',
-                  showLocationIcon: false,
+                  showLocationIcon: true,
+                  link:
+                      'https://www.google.com/maps/place/rootura/@24.7133418,46.6617369,15z/data=!4m2!3m1!1s0x0:0x25121738c24fcebc?sa=X&ved=2ahUKEwjY3LbhpYr9AhW68LsIHfTRCNcQ_BJ6BAhqEAg',
                 ),
               ],
             ),
+          ),
+          SmoothPageIndicator(
+              controller: _controller, // PageController
+              count: 3,
+              effect: WormEffect(
+                dotColor: Colors.grey,
+                activeDotColor: Theme.of(context).primaryColorDark,
+              ),
+              // your preferred effect
+              onDotClicked: (index) {}),
+          // SizedBox(
+          //   height: 25,
+          // ),
+          // Padding(
+          //   padding: const EdgeInsets.symmetric(horizontal: 25),
+          //   child: Row(
+          //     //  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //     children: [
+          //       Text(
+          //         'Matrial',
+          //         style: TextStyle(
+          //           fontSize: 28,
+          //           fontWeight: FontWeight.bold,
+          //         ),
+          //       ),
+          //       Text(
+          //         ' Categories',
+          //         style: TextStyle(
+          //           fontSize: 28,
+          //         ),
+          //       ),
+          //     ],
+          //   ),
+          // ),
+          // Container(
+          //   height: 200,
+          //   child: ListView(
+          //     scrollDirection: Axis.horizontal,
+          //     controller: _controller2,
+          //     children: [
+          //       MyCard(
+          //         category: 'Plastic',
+          //         color: Color.fromARGB(255, 189, 232, 152),
+          //         width: 150,
+          //         img: 'assets/images/8BABA77D-4D45-4455-B2AA-E7346F29DB8A.png',
+          //         h: 100,
+          //         w: 100,
+          //         f: 15,
+          //         link: '',
+          //         showLocationIcon: false,
+          //       ),
+          //       MyCard(
+          //         category: 'Can',
+          //         color: Color.fromARGB(255, 249, 215, 255),
+          //         width: 150,
+          //         img: 'assets/images/B1F516F5-24C3-49A0-9C73-DFB9C53B8A49.png',
+          //         h: 100,
+          //         w: 100,
+          //         f: 15,
+          //         link: '',
+          //         showLocationIcon: false,
+          //       ),
+          //       MyCard(
+          //         category: 'Paper',
+          //         color: Color.fromARGB(255, 255, 221, 176),
+          //         width: 150,
+          //         img: 'assets/images/6A85129E-9AC5-4A37-9F66-CD59E22D356A.png',
+          //         h: 100,
+          //         w: 100,
+          //         f: 15,
+          //         link: '',
+          //         showLocationIcon: false,
+          //       ),
+          //       MyCard(
+          //         category: 'Glass',
+          //         color: Color.fromARGB(255, 189, 232, 152),
+          //         width: 150,
+          //         img: 'assets/images/35293533-33CB-4941-80FE-EB4D7279E30C.png',
+          //         h: 100,
+          //         w: 100,
+          //         f: 15,
+          //         link: '',
+          //         showLocationIcon: false,
+          //       ),
+          //       MyCard(
+          //         category: 'Box',
+          //         color: Color.fromARGB(255, 176, 230, 255),
+          //         width: 150,
+          //         img: 'assets/images/11879CE4-9519-47BE-AF87-7A21DD315EED.png',
+          //         h: 100,
+          //         w: 100,
+          //         f: 15,
+          //         link: '',
+          //         showLocationIcon: false,
+          //       ),
+          //     ],
+          //   ),
 
 /*
             child: Container(
@@ -245,7 +324,7 @@ class _categoriesState extends State<categories> {
                   
             ),
             */
-          ),
+          // ),
         ]),
       ),
     );
