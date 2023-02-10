@@ -10,6 +10,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:irecycle/common/utils.dart';
 import 'package:irecycle/controllers/FBCloudStore.dart';
 import 'package:irecycle/controllers/FBStorage.dart';
+import 'package:irecycle/pages/widgets/threadMain.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
 import 'package:cross_file/cross_file.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -28,6 +29,7 @@ class _WritePost extends State<WritePost> {
   bool _isLoading = false;
   File? _postImageFile;
   String name = '';
+  int count = 0;
   void initState() {
     _getUserDetail();
     super.initState();
@@ -129,14 +131,67 @@ class _WritePost extends State<WritePost> {
     }
   }
 
+  void _showDialog() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          // set up the buttons
+          Widget cancelButton = TextButton(
+            child: Text(
+              "No",
+              style: TextStyle(fontSize: 20, color: Colors.red),
+            ),
+            onPressed: Navigator.of(context).pop,
+          );
+          Widget continueButton = TextButton(
+            child: Text(
+              "Yes",
+              style: TextStyle(fontSize: 20, color: Colors.green),
+            ),
+            onPressed: () => Navigator.popUntil(
+              context,
+              (route) {
+                return count++ == 2;
+              },
+            ),
+          );
+
+          return AlertDialog(
+            title: Text(
+              'Exit',
+              style: TextStyle(color: Colors.deepPurple, fontSize: 20),
+            ),
+            content: Text(
+              'Are you sure you want to discard this post ?',
+              style: TextStyle(fontSize: 20),
+            ),
+            actions: [
+              cancelButton,
+              continueButton,
+            ],
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text('Write Post'),
         centerTitle: true,
         actions: <Widget>[
+          IconButton(
+            icon: Icon(
+              Icons.arrow_back,
+              color: Colors.white,
+              size: 40,
+            ),
+            onPressed: () {
+              _showDialog();
+            },
+          ),
           ElevatedButton(
               onPressed: () => _postToFB(),
               child: Text(

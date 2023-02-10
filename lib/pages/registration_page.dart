@@ -31,7 +31,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
   final TextEditingController _nameController = TextEditingController();
 
   Future addUserDetails(String name, String email) async {
-        List<String> likeList= [];
+    List<String> likeList = [];
 
     final firebaseUser = await FirebaseAuth.instance.currentUser!;
     await FirebaseFirestore.instance
@@ -46,7 +46,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
     });
   }
 
-  void _showDialog() {
+  void showPopUp() {
     showDialog(
         context: context,
         builder: (context) {
@@ -86,7 +86,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
 
   @override
   Widget build(BuildContext context) {
-    showToastMessage('hello');
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
@@ -215,12 +214,13 @@ class _RegistrationPageState extends State<RegistrationPage> {
                               ),
                             ),
                             onPressed: () async {
-                              if (_emailController.text.isEmpty &&
-                                  _passController.text.isEmpty &&
-                                  _repassController.text.isEmpty &&
+                              if (_emailController.text.isEmpty ||
+                                  _passController.text.isEmpty ||
+                                  _repassController.text.isEmpty ||
                                   _nameController.text.isEmpty) {
-                                _showDialog();
-                              } else if (_nameController.text.isEmpty) {
+                                showPopUp();
+                              } /*
+                              else if (_nameController.text.isEmpty) {
                                 showToastMessage('Please enter your name');
                               } else if (_emailController.text.isEmpty) {
                                 showToastMessage('Please enter your email');
@@ -233,7 +233,12 @@ class _RegistrationPageState extends State<RegistrationPage> {
                               //}//else if(!letterReg.hasMatch(_passController.text)){
                               //showToastMessage('كلمة المرور يجب أن تحتوي على حروف');
                               //}
-                              else if (_passController.text.length < 6) {
+                              */
+
+                              else if (!_emailController.text.contains('@')) {
+                                showToastMessage(
+                                    'Please enter a valid E-mail address');
+                              } else if (_passController.text.length < 6) {
                                 showToastMessage(
                                     'Password should be no less than 6 numbers');
                               } else if (_passController.text !=
@@ -251,7 +256,8 @@ class _RegistrationPageState extends State<RegistrationPage> {
                                       MaterialPageRoute(
                                           builder: (context) => HomePage()));
                                 }).onError((error, stackTrace) {
-                                  showToastMessage("Error ${error.toString()}");
+                                  showToastMessage(
+                                      "This E-mail address is already in use");
                                 });
                               }
                               addUserDetails(_nameController.text.trim(),
