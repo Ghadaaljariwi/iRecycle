@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:irecycle/pages/BlocCategories/addCategory.dart';
 import 'package:irecycle/pages/login_page.dart';
 import 'package:irecycle/pages/splash_screen.dart';
 import 'package:irecycle/pages/widgets/header_widget.dart';
@@ -33,7 +34,7 @@ class CategoryField extends StatefulWidget {
 class _CategoryFieldState extends State<CategoryField> {
   TextEditingController NameController = TextEditingController();
   TextEditingController DescriptionController = TextEditingController();
-  final FocusNode _nodeText1 = FocusNode();
+  // final FocusNode _nodeText1 = FocusNode();
   FocusNode writingTextFocus = FocusNode();
   File? image;
   String cid = Utils.getRandomString(8) + Random().nextInt(500).toString();
@@ -72,11 +73,37 @@ class _CategoryFieldState extends State<CategoryField> {
     });
   }
 
+  void showPopUp() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text(
+              "Empty Fields",
+              style: TextStyle(color: Colors.lightGreen, fontSize: 20),
+            ),
+            content: Text(
+              "Please enter all required fields",
+              style: TextStyle(fontSize: 20),
+            ),
+            actions: <Widget>[
+              TextButton(
+                onPressed: Navigator.of(context).pop,
+                child: const Text(
+                  "OK",
+                  style: TextStyle(fontSize: 20),
+                ),
+              )
+            ],
+          );
+        });
+  }
+
   void validate() {
     if (NameController.text.isEmpty ||
         DescriptionController.text.isEmpty ||
         image == null) {
-      showToastMessage("Please fill all the required fields");
+      showPopUp();
     } else {
       add();
     }
@@ -131,6 +158,49 @@ class _CategoryFieldState extends State<CategoryField> {
     }
   }
 
+  void _showDialog() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          // set up the buttons
+          Widget cancelButton = TextButton(
+            child: Text(
+              "No",
+              style: TextStyle(fontSize: 20, color: Colors.red),
+            ),
+            onPressed: Navigator.of(context).pop,
+          );
+          Widget continueButton = TextButton(
+            child: Text(
+              "Yes",
+              style: TextStyle(fontSize: 20, color: Colors.green),
+            ),
+            onPressed: () => Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (BuildContext context) {
+                  return addCategory();
+                },
+              ),
+            ),
+          );
+
+          return AlertDialog(
+            title: Text(
+              'Exit',
+              style: TextStyle(color: Colors.deepPurple, fontSize: 20),
+            ),
+            content: Text(
+              'Are you sure you want to discard this category ?',
+              style: TextStyle(fontSize: 20),
+            ),
+            actions: [
+              cancelButton,
+              continueButton,
+            ],
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     //return BlocBuilder<CategoryBloc, CategoryState>(
@@ -141,12 +211,12 @@ class _CategoryFieldState extends State<CategoryField> {
         actions: <Widget>[
           IconButton(
             icon: Icon(
-              Icons.arrow_forward,
+              Icons.arrow_back,
               color: Colors.white,
               size: 40,
             ),
             onPressed: () {
-              Navigator.of(context).pop();
+              _showDialog();
             },
           )
         ],
@@ -242,6 +312,9 @@ class _CategoryFieldState extends State<CategoryField> {
                             child: Text('Pick Camera')),
                       ],
                     ),
+                    SizedBox(
+                      height: 20,
+                    ),
                     Divider(
                       height: 1,
                       color: Colors.black,
@@ -251,7 +324,7 @@ class _CategoryFieldState extends State<CategoryField> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
                         FloatingActionButton(
-                          onPressed: validate,
+                          onPressed: add,
                           child: Text('Add'),
                         )
                       ],

@@ -8,7 +8,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:irecycle/common/utils.dart';
 import 'package:irecycle/pages/widgets/contentDetailProfile.dart';
-import 'package:irecycle/pages/widgets/editPost.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
 import 'package:keyboard_actions/keyboard_actions_config.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -453,35 +452,53 @@ class _EditPost extends State<EditPost> {
         KeyboardActionsItem(
           displayArrows: false,
           focusNode: writingTextFocus,
-          toolbarButtons: [
-            (node) {
-              return GestureDetector(
-                onTap: () {
-                  print('Select Image');
-                  //    _getImageAndCrop();
-                },
-                child: Container(
-                  color: Colors.grey[200],
-                  padding: EdgeInsets.all(8.0),
-                  child: Row(
-                    children: <Widget>[
-                      Icon(Icons.add_photo_alternate, size: 28),
-                      Text(
-                        "Add Image",
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ],
-                  ),
-                ),
-              );
-            },
-          ],
         ),
       ],
     );
+  }
+
+  int count = 0;
+
+  void _showDialog() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          // set up the buttons
+          Widget cancelButton = TextButton(
+            child: Text(
+              "No",
+              style: TextStyle(fontSize: 20, color: Colors.red),
+            ),
+            onPressed: Navigator.of(context).pop,
+          );
+          Widget continueButton = TextButton(
+            child: Text(
+              "Yes",
+              style: TextStyle(fontSize: 20, color: Colors.green),
+            ),
+            onPressed: () => Navigator.popUntil(
+              context,
+              (route) {
+                return count++ == 2;
+              },
+            ),
+          );
+
+          return AlertDialog(
+            title: Text(
+              'Exit',
+              style: TextStyle(color: Colors.deepPurple, fontSize: 20),
+            ),
+            content: Text(
+              'Are you sure you want to discard this post ?',
+              style: TextStyle(fontSize: 20),
+            ),
+            actions: [
+              cancelButton,
+              continueButton,
+            ],
+          );
+        });
   }
 
   void _postToFB() async {
@@ -537,8 +554,6 @@ class _EditPost extends State<EditPost> {
     //_postImageFile = File(widget.data['postImage']);
     post = widget.data['postImage'];
     writingTextController.text = widget.data['postContent'];
-    showToastMessage(postId);
-    showToastMessage('test editing');
     final size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(

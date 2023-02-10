@@ -202,7 +202,6 @@ class _LoginPageState extends State<LoginPage> {
                                         }).onError((error, stackTrace) {
                                           showToastMessage(
                                               "You have entered a wrong email or password, please try again");
-                                          // "Error ${error.toString()}");
                                         });
                                       } else {
                                         await FirebaseAuth.instance
