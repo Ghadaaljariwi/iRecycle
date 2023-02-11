@@ -158,6 +158,8 @@ class _CategoryFieldState extends State<CategoryField> {
     }
   }
 
+  int count = 0;
+
   void _showDialog() {
     showDialog(
         context: context,
@@ -175,12 +177,11 @@ class _CategoryFieldState extends State<CategoryField> {
               "Yes",
               style: TextStyle(fontSize: 20, color: Colors.green),
             ),
-            onPressed: () => Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (BuildContext context) {
-                  return addCategory();
-                },
-              ),
+            onPressed: () => Navigator.popUntil(
+              context,
+              (route) {
+                return count++ == 2;
+              },
             ),
           );
 
