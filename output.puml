@@ -1,0 +1,818 @@
+@startuml output
+set namespaceSeparator ::
+
+class "irecycle::common::theme_helper.dart::ThemeHelper" {
+  +InputDecoration textInputDecoration()
+  +BoxDecoration inputBoxDecorationShaddow()
+  +BoxDecoration buttonBoxDecoration()
+  +ButtonStyle buttonStyle()
+  +AlertDialog alartDialog()
+}
+
+class "irecycle::common::theme_helper.dart::LoginFormStyle" {
+}
+
+class "irecycle::common::utils.dart::Utils" {
+  {static} +Widget loadingCircle()
+  {static} +Future<File?> cropImageFile()
+  {static} +Widget cacheNetworkImageWithEvent()
+  {static} +String getRandomString()
+}
+
+class "irecycle::controllers::FBCloudStore.dart::FBCloudStore" {
+  {static} +Future<void> sendPostInFirebase()
+}
+
+class "irecycle::controllers::FBStorage.dart::FBStorage" {
+  {static} +Future<String> uploadPostImages()
+}
+
+class "irecycle::firebase_options.dart::DefaultFirebaseOptions" {
+  {static} +FirebaseOptions web
+  {static} +FirebaseOptions android
+  {static} +FirebaseOptions ios
+  {static} +FirebaseOptions macos
+  {static} +FirebaseOptions currentPlatform
+}
+
+"irecycle::firebase_options.dart::DefaultFirebaseOptions" o-- "firebase_core_platform_interface::firebase_core_platform_interface.dart::FirebaseOptions"
+
+class "irecycle::main.dart::MyApp" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "irecycle::main.dart::MyApp"
+
+class "irecycle::main.dart::MyHomePage" {
+  +String title
+  +State<MyHomePage> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "irecycle::main.dart::MyHomePage"
+
+class "irecycle::main.dart::_MyHomePageState" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "irecycle::main.dart::_MyHomePageState"
+
+class "irecycle::models::Comments.dart::Comments" {
+  +DocumentSnapshot<Object?> data
+  +Size size
+  +State<StatefulWidget> createState()
+}
+
+"irecycle::models::Comments.dart::Comments" o-- "cloud_firestore::cloud_firestore.dart::DocumentSnapshot<Object>"
+"irecycle::models::Comments.dart::Comments" o-- "dart::ui::Size"
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "irecycle::models::Comments.dart::Comments"
+
+class "irecycle::models::Comments.dart::_Comments" {
+  +void initState()
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "irecycle::models::Comments.dart::_Comments"
+
+class "irecycle::models::profileThreadItem.dart::ProfileThreadItem" {
+  +BuildContext parentContext
+  +DocumentSnapshot<Object?> data
+  +bool isFromThread
+  +int commentCount
+  +int likeCount
+  +State<StatefulWidget> createState()
+}
+
+"irecycle::models::profileThreadItem.dart::ProfileThreadItem" o-- "flutter::src::widgets::framework.dart::BuildContext"
+"irecycle::models::profileThreadItem.dart::ProfileThreadItem" o-- "cloud_firestore::cloud_firestore.dart::DocumentSnapshot<Object>"
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "irecycle::models::profileThreadItem.dart::ProfileThreadItem"
+
+class "irecycle::models::profileThreadItem.dart::_ProfileThreadItem" {
+  -int _likeCount
+  +void initState()
+  -void _updateLikeCount()
+  -void _showDialog()
+  +void delete()
+  +Future<dynamic> deletePostDB()
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "irecycle::models::profileThreadItem.dart::_ProfileThreadItem"
+
+class "irecycle::models::profileThreadItem.dart::EditPost" {
+  +DocumentSnapshot<Object?> data
+  +State<StatefulWidget> createState()
+}
+
+"irecycle::models::profileThreadItem.dart::EditPost" o-- "cloud_firestore::cloud_firestore.dart::DocumentSnapshot<Object>"
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "irecycle::models::profileThreadItem.dart::EditPost"
+
+class "irecycle::models::profileThreadItem.dart::_EditPost" {
+  +TextEditingController writingTextController
+  -FocusNode _nodeText1
+  +FocusNode writingTextFocus
+  -bool _isLoading
+  +String postId
+  +String name
+  +String postContet
+  +String post
+  -File? _postImageFile
+  +int count
+  +void initState()
+  -KeyboardActionsConfig _buildConfig()
+  -void _showDialog()
+  -void _postToFB()
+  +Widget build()
+  +dynamic checkPermission()
+  -dynamic _getUserDetail()
+  +dynamic ImagePicker()
+}
+
+"irecycle::models::profileThreadItem.dart::_EditPost" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+"irecycle::models::profileThreadItem.dart::_EditPost" o-- "flutter::src::widgets::focus_manager.dart::FocusNode"
+"irecycle::models::profileThreadItem.dart::_EditPost" o-- "dart::io::File"
+"flutter::src::widgets::framework.dart::State" <|-- "irecycle::models::profileThreadItem.dart::_EditPost"
+
+class "irecycle::models::threadItem.dart::ThreadItem" {
+  +BuildContext parentContext
+  +DocumentSnapshot<Object?> data
+  +bool isFromThread
+  +int commentCount
+  +int likeCount
+  +State<StatefulWidget> createState()
+}
+
+"irecycle::models::threadItem.dart::ThreadItem" o-- "flutter::src::widgets::framework.dart::BuildContext"
+"irecycle::models::threadItem.dart::ThreadItem" o-- "cloud_firestore::cloud_firestore.dart::DocumentSnapshot<Object>"
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "irecycle::models::threadItem.dart::ThreadItem"
+
+class "irecycle::models::threadItem.dart::_ThreadItem" {
+  -int _likeCount
+  +String uid
+  +void initState()
+  -dynamic _getUserDetail()
+  +dynamic follow()
+  -void _updateLikeCount()
+  +Widget page()
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "irecycle::models::threadItem.dart::_ThreadItem"
+
+class "irecycle::onBording::onbording.dart::OnboardingScreen" {
+  +_OnboardingScreenState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "irecycle::onBording::onbording.dart::OnboardingScreen"
+
+class "irecycle::onBording::onbording.dart::_OnboardingScreenState" {
+  -int _numPages
+  -PageController _pageController
+  -int _currentPage
+  -List<Widget> _buildPageIndicator()
+  -Widget _indicator()
+  +Widget build()
+}
+
+"irecycle::onBording::onbording.dart::_OnboardingScreenState" o-- "flutter::src::widgets::page_view.dart::PageController"
+"flutter::src::widgets::framework.dart::State" <|-- "irecycle::onBording::onbording.dart::_OnboardingScreenState"
+
+class "irecycle::pages::AdminCategories.dart::AdminCategories" {
+  +State<AdminCategories> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "irecycle::pages::AdminCategories.dart::AdminCategories"
+
+class "irecycle::pages::AdminCategories.dart::_AdminCategoriesState" {
+  -PageController _controller
+  -PageController _controller2
+  +Widget build()
+}
+
+"irecycle::pages::AdminCategories.dart::_AdminCategoriesState" o-- "flutter::src::widgets::page_view.dart::PageController"
+"flutter::src::widgets::framework.dart::State" <|-- "irecycle::pages::AdminCategories.dart::_AdminCategoriesState"
+
+class "irecycle::pages::AdminHome.dart::AdminHomePage" {
+  +State<StatefulWidget> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "irecycle::pages::AdminHome.dart::AdminHomePage"
+
+class "irecycle::pages::AdminHome.dart::_AdminHomePageState" {
+  +String email
+  -double _drawerIconSize
+  -double _drawerFontSize
+  -int _selectedIndex
+  +TextEditingController nameController
+  -TextEditingController _emailController
+  -List<Widget> _pages
+  -void _bottomNav()
+  -dynamic _getUserDetail()
+  +Future<dynamic> delete()
+  +void showToastMessage()
+  -void _showDialog()
+  +Widget build()
+}
+
+"irecycle::pages::AdminHome.dart::_AdminHomePageState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+"flutter::src::widgets::framework.dart::State" <|-- "irecycle::pages::AdminHome.dart::_AdminHomePageState"
+
+class "irecycle::pages::AdminViewPost::Adminitem.dart::AdminThreadItem" {
+  +BuildContext parentContext
+  +DocumentSnapshot<Object?> data
+  +bool isFromThread
+  +int commentCount
+  +State<StatefulWidget> createState()
+}
+
+"irecycle::pages::AdminViewPost::Adminitem.dart::AdminThreadItem" o-- "flutter::src::widgets::framework.dart::BuildContext"
+"irecycle::pages::AdminViewPost::Adminitem.dart::AdminThreadItem" o-- "cloud_firestore::cloud_firestore.dart::DocumentSnapshot<Object>"
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "irecycle::pages::AdminViewPost::Adminitem.dart::AdminThreadItem"
+
+class "irecycle::pages::AdminViewPost::Adminitem.dart::_AdminThreadItem" {
+  +void initState()
+  +dynamic follow()
+  -dynamic _updateState()
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "irecycle::pages::AdminViewPost::Adminitem.dart::_AdminThreadItem"
+
+class "irecycle::pages::AdminViewPost::AdminMaintread.dart::AdminThreadMain" {
+  +State<StatefulWidget> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "irecycle::pages::AdminViewPost::AdminMaintread.dart::AdminThreadMain"
+
+class "irecycle::pages::AdminViewPost::AdminMaintread.dart::_AdminThreadMain" {
+  -bool _isLoading
+  +void initState()
+  -void _writePost()
+  +Widget build()
+  -dynamic _getUserDetail()
+  -void _moveToContentDetail()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "irecycle::pages::AdminViewPost::AdminMaintread.dart::_AdminThreadMain"
+
+class "irecycle::pages::Bloc::home_bloc.dart::HomeBloc" {
+  -void _onFetchDataEvent()
+}
+
+"bloc::src::bloc.dart::Bloc" <|-- "irecycle::pages::Bloc::home_bloc.dart::HomeBloc"
+
+abstract class "irecycle::pages::Bloc::home_event.dart::HomeEvent" {
+}
+
+"equatable::src::equatable.dart::Equatable" <|-- "irecycle::pages::Bloc::home_event.dart::HomeEvent"
+
+class "irecycle::pages::Bloc::home_event.dart::FetchDataEvent" {
+  +List<Object?> props
+}
+
+"irecycle::pages::Bloc::home_event.dart::HomeEvent" <|-- "irecycle::pages::Bloc::home_event.dart::FetchDataEvent"
+
+abstract class "irecycle::pages::Bloc::home_state.dart::HomeState" {
+}
+
+"equatable::src::equatable.dart::Equatable" <|-- "irecycle::pages::Bloc::home_state.dart::HomeState"
+
+class "irecycle::pages::Bloc::home_state.dart::HomeInitialState" {
+  +List<Object?> props
+}
+
+"irecycle::pages::Bloc::home_state.dart::HomeState" <|-- "irecycle::pages::Bloc::home_state.dart::HomeInitialState"
+
+class "irecycle::pages::Bloc::home_state.dart::HomeLoadingState" {
+  +List<Object?> props
+}
+
+"irecycle::pages::Bloc::home_state.dart::HomeState" <|-- "irecycle::pages::Bloc::home_state.dart::HomeLoadingState"
+
+class "irecycle::pages::Bloc::home_state.dart::HomeErrorFetchDataState" {
+  +String errorMessage
+  +List<Object?> props
+}
+
+"irecycle::pages::Bloc::home_state.dart::HomeState" <|-- "irecycle::pages::Bloc::home_state.dart::HomeErrorFetchDataState"
+
+class "irecycle::pages::Bloc::home_state.dart::HomeSuccessFetchDataState" {
+  +List<Post> posts
+  +List<Object?> props
+}
+
+"irecycle::pages::Bloc::home_state.dart::HomeState" <|-- "irecycle::pages::Bloc::home_state.dart::HomeSuccessFetchDataState"
+
+class "irecycle::pages::Bloc::Post.dart::Post" {
+  +String id
+  +String name
+  +String thumbnailURL
+  +String price
+}
+
+class "irecycle::pages::Bloc::post_generator.dart::PostGenerator" {
+  {static} +List<Post> generateDummyPosts()
+}
+
+class "irecycle::pages::BlocCategories::addCategory.dart::addCategory" {
+  +State<StatefulWidget> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "irecycle::pages::BlocCategories::addCategory.dart::addCategory"
+
+class "irecycle::pages::BlocCategories::addCategory.dart::_addCategoryState" {
+  -double _drawerIconSize
+  -double _drawerFontSize
+  +TextEditingController nameController
+  +List<category> list
+  -PageController _controller
+  +void showToastMessage()
+  +void please()
+  +Widget build()
+}
+
+"irecycle::pages::BlocCategories::addCategory.dart::_addCategoryState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+"irecycle::pages::BlocCategories::addCategory.dart::_addCategoryState" o-- "flutter::src::widgets::page_view.dart::PageController"
+"flutter::src::widgets::framework.dart::State" <|-- "irecycle::pages::BlocCategories::addCategory.dart::_addCategoryState"
+
+class "irecycle::pages::BlocCategories::bloc::category_bloc.dart::CategoryBloc" {
+  +Future<dynamic> onAddCategory()
+  -Future<dynamic> _getUserDetail()
+}
+
+"bloc::src::bloc.dart::Bloc" <|-- "irecycle::pages::BlocCategories::bloc::category_bloc.dart::CategoryBloc"
+
+abstract class "irecycle::pages::BlocCategories::bloc::category_bloc.dart::CategoryEvent" {
+  +List<Object> props
+}
+
+"equatable::src::equatable.dart::Equatable" <|-- "irecycle::pages::BlocCategories::bloc::category_bloc.dart::CategoryEvent"
+
+class "irecycle::pages::BlocCategories::bloc::category_bloc.dart::AddCategory" {
+  +category object
+  +List<Object> props
+}
+
+"irecycle::pages::BlocCategories::bloc::category_bloc.dart::AddCategory" o-- "irecycle::pages::BlocCategories::category.dart::category"
+"irecycle::pages::BlocCategories::bloc::category_bloc.dart::CategoryEvent" <|-- "irecycle::pages::BlocCategories::bloc::category_bloc.dart::AddCategory"
+
+class "irecycle::pages::BlocCategories::bloc::category_bloc.dart::CategoryState" {
+  +List<category> categoryList
+  +List<Object> props
+}
+
+"equatable::src::equatable.dart::Equatable" <|-- "irecycle::pages::BlocCategories::bloc::category_bloc.dart::CategoryState"
+
+class "irecycle::pages::BlocCategories::bloc::category_bloc.dart::CategoryInitial" {
+}
+
+"irecycle::pages::BlocCategories::bloc::category_bloc.dart::CategoryState" <|-- "irecycle::pages::BlocCategories::bloc::category_bloc.dart::CategoryInitial"
+
+class "irecycle::pages::BlocCategories::cat.dart::Cat" {
+  +String id
+  +String name
+  +String description
+  +String image
+  +void delete()
+  +Future<dynamic> deleteCategoryDB()
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "irecycle::pages::BlocCategories::cat.dart::Cat"
+
+class "irecycle::pages::BlocCategories::category.dart::category" {
+  +String id
+  +String name
+  +String description
+  +List<Object?> props
+  +Map<String, dynamic> toMap()
+}
+
+"equatable::src::equatable.dart::Equatable" <|-- "irecycle::pages::BlocCategories::category.dart::category"
+
+class "irecycle::pages::BlocCategories::categoryField.dart::CategoryField" {
+  +State<StatefulWidget> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "irecycle::pages::BlocCategories::categoryField.dart::CategoryField"
+
+class "irecycle::pages::BlocCategories::categoryField.dart::_CategoryFieldState" {
+  +TextEditingController NameController
+  +TextEditingController DescriptionController
+  +FocusNode writingTextFocus
+  +File? image
+  +String cid
+  +int count
+  +void add()
+  +Future<dynamic> addCategoryDB()
+  +void showPopUp()
+  +void validate()
+  +void showToastMessage()
+  +dynamic checkPermission()
+  +Future<dynamic> pickImage()
+  -void _showDialog()
+  +Widget build()
+}
+
+"irecycle::pages::BlocCategories::categoryField.dart::_CategoryFieldState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+"irecycle::pages::BlocCategories::categoryField.dart::_CategoryFieldState" o-- "flutter::src::widgets::focus_manager.dart::FocusNode"
+"irecycle::pages::BlocCategories::categoryField.dart::_CategoryFieldState" o-- "dart::io::File"
+"flutter::src::widgets::framework.dart::State" <|-- "irecycle::pages::BlocCategories::categoryField.dart::_CategoryFieldState"
+
+class "irecycle::pages::categories.dart::categories" {
+  +State<categories> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "irecycle::pages::categories.dart::categories"
+
+class "irecycle::pages::categories.dart::_categoriesState" {
+  -PageController _controller
+  -PageController _controller2
+  +dynamic name
+  +Widget build()
+}
+
+"irecycle::pages::categories.dart::_categoriesState" o-- "flutter::src::widgets::page_view.dart::PageController"
+"flutter::src::widgets::framework.dart::State" <|-- "irecycle::pages::categories.dart::_categoriesState"
+
+class "irecycle::pages::forgoPass.dart::forgotPass" {
+  +State<forgotPass> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "irecycle::pages::forgoPass.dart::forgotPass"
+
+class "irecycle::pages::forgoPass.dart::_forgotPassState" {
+  -TextEditingController _emailController
+  -void _showDialog()
+  +void showToastMessage()
+  +Widget build()
+}
+
+"irecycle::pages::forgoPass.dart::_forgotPassState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+"flutter::src::widgets::framework.dart::State" <|-- "irecycle::pages::forgoPass.dart::_forgotPassState"
+
+class "irecycle::pages::homes.dart::HomePage" {
+  +State<StatefulWidget> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "irecycle::pages::homes.dart::HomePage"
+
+class "irecycle::pages::homes.dart::_HomePageState" {
+  -double _drawerIconSize
+  -double _drawerFontSize
+  +TextEditingController nameController
+  -TextEditingController _emailController
+  -int _selectedIndex
+  -List<Widget> _pages
+  -dynamic _getUserDetail()
+  +Future<dynamic> delete()
+  +void showToastMessage()
+  -void _showDialog()
+  +Widget build()
+}
+
+"irecycle::pages::homes.dart::_HomePageState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+"flutter::src::widgets::framework.dart::State" <|-- "irecycle::pages::homes.dart::_HomePageState"
+
+class "irecycle::pages::ImageResult.dart::ImageResult" {
+  +String result
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "irecycle::pages::ImageResult.dart::ImageResult"
+
+class "irecycle::pages::login_page.dart::LoginPage" {
+  +_LoginPageState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "irecycle::pages::login_page.dart::LoginPage"
+
+class "irecycle::pages::login_page.dart::_LoginPageState" {
+  -double _headerHeight
+  -Key _formKey
+  -TextEditingController _emailController
+  -TextEditingController _passController
+  -void _showDialog()
+  +void showToastMessage()
+  +Widget build()
+}
+
+"irecycle::pages::login_page.dart::_LoginPageState" o-- "flutter::src::foundation::key.dart::Key"
+"irecycle::pages::login_page.dart::_LoginPageState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+"flutter::src::widgets::framework.dart::State" <|-- "irecycle::pages::login_page.dart::_LoginPageState"
+
+class "irecycle::pages::Mycard.dart::MyCard" {
+  +String category
+  +dynamic color
+  +dynamic img
+  +double width
+  +double h
+  +double w
+  +double f
+  +String link
+  +bool showLocationIcon
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "irecycle::pages::Mycard.dart::MyCard"
+
+class "irecycle::pages::MyCard2.dart::MyCard2" {
+  +String category
+  +dynamic color
+  +dynamic img
+  +double width
+  +double h
+  +double w
+  +double f
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "irecycle::pages::MyCard2.dart::MyCard2"
+
+class "irecycle::pages::registration_page.dart::RegistrationPage" {
+  +State<StatefulWidget> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "irecycle::pages::registration_page.dart::RegistrationPage"
+
+class "irecycle::pages::registration_page.dart::_RegistrationPageState" {
+  -GlobalKey<FormState> _formKey
+  +bool checkedValue
+  +bool checkboxValue
+  -TextEditingController _emailController
+  -TextEditingController _passController
+  -TextEditingController _repassController
+  -TextEditingController _nameController
+  +Future<dynamic> addUserDetails()
+  +void showPopUp()
+  +void showToastMessage()
+  +Widget build()
+}
+
+"irecycle::pages::registration_page.dart::_RegistrationPageState" o-- "flutter::src::widgets::framework.dart::GlobalKey<FormState>"
+"irecycle::pages::registration_page.dart::_RegistrationPageState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+"flutter::src::widgets::framework.dart::State" <|-- "irecycle::pages::registration_page.dart::_RegistrationPageState"
+
+class "irecycle::pages::scan_object.dart::CameraScreen" {
+  +_CameraScreenState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "irecycle::pages::scan_object.dart::CameraScreen"
+
+class "irecycle::pages::scan_object.dart::_CameraScreenState" {
+  +ImagePicker imagePicker
+  +String apiKey
+  +String result
+  +String type
+  -Future<void> _getPermission()
+  -Future<void> _pickImage()
+  -Future<void> _sendImage()
+  -Future<void> _showResult()
+  +Widget build()
+}
+
+"irecycle::pages::scan_object.dart::_CameraScreenState" o-- "image_picker::image_picker.dart::ImagePicker"
+"flutter::src::widgets::framework.dart::State" <|-- "irecycle::pages::scan_object.dart::_CameraScreenState"
+
+class "irecycle::pages::splash_screen.dart::SplashScreen" {
+  +String title
+  +_SplashScreenState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "irecycle::pages::splash_screen.dart::SplashScreen"
+
+class "irecycle::pages::splash_screen.dart::_SplashScreenState" {
+  -bool _isVisible
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "irecycle::pages::splash_screen.dart::_SplashScreenState"
+
+class "irecycle::pages::TestBloc.dart::Bloc" {
+  +State<StatefulWidget> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "irecycle::pages::TestBloc.dart::Bloc"
+
+class "irecycle::pages::TestBloc.dart::_BlocState" {
+  +HomeBloc bloc
+  -double _drawerIconSize
+  -double _drawerFontSize
+  +TextEditingController nameController
+  -TextEditingController _emailController
+  +File? image
+  +void initState()
+  -dynamic _getUserDetail()
+  +Future<dynamic> delete()
+  +void showToastMessage()
+  -void _showDialog()
+  +dynamic checkPermission()
+  +Future<dynamic> pickImage()
+  -Widget _buildFoodCard()
+  +Widget build()
+}
+
+"irecycle::pages::TestBloc.dart::_BlocState" o-- "irecycle::pages::Bloc::home_bloc.dart::HomeBloc"
+"irecycle::pages::TestBloc.dart::_BlocState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+"irecycle::pages::TestBloc.dart::_BlocState" o-- "dart::io::File"
+"flutter::src::widgets::framework.dart::State" <|-- "irecycle::pages::TestBloc.dart::_BlocState"
+
+class "irecycle::pages::widgets::contentDetail.dart::ContentDetail" {
+  +DocumentSnapshot<Object?> postData
+  +State<StatefulWidget> createState()
+}
+
+"irecycle::pages::widgets::contentDetail.dart::ContentDetail" o-- "cloud_firestore::cloud_firestore.dart::DocumentSnapshot<Object>"
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "irecycle::pages::widgets::contentDetail.dart::ContentDetail"
+
+class "irecycle::pages::widgets::contentDetail.dart::_ContentDetail" {
+  -TextEditingController _msgTextController
+  -FocusNode _writingTextFocus
+  +String userName
+  +void initState()
+  +Widget build()
+  -Widget _buildTextComposer()
+  -dynamic _getUserDetail()
+  -Future<void> _handleSubmitted()
+}
+
+"irecycle::pages::widgets::contentDetail.dart::_ContentDetail" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+"irecycle::pages::widgets::contentDetail.dart::_ContentDetail" o-- "flutter::src::widgets::focus_manager.dart::FocusNode"
+"flutter::src::widgets::framework.dart::State" <|-- "irecycle::pages::widgets::contentDetail.dart::_ContentDetail"
+
+class "irecycle::pages::widgets::contentDetailProfile.dart::ContentDetailProfile" {
+  +DocumentSnapshot<Object?> postData
+  +State<StatefulWidget> createState()
+}
+
+"irecycle::pages::widgets::contentDetailProfile.dart::ContentDetailProfile" o-- "cloud_firestore::cloud_firestore.dart::DocumentSnapshot<Object>"
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "irecycle::pages::widgets::contentDetailProfile.dart::ContentDetailProfile"
+
+class "irecycle::pages::widgets::contentDetailProfile.dart::_ContentDetailProfile" {
+  -TextEditingController _msgTextController
+  -FocusNode _writingTextFocus
+  +String userName
+  +void initState()
+  +Widget build()
+  -Widget _buildTextComposer()
+  -dynamic _getUserDetail()
+  -Future<void> _handleSubmitted()
+}
+
+"irecycle::pages::widgets::contentDetailProfile.dart::_ContentDetailProfile" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+"irecycle::pages::widgets::contentDetailProfile.dart::_ContentDetailProfile" o-- "flutter::src::widgets::focus_manager.dart::FocusNode"
+"flutter::src::widgets::framework.dart::State" <|-- "irecycle::pages::widgets::contentDetailProfile.dart::_ContentDetailProfile"
+
+class "irecycle::pages::widgets::header_widget.dart::HeaderWidget" {
+  -double _height
+  -bool _showIcon
+  -IconData _icon
+  +_HeaderWidgetState createState()
+}
+
+"irecycle::pages::widgets::header_widget.dart::HeaderWidget" o-- "flutter::src::widgets::icon_data.dart::IconData"
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "irecycle::pages::widgets::header_widget.dart::HeaderWidget"
+
+class "irecycle::pages::widgets::header_widget.dart::_HeaderWidgetState" {
+  -double _height
+  -bool _showIcon
+  -IconData _icon
+  +Widget build()
+}
+
+"irecycle::pages::widgets::header_widget.dart::_HeaderWidgetState" o-- "flutter::src::widgets::icon_data.dart::IconData"
+"flutter::src::widgets::framework.dart::State" <|-- "irecycle::pages::widgets::header_widget.dart::_HeaderWidgetState"
+
+class "irecycle::pages::widgets::header_widget.dart::ShapeClipper" {
+  -List<Offset> _offsets
+  +Path getClip()
+  +bool shouldReclip()
+}
+
+"flutter::src::rendering::proxy_box.dart::CustomClipper" <|-- "irecycle::pages::widgets::header_widget.dart::ShapeClipper"
+
+class "irecycle::pages::widgets::threadMain.dart::ThreadMain" {
+  +State<StatefulWidget> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "irecycle::pages::widgets::threadMain.dart::ThreadMain"
+
+class "irecycle::pages::widgets::threadMain.dart::_ThreadMain" {
+  -bool _isLoading
+  +void initState()
+  -void _writePost()
+  +Widget build()
+  -dynamic _getUserDetail()
+  -void _moveToContentDetail()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "irecycle::pages::widgets::threadMain.dart::_ThreadMain"
+
+class "irecycle::pages::widgets::writePost.dart::WritePost" {
+  +State<StatefulWidget> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "irecycle::pages::widgets::writePost.dart::WritePost"
+
+class "irecycle::pages::widgets::writePost.dart::_WritePost" {
+  +TextEditingController writingTextController
+  -FocusNode _nodeText1
+  +FocusNode writingTextFocus
+  -bool _isLoading
+  -File? _postImageFile
+  +String name
+  +int count
+  +void initState()
+  -KeyboardActionsConfig _buildConfig()
+  -void _postToFB()
+  -void _showDialog()
+  +Widget build()
+  -Future<void> _getImageAndCrop()
+  +dynamic checkPermission()
+  +void showToastMessage()
+  -dynamic _getUserDetail()
+}
+
+"irecycle::pages::widgets::writePost.dart::_WritePost" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+"irecycle::pages::widgets::writePost.dart::_WritePost" o-- "flutter::src::widgets::focus_manager.dart::FocusNode"
+"irecycle::pages::widgets::writePost.dart::_WritePost" o-- "dart::io::File"
+"flutter::src::widgets::framework.dart::State" <|-- "irecycle::pages::widgets::writePost.dart::_WritePost"
+
+class "irecycle::profile::edit_profile.dart::EditProfile" {
+  +String currentUserId
+  +_EditProfileState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "irecycle::profile::edit_profile.dart::EditProfile"
+
+class "irecycle::profile::edit_profile.dart::_EditProfileState" {
+  +bool isLoading
+  +TextEditingController nameController
+  -TextEditingController _emailController
+  +File? image
+  -dynamic _getUserDetail()
+  +void initState()
+  +dynamic getUser()
+  +void showToastMessage()
+  +Column buildPictureField()
+  +Column buildDisplayNameField()
+  +Column buildBioField()
+  +Widget build()
+}
+
+"irecycle::profile::edit_profile.dart::_EditProfileState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+"irecycle::profile::edit_profile.dart::_EditProfileState" o-- "dart::io::File"
+"flutter::src::widgets::framework.dart::State" <|-- "irecycle::profile::edit_profile.dart::_EditProfileState"
+
+class "irecycle::profile::profile_page.dart::ProfilePage" {
+  +State<StatefulWidget> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "irecycle::profile::profile_page.dart::ProfilePage"
+
+class "irecycle::profile::profile_page.dart::_ProfilePageState" {
+  +GlobalKey<FormState> formKey
+  +TextEditingController nameController
+  +TextEditingController emailController
+  -bool _isEditing
+  -bool _isLoading
+  +String uid
+  +String userName
+  +String userImage
+  +void initState()
+  -void _cancelEdit()
+  -void _saveChanges()
+  -dynamic _getUserDetail()
+  +Column buildCountColumn()
+  +dynamic editProfile()
+  +dynamic buildProfileButton()
+  +Container buildButton()
+  +dynamic buildProfileHeader()
+  +Widget build()
+}
+
+"irecycle::profile::profile_page.dart::_ProfilePageState" o-- "flutter::src::widgets::framework.dart::GlobalKey<FormState>"
+"irecycle::profile::profile_page.dart::_ProfilePageState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+"flutter::src::widgets::framework.dart::State" <|-- "irecycle::profile::profile_page.dart::_ProfilePageState"
+
+class "irecycle::scan_text.dart::CameraScreen" {
+  +_CameraScreenState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "irecycle::scan_text.dart::CameraScreen"
+
+class "irecycle::scan_text.dart::_CameraScreenState" {
+  +ImagePicker imagePicker
+  +String apiKey
+  +String result
+  -Future<void> _getPermission()
+  -Future<void> _pickImage()
+  -Future<void> _sendImage()
+  -Future<void> _showResult()
+  +Widget build()
+}
+
+"irecycle::scan_text.dart::_CameraScreenState" o-- "image_picker::image_picker.dart::ImagePicker"
+"flutter::src::widgets::framework.dart::State" <|-- "irecycle::scan_text.dart::_CameraScreenState"
+
+
+@enduml
