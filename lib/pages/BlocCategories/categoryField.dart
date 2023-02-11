@@ -21,6 +21,7 @@ import '../../common/utils.dart';
 import '../../controllers/FBStorage.dart';
 import 'bloc/category_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:irecycle/common/theme_helper.dart';
 
 import 'category.dart';
 
@@ -244,6 +245,7 @@ class _CategoryFieldState extends State<CategoryField> {
           //KeyboardActions(
           //config: _buildConfig(context),
           Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Container(
                   //    width: size.width,
@@ -258,34 +260,28 @@ class _CategoryFieldState extends State<CategoryField> {
                     TextFormField(
                       autofocus: mounted,
                       focusNode: writingTextFocus,
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: 'Category Name',
-                        hintMaxLines: 4,
-                      ),
+                      decoration: ThemeHelper().textInputDecoration(
+                          'Category Name', 'Enter Category Name'),
                       controller: NameController,
                       keyboardType: TextInputType.multiline,
                       maxLines: null,
                     ),
                     Divider(
-                      height: 1,
-                      color: Colors.black,
+                      height: 15,
+                      color: Colors.white,
                     ),
                     TextFormField(
                       //autofocus: mounted,
                       //focusNode: writingTextFocus,
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: 'Category Description',
-                        hintMaxLines: 10,
-                      ),
+                      decoration: ThemeHelper().textInputDecoration(
+                          'Category Description', 'Enter Category Description'),
                       controller: DescriptionController,
                       keyboardType: TextInputType.multiline,
                       maxLines: null,
                     ),
                     Divider(
-                      height: 1,
-                      color: Colors.black,
+                      height: 15,
+                      color: Colors.white,
                     ),
                     image != null
                         ? Center(
@@ -302,31 +298,73 @@ class _CategoryFieldState extends State<CategoryField> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        ElevatedButton(
-                            onPressed: (() =>
-                                checkPermission(ImageSource.gallery)),
-                            child: Text('Pick Gallery')),
-                        ElevatedButton(
-                            onPressed: (() =>
-                                checkPermission(ImageSource.camera)),
-                            child: Text('Pick Camera')),
+                        Container(
+                            decoration:
+                                ThemeHelper().buttonBoxDecoration(context),
+                            child: ElevatedButton(
+                              style: ThemeHelper().buttonStyle(),
+                              child: Padding(
+                                padding: EdgeInsets.fromLTRB(20, 6, 25, 6),
+                                child: Text(
+                                  'Gallery',
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.normal,
+                                      color: Colors.white),
+                                ),
+                              ),
+                              onPressed: (() =>
+                                  checkPermission(ImageSource.gallery)),
+                            )),
+                        SizedBox(width: 20),
+                        Container(
+                            decoration:
+                                ThemeHelper().buttonBoxDecoration(context),
+                            child: ElevatedButton(
+                              style: ThemeHelper().buttonStyle(),
+                              child: Padding(
+                                padding: EdgeInsets.fromLTRB(20, 6, 25, 6),
+                                child: Text(
+                                  'Pick Camera',
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.normal,
+                                      color: Colors.white),
+                                ),
+                              ),
+                              onPressed: (() =>
+                                  checkPermission(ImageSource.camera)),
+                            )),
                       ],
                     ),
                     SizedBox(
-                      height: 20,
+                      height: 10,
                     ),
                     Divider(
-                      height: 1,
-                      color: Colors.black,
+                      height: 15,
+                      color: Colors.white,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
-                        FloatingActionButton(
-                          onPressed: add,
-                          child: Text('Add'),
-                        )
+                        Container(
+                            decoration:
+                                ThemeHelper().buttonBoxDecoration(context),
+                            child: ElevatedButton(
+                              style: ThemeHelper().buttonStyle(),
+                              child: Padding(
+                                padding: EdgeInsets.fromLTRB(40, 10, 40, 10),
+                                child: Text(
+                                  'Add',
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white),
+                                ),
+                              ),
+                              onPressed: add,
+                            ))
                       ],
                     ),
                   ],
