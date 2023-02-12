@@ -104,7 +104,7 @@ class _ProfileThreadItem extends State<ProfileThreadItem> {
     });
   }
 
-  void _showDialog() {
+  void displayAlertMessage() {
     showDialog(
         context: context,
         builder: (context) {
@@ -363,7 +363,7 @@ class _ProfileThreadItem extends State<ProfileThreadItem> {
                         child: Row(
                           children: <Widget>[
                             IconButton(
-                              onPressed: _showDialog,
+                              onPressed: displayAlertMessage,
                               icon: Icon(
                                 Icons.delete,
                                 size: 18,
@@ -540,6 +540,8 @@ class _EditPost extends State<EditPost> {
 
       FBCloudStore.sendPostInFirebase(
           postId, name, writingTextController.text, post);
+
+      showToastMessage("The post is under review by the admin");
 
       setState(() {
         _isLoading = false;
