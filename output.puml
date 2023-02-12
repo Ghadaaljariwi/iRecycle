@@ -1,23 +1,4 @@
 @startuml output
-set namespaceSeparator ::
-
-class "irecycle::common::theme_helper.dart::ThemeHelper" {
-  +InputDecoration textInputDecoration()
-  +BoxDecoration inputBoxDecorationShaddow()
-  +BoxDecoration buttonBoxDecoration()
-  +ButtonStyle buttonStyle()
-  +AlertDialog alartDialog()
-}
-
-class "irecycle::common::theme_helper.dart::LoginFormStyle" {
-}
-
-class "irecycle::common::utils.dart::Utils" {
-  {static} +Widget loadingCircle()
-  {static} +Future<File?> cropImageFile()
-  {static} +Widget cacheNetworkImageWithEvent()
-  {static} +String getRandomString()
-}
 
 class "irecycle::controllers::FBCloudStore.dart::FBCloudStore" {
   {static} +Future<void> sendPostInFirebase()
@@ -27,34 +8,6 @@ class "irecycle::controllers::FBStorage.dart::FBStorage" {
   {static} +Future<String> uploadPostImages()
 }
 
-class "irecycle::firebase_options.dart::DefaultFirebaseOptions" {
-  {static} +FirebaseOptions web
-  {static} +FirebaseOptions android
-  {static} +FirebaseOptions ios
-  {static} +FirebaseOptions macos
-  {static} +FirebaseOptions currentPlatform
-}
-
-"irecycle::firebase_options.dart::DefaultFirebaseOptions" o-- "firebase_core_platform_interface::firebase_core_platform_interface.dart::FirebaseOptions"
-
-class "irecycle::main.dart::MyApp" {
-  +Widget build()
-}
-
-"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "irecycle::main.dart::MyApp"
-
-class "irecycle::main.dart::MyHomePage" {
-  +String title
-  +State<MyHomePage> createState()
-}
-
-"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "irecycle::main.dart::MyHomePage"
-
-class "irecycle::main.dart::_MyHomePageState" {
-  +Widget build()
-}
-
-"flutter::src::widgets::framework.dart::State" <|-- "irecycle::main.dart::_MyHomePageState"
 
 class "irecycle::models::Comments.dart::Comments" {
   +DocumentSnapshot<Object?> data
@@ -62,16 +15,10 @@ class "irecycle::models::Comments.dart::Comments" {
   +State<StatefulWidget> createState()
 }
 
-"irecycle::models::Comments.dart::Comments" o-- "cloud_firestore::cloud_firestore.dart::DocumentSnapshot<Object>"
-"irecycle::models::Comments.dart::Comments" o-- "dart::ui::Size"
-"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "irecycle::models::Comments.dart::Comments"
-
 class "irecycle::models::Comments.dart::_Comments" {
   +void initState()
   +Widget build()
 }
-
-"flutter::src::widgets::framework.dart::State" <|-- "irecycle::models::Comments.dart::_Comments"
 
 class "irecycle::models::profileThreadItem.dart::ProfileThreadItem" {
   +BuildContext parentContext
@@ -81,10 +28,6 @@ class "irecycle::models::profileThreadItem.dart::ProfileThreadItem" {
   +int likeCount
   +State<StatefulWidget> createState()
 }
-
-"irecycle::models::profileThreadItem.dart::ProfileThreadItem" o-- "flutter::src::widgets::framework.dart::BuildContext"
-"irecycle::models::profileThreadItem.dart::ProfileThreadItem" o-- "cloud_firestore::cloud_firestore.dart::DocumentSnapshot<Object>"
-"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "irecycle::models::profileThreadItem.dart::ProfileThreadItem"
 
 class "irecycle::models::profileThreadItem.dart::_ProfileThreadItem" {
   -int _likeCount
@@ -96,15 +39,10 @@ class "irecycle::models::profileThreadItem.dart::_ProfileThreadItem" {
   +Widget build()
 }
 
-"flutter::src::widgets::framework.dart::State" <|-- "irecycle::models::profileThreadItem.dart::_ProfileThreadItem"
-
 class "irecycle::models::profileThreadItem.dart::EditPost" {
   +DocumentSnapshot<Object?> data
   +State<StatefulWidget> createState()
 }
-
-"irecycle::models::profileThreadItem.dart::EditPost" o-- "cloud_firestore::cloud_firestore.dart::DocumentSnapshot<Object>"
-"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "irecycle::models::profileThreadItem.dart::EditPost"
 
 class "irecycle::models::profileThreadItem.dart::_EditPost" {
   +TextEditingController writingTextController
@@ -127,11 +65,6 @@ class "irecycle::models::profileThreadItem.dart::_EditPost" {
   +dynamic ImagePicker()
 }
 
-"irecycle::models::profileThreadItem.dart::_EditPost" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
-"irecycle::models::profileThreadItem.dart::_EditPost" o-- "flutter::src::widgets::focus_manager.dart::FocusNode"
-"irecycle::models::profileThreadItem.dart::_EditPost" o-- "dart::io::File"
-"flutter::src::widgets::framework.dart::State" <|-- "irecycle::models::profileThreadItem.dart::_EditPost"
-
 class "irecycle::models::threadItem.dart::ThreadItem" {
   +BuildContext parentContext
   +DocumentSnapshot<Object?> data
@@ -140,10 +73,6 @@ class "irecycle::models::threadItem.dart::ThreadItem" {
   +int likeCount
   +State<StatefulWidget> createState()
 }
-
-"irecycle::models::threadItem.dart::ThreadItem" o-- "flutter::src::widgets::framework.dart::BuildContext"
-"irecycle::models::threadItem.dart::ThreadItem" o-- "cloud_firestore::cloud_firestore.dart::DocumentSnapshot<Object>"
-"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "irecycle::models::threadItem.dart::ThreadItem"
 
 class "irecycle::models::threadItem.dart::_ThreadItem" {
   -int _likeCount
@@ -155,26 +84,6 @@ class "irecycle::models::threadItem.dart::_ThreadItem" {
   +Widget page()
   +Widget build()
 }
-
-"flutter::src::widgets::framework.dart::State" <|-- "irecycle::models::threadItem.dart::_ThreadItem"
-
-class "irecycle::onBording::onbording.dart::OnboardingScreen" {
-  +_OnboardingScreenState createState()
-}
-
-"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "irecycle::onBording::onbording.dart::OnboardingScreen"
-
-class "irecycle::onBording::onbording.dart::_OnboardingScreenState" {
-  -int _numPages
-  -PageController _pageController
-  -int _currentPage
-  -List<Widget> _buildPageIndicator()
-  -Widget _indicator()
-  +Widget build()
-}
-
-"irecycle::onBording::onbording.dart::_OnboardingScreenState" o-- "flutter::src::widgets::page_view.dart::PageController"
-"flutter::src::widgets::framework.dart::State" <|-- "irecycle::onBording::onbording.dart::_OnboardingScreenState"
 
 class "irecycle::pages::AdminCategories.dart::AdminCategories" {
   +State<AdminCategories> createState()
