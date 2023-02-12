@@ -17,6 +17,7 @@ import '../Mycard.dart';
 import 'bloc/category_bloc.dart';
 import 'cat.dart';
 import 'category.dart';
+import 'categoryDetail.dart';
 
 class addCategory extends StatefulWidget {
   @override
@@ -247,7 +248,6 @@ class _addCategoryState extends State<addCategory> {
                           if (!snapshot.hasData) {
                             return const LinearProgressIndicator();
                           }
-
                           return Stack(
                             children: [
                               snapshot.hasData
@@ -257,11 +257,20 @@ class _addCategoryState extends State<addCategory> {
                                       shrinkWrap: true,
                                       children: snapshot.data!.docs
                                           .map((DocumentSnapshot data) {
-                                        return Cat(
-                                          id: data["id"],
-                                          name: data['name'],
-                                          description: data['description'],
-                                          image: data['image'],
+                                        return InkWell(
+                                          child: Cat(
+                                            id: data["id"],
+                                            name: data['name'],
+                                            description: data['description'],
+                                            image: data['image'],
+                                          ),
+                                          onTap: () =>
+                                              Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  CategoryDetail(cat: data),
+                                            ),
+                                          ),
                                         );
                                       }).toList(),
                                     )
