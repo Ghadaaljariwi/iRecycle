@@ -278,7 +278,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
               ),
               GButton(
                 icon: Icons.park_sharp,
-                text: 'community',
+                text: 'Community',
               ),
               GButton(
                 icon: Icons.category_outlined,

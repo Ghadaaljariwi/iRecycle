@@ -12,13 +12,16 @@ class Cat extends StatelessWidget {
   late String name;
   late String description;
   late String image;
+  late Color color;
 
   Cat(
       {required this.name,
       required this.id,
       required this.description,
       required this.image,
+      required this.color,
       Key? key});
+
   void delete() {
     deleteCategoryDB(id);
   }
@@ -31,13 +34,16 @@ class Cat extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
+
     return Padding(
       padding: const EdgeInsets.all(20),
       child: Container(
         width: 200,
         padding: EdgeInsets.all(20),
         decoration: BoxDecoration(
-          color: Color.fromARGB(255, 189, 232, 152),
+          color: color,
           borderRadius: BorderRadius.circular(16),
         ),
         child: Column(

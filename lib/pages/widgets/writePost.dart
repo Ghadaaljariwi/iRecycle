@@ -178,20 +178,20 @@ class _WritePost extends State<WritePost> {
     final size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back,
+            color: Colors.white,
+            size: 40,
+          ),
+          onPressed: () {
+            _showDialog();
+          },
+        ),
         automaticallyImplyLeading: false,
         title: Text('Write Post'),
         centerTitle: true,
         actions: <Widget>[
-          IconButton(
-            icon: Icon(
-              Icons.arrow_back,
-              color: Colors.white,
-              size: 40,
-            ),
-            onPressed: () {
-              _showDialog();
-            },
-          ),
           ElevatedButton(
               onPressed: () => _postToFB(),
               child: Text(

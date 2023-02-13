@@ -559,6 +559,16 @@ class _EditPost extends State<EditPost> {
     final size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back,
+            color: Colors.white,
+            size: 40,
+          ),
+          onPressed: () {
+            _showDialog();
+          },
+        ),
         title: Text('Edit Post'),
         centerTitle: true,
         actions: <Widget>[

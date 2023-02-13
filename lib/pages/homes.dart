@@ -285,12 +285,12 @@ class _HomePageState extends State<HomePage> {
               GButton(
                 icon: Icons.park_sharp,
                 iconSize: 25,
-                text: 'community',
+                text: 'Community',
               ),
               GButton(
                 icon: Icons.document_scanner_outlined,
                 iconSize: 25,
-                text: 'classifier',
+                text: 'Classifier',
               ),
               GButton(
                 icon: Icons.person,
