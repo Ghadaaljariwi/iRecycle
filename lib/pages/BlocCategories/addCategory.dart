@@ -85,15 +85,26 @@ class _addCategoryState extends State<addCategory> {
     });
   }
 */
+
+  int index = 0;
+
+  List<Color> myColors = [
+    Color.fromARGB(255, 189, 232, 152),
+    Color.fromARGB(255, 249, 215, 255),
+    Color.fromARGB(255, 255, 221, 176),
+    Color.fromARGB(255, 176, 230, 255),
+  ];
+
+  Color chooseColor(int i) {
+    index++;
+    return myColors[i];
+  }
+
   @override
   Widget build(BuildContext context) {
-    // please();
-    //_getUserDetail();
-    // showToastMessage(list.first.name);
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
 
-    //  return BlocBuilder<CategoryBloc, CategoryState>(
-    //  builder: (context, state) {
-    // List<category> list = state.categoryList;
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -186,7 +197,7 @@ class _addCategoryState extends State<addCategory> {
                   color: Theme.of(context).accentColor,
                 ),
                 title: Text(
-                  'Logout',
+                  'Log Out',
                   style: TextStyle(
                       fontSize: _drawerFontSize,
                       color: Theme.of(context).accentColor),
@@ -238,8 +249,8 @@ class _addCategoryState extends State<addCategory> {
               child: Column(
                 children: [
                   Container(
-                    width: 150,
-                    height: 500,
+                    width: width,
+                    height: height,
                     child: StreamBuilder<QuerySnapshot>(
                         stream: FirebaseFirestore.instance
                             .collection('categories')
@@ -263,6 +274,7 @@ class _addCategoryState extends State<addCategory> {
                                             name: data['name'],
                                             description: data['description'],
                                             image: data['image'],
+                                            color: chooseColor(index % 4),
                                           ),
                                           onTap: () =>
                                               Navigator.of(context).push(

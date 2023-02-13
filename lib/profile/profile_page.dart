@@ -36,6 +36,7 @@ class _ProfilePageState extends State<ProfilePage> {
   String uid = FirebaseAuth.instance.currentUser!.uid;
   String userName = '';
   String userImage = '';
+  final _controller = PageController();
 
   @override
   void initState() {
@@ -111,14 +112,17 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Container buildButton(
       {required String text, required void Function() function}) {
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
+
     return Container(
       padding: EdgeInsets.only(top: 2.0),
       child: ElevatedButton(
         style: ThemeHelper().buttonStyle(),
         onPressed: function,
         child: Container(
-          width: 240.0,
-          height: 27.0,
+          width: width * 240.0 / width,
+          height: height * 27.0 / height,
           child: Text(
             text,
             style: TextStyle(
@@ -140,147 +144,149 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   buildProfileHeader() {
-    return FutureBuilder(
-      //future: usersRef.document(widget.profileId).get(),
-      builder: (context, snapshot) {
-        // if (!snapshot.hasData) {
-        //   return circularProgress();
-        // }
-        // User user = User.fromDocument(snapshot.data);
-        return Padding(
-          padding: EdgeInsets.all(16.0),
-          child: Column(
+    //return FutureBuilder(
+    //future: usersRef.document(widget.profileId).get(),
+    //builder: (context, snapshot) {
+    // if (!snapshot.hasData) {
+    //   return circularProgress();
+    // }
+    // User user = User.fromDocument(snapshot.data);
+    return Padding(
+      padding: EdgeInsets.all(0),
+      child: Column(
+        children: [
+          Row(
             children: <Widget>[
-              Row(
-                children: <Widget>[
-                  CircleAvatar(
-                    radius: 40.0,
-                    backgroundColor: Colors.grey,
-                    backgroundImage: NetworkImage(
-                      userImage,
-                    ),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: Column(
+              CircleAvatar(
+                radius: 40.0,
+                backgroundColor: Colors.grey,
+                backgroundImage: NetworkImage(
+                  userImage,
+                ),
+              ),
+              Expanded(
+                flex: 1,
+                child: Column(
+                  children: <Widget>[
+                    Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
-                        Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: <Widget>[
-                            buildCountColumn("posts", 0),
-                            buildCountColumn("followers", 0),
-                            buildCountColumn("following", 0),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: <Widget>[
-                            buildProfileButton(),
-                          ],
-                        ),
+                        buildCountColumn("posts", 0),
+                        buildCountColumn("followers", 0),
+                        buildCountColumn("following", 0),
                       ],
                     ),
-                  ),
-                ],
-              ),
-              Container(
-                alignment: Alignment.centerLeft,
-                padding: EdgeInsets.only(top: 12.0),
-                child: Text(
-                  FirebaseAuth.instance.currentUser!.email.toString(),
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16.0,
-                  ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        buildProfileButton(),
+                      ],
+                    ),
+                  ],
                 ),
-              ),
-              Container(
-                alignment: Alignment.centerLeft,
-                padding: EdgeInsets.only(top: 4.0),
-                child: Text(
-                  userName,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-              Divider(
-                height: 1,
-                color: Colors.black,
-              ),
-              Container(
-                alignment: Alignment.centerLeft,
-                padding: const EdgeInsets.only(top: 4.0),
-                child: StreamBuilder<QuerySnapshot>(
-                    stream: FirebaseFirestore.instance
-                        .collection('thread')
-                        .orderBy('postTimeStamp', descending: true)
-                        .snapshots(),
-                    builder: (context, snapshot) {
-                      if (!snapshot.hasData) return LinearProgressIndicator();
-                      return Stack(
-                        children: <Widget>[
-                          snapshot.data!.docs.length > 0
-                              ? ListView(
-                                  shrinkWrap: true,
-                                  children: snapshot.data!.docs
-                                      .map((DocumentSnapshot data) {
-                                    if (uid == data['userID']) {
-                                      return ProfileThreadItem(
-                                        data: data,
-                                        isFromThread: true,
-                                        likeCount: data['postLikeCount'],
-                                        commentCount: data['postCommentCount'],
-                                        parentContext: context,
-                                      );
-                                    } else {
-                                      return Utils.loadingCircle(_isLoading);
-                                    }
-                                  }).toList(),
-                                )
-                              : Container(
-                                  child: Center(
-                                      child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: <Widget>[
-                                      Icon(
-                                        Icons.error,
-                                        color: Colors.grey[700],
-                                        size: 64,
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.all(14.0),
-                                        child: Text(
-                                          'There is no post',
-                                          style: TextStyle(
-                                              fontSize: 16,
-                                              color: Colors.grey[700]),
-                                          textAlign: TextAlign.center,
-                                        ),
-                                      ),
-                                    ],
-                                  )),
-                                ),
-                          Utils.loadingCircle(_isLoading),
-                        ],
-                      );
-                    }),
               ),
             ],
           ),
-        );
-      },
+          Container(
+            alignment: Alignment.centerLeft,
+            padding: EdgeInsets.only(top: 12.0),
+            child: Text(
+              FirebaseAuth.instance.currentUser!.email.toString(),
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 16.0,
+              ),
+            ),
+          ),
+          Container(
+            alignment: Alignment.centerLeft,
+            padding: EdgeInsets.only(top: 4.0),
+            child: Text(
+              userName,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          Divider(
+            height: 1,
+            color: Colors.black,
+          ),
+          Container(
+            height: 200,
+            alignment: Alignment.centerLeft,
+            padding: const EdgeInsets.only(top: 4.0),
+            child: StreamBuilder<QuerySnapshot>(
+                stream: FirebaseFirestore.instance
+                    .collection('thread')
+                    .orderBy('postTimeStamp', descending: true)
+                    .snapshots(),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) return LinearProgressIndicator();
+                  return Column(
+                    children: <Widget>[
+                      snapshot.data!.docs.length > 0
+                          ? ListView(
+                              padding: EdgeInsets.all(0),
+                              shrinkWrap: true,
+                              children: snapshot.data!.docs
+                                  .map((DocumentSnapshot data) {
+                                if (uid == data['userID']) {
+                                  return ProfileThreadItem(
+                                    data: data,
+                                    isFromThread: true,
+                                    likeCount: data['postLikeCount'],
+                                    commentCount: data['postCommentCount'],
+                                    parentContext: context,
+                                  );
+                                } else {
+                                  return Utils.loadingCircle(_isLoading);
+                                }
+                              }).toList(),
+                            )
+                          : Container(
+                              child: Center(
+                                  child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Icon(
+                                    Icons.error,
+                                    color: Colors.grey[700],
+                                    size: 64,
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(14.0),
+                                    child: Text(
+                                      'There is no post',
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          color: Colors.grey[700]),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                ],
+                              )),
+                            ),
+                      Utils.loadingCircle(_isLoading),
+                    ],
+                  );
+                }),
+          ),
+        ],
+      ),
     );
+    //},
+    //);
   }
 
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
     return Scaffold(
       body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[buildProfileHeader()],
-        ),
+        child: buildProfileHeader(),
       ),
     );
   }

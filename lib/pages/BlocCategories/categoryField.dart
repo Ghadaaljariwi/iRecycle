@@ -204,23 +204,19 @@ class _CategoryFieldState extends State<CategoryField> {
 
   @override
   Widget build(BuildContext context) {
-    //return BlocBuilder<CategoryBloc, CategoryState>(
-    //builder: (context, state) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back,
+            color: Colors.white,
+            size: 40,
+          ),
+          onPressed: () {
+            _showDialog();
+          },
+        ),
         automaticallyImplyLeading: false,
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(
-              Icons.arrow_back,
-              color: Colors.white,
-              size: 40,
-            ),
-            onPressed: () {
-              _showDialog();
-            },
-          )
-        ],
         title: Center(
           child: Text(
             "Adding Category",
@@ -303,29 +299,37 @@ class _CategoryFieldState extends State<CategoryField> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        ElevatedButton(
-                            onPressed: (() =>
-                                checkPermission(ImageSource.gallery)),
-                            child: Text('Pick Gallery')),
-                        ElevatedButton(
-                            onPressed: (() =>
-                                checkPermission(ImageSource.camera)),
-                            child: Text('Pick Camera')),
+                        IconButton(
+                          onPressed: () => checkPermission(ImageSource.gallery),
+                          iconSize: 30,
+                          color: Color.fromARGB(255, 65, 102, 39),
+                          icon: const Icon(Icons.photo_library_outlined),
+                          padding: EdgeInsets.only(right: 30),
+                        ),
+                        IconButton(
+                            onPressed: () =>
+                                checkPermission(ImageSource.camera),
+                            iconSize: 30,
+                            color: Color.fromARGB(255, 65, 102, 39),
+                            icon: const Icon(Icons.photo_camera)),
                       ],
                     ),
                     SizedBox(
-                      height: 20,
+                      height: 10,
                     ),
                     Divider(
                       height: 1,
                       color: Colors.black,
+                    ),
+                    SizedBox(
+                      height: 10,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
                         FloatingActionButton(
-                          onPressed: add,
+                          onPressed: add, //validate
                           child: Text('Add'),
                         )
                       ],

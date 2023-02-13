@@ -24,7 +24,7 @@ class _categoriesState extends State<categories> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
+      body: SingleChildScrollView(
         child: Column(children: [
           SizedBox(
             height: 25,
