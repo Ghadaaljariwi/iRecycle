@@ -283,7 +283,7 @@ class _ProfileThreadItem extends State<ProfileThreadItem> {
                       Padding(
                         padding: const EdgeInsets.only(top: 6.0, bottom: 2.0),
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: <Widget>[
                             GestureDetector(
                               onTap: () => _updateLikeCount(
@@ -541,7 +541,7 @@ class _EditPost extends State<EditPost> {
       FBCloudStore.sendPostInFirebase(
           postId, name, writingTextController.text, post);
 
-      showToastMessage("The post is under review by the admin");
+      //showToastMessage("The post is under review by the admin");
 
       setState(() {
         _isLoading = false;

@@ -71,8 +71,8 @@ class _CategoryDetailState extends State<CategoryDetail> {
                 widget.cat['image'].startsWith('http'))
               Image.network(
                 widget.cat['image'],
-                height: 150,
-                width: 150,
+                height: 450,
+                width: 450,
               ),
             SizedBox(height: 20),
             Text(
