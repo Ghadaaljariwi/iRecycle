@@ -188,7 +188,7 @@ class _HomePageState extends State<HomePage> {
                 color: Theme.of(context).accentColor,
               ),
               title: Text(
-                'Log Out',
+                'Logout',
                 style: TextStyle(
                     fontSize: _drawerFontSize,
                     color: Theme.of(context).accentColor),

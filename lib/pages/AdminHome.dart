@@ -215,7 +215,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
                   color: Theme.of(context).accentColor,
                 ),
                 title: Text(
-                  'Log Out',
+                  'Logout',
                   style: TextStyle(
                       fontSize: _drawerFontSize,
                       color: Theme.of(context).accentColor),

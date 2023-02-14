@@ -214,6 +214,7 @@ class _ProfilePageState extends State<ProfilePage> {
             color: Colors.black,
           ),
           Container(
+            height: 200,
             alignment: Alignment.centerLeft,
             padding: const EdgeInsets.only(top: 4.0),
             child: StreamBuilder<QuerySnapshot>(

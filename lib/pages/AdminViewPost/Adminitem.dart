@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:irecycle/common/utils.dart';
 import 'package:irecycle/models/Comments.dart';
 
@@ -38,25 +37,8 @@ class _AdminThreadItem extends State<AdminThreadItem> {
     });
   }
 
-  void showToastMessage(String message) {
-    Fluttertoast.showToast(
-        msg: message,
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.CENTER,
-        timeInSecForIosWeb: 1,
-        textColor: Colors.white,
-        fontSize: 16.0);
-  }
-
   _updateState(state) {
     widget.data.reference.update({'state': state});
-    String str = '';
-    if (state == 'False') {
-      str = "declined";
-    } else {
-      str = "accepted";
-    }
-    showToastMessage("The post has been " + str + " successfully");
   }
 
   @override

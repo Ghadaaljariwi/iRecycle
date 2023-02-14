@@ -125,8 +125,6 @@ class _WritePost extends State<WritePost> {
           //widget.myData,
           postImageURL);
 
-      showToastMessage("The post is under review by the admin");
-
       setState(() {
         _isLoading = false;
       });

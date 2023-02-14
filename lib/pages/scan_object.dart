@@ -32,8 +32,8 @@ class _CameraScreenState extends State<CameraScreen> {
     }
   }
 
-  Future<void> _pickImage(ImageSource source) async {
-    final pickedFile = await imagePicker.getImage(source: source);
+  Future<void> _pickImage() async {
+    final pickedFile = await imagePicker.getImage(source: ImageSource.gallery);
     if (pickedFile != null) {
       _sendImage(pickedFile.path);
     }
@@ -111,7 +111,6 @@ class _CameraScreenState extends State<CameraScreen> {
         child: new Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              /*
               ElevatedButton(
                 child: Text('Scan Object'),
                 onPressed: () {
@@ -120,51 +119,11 @@ class _CameraScreenState extends State<CameraScreen> {
                   type = 'OBJECT_LOCALIZATION';
                 },
               ),
-              */
               ElevatedButton(
-                child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Text('From Gallery',
-                          style: TextStyle(
-                            fontSize: 20,
-                          )),
-                      Padding(padding: EdgeInsets.all(5)),
-                      Icon(
-                        Icons.photo_library_outlined,
-                        size: 30,
-                      )
-                    ]),
+                child: Text('Scan Text'),
                 onPressed: () {
                   _getPermission();
-                  _pickImage(ImageSource.gallery);
-                  type = 'TEXT_DETECTION';
-                },
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              ElevatedButton(
-                child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Text('From Camera',
-                          style: TextStyle(
-                            fontSize: 20,
-                          )),
-                      Padding(padding: EdgeInsets.all(5)),
-                      Icon(
-                        Icons.photo_camera,
-                        size: 30,
-                      )
-                    ]),
-                onPressed: () {
-                  _getPermission();
-                  _pickImage(ImageSource.camera);
+                  _pickImage();
                   type = 'TEXT_DETECTION';
                 },
               ),
