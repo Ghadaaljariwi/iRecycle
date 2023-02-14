@@ -541,7 +541,7 @@ class _EditPost extends State<EditPost> {
       FBCloudStore.sendPostInFirebase(
           postId, name, writingTextController.text, post);
 
-      //showToastMessage("The post is under review by the admin");
+      showToastMessage("The post is under review by the admin");
 
       setState(() {
         _isLoading = false;
