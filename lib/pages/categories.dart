@@ -109,21 +109,37 @@ class _categoriesState extends State<categories> {
               //  mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
+
                   'Eco-Friendly Places',
                   style: TextStyle(
-                    fontSize: 22,
+
+                    
+                    fontSize: 28,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
+            
+              ],
+            ),
+            
+          ),
+            Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 25),
+            child: Row(
+              //  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+               
                 Text(
-                  ' To Check Out!',
+                  'To Check Out!',
                   style: TextStyle(
-                    fontSize: 22,
+                    fontSize: 28,
                   ),
                 ),
               ],
             ),
+            
           ),
+        
           Container(
             height: 300,
             child: ListView(
