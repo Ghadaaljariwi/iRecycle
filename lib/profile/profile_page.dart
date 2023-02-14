@@ -68,6 +68,35 @@ class _ProfilePageState extends State<ProfilePage> {
       body: SingleChildScrollView(
         child: Column(
       children: [
+        Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 25),
+            child: Row(
+              //  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Hey',
+                  style: TextStyle(
+                    fontSize: 77,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 25),
+            child: Row(
+              //  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  '',
+                  style: TextStyle(
+                    fontSize: 28,
+                  ),
+                ),
+              ],
+            ),
+          ),
       
         Container(
           alignment: Alignment.centerLeft,
@@ -100,6 +129,8 @@ class _ProfilePageState extends State<ProfilePage> {
                         ? ListView(
                             padding: EdgeInsets.all(0),
                             shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+
                             children: snapshot.data!.docs
                                 .map((DocumentSnapshot data) {
                               if (uid == data['userID']) {

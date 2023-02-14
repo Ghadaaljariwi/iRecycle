@@ -32,56 +32,59 @@ class _ThreadMain extends State<ThreadMain> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: StreamBuilder<QuerySnapshot>(
-          stream: FirebaseFirestore.instance
-              .collection('thread')
-              //.where('state', isEqualTo: 'True')
-              .orderBy('postTimeStamp', descending: true)
-              .snapshots(),
-          builder: (context, snapshot) {
-            if (!snapshot.hasData) return LinearProgressIndicator();
-            return Stack(
-              children: <Widget>[
-                snapshot.data!.docs.length > 0
-                    ? ListView(
-                        shrinkWrap: true,
-                        children:
-                            snapshot.data!.docs.map((DocumentSnapshot data) {
-                          return ThreadItem(
-                            data: data,
-                            isFromThread: true,
-                            likeCount: data['postLikeCount'],
-                            commentCount: data['postCommentCount'],
-                            parentContext: context,
-                          );
-                        }).toList(),
-                      )
-                    : Container(
-                        child: Center(
-                            child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Icon(
-                              Icons.error,
-                              color: Colors.grey[700],
-                              size: 64,
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(14.0),
-                              child: Text(
-                                'There are no posts',
-                                style: TextStyle(
-                                    fontSize: 16, color: Colors.grey[700]),
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                          ],
-                        )),
-                      ),
-                Utils.loadingCircle(_isLoading),
-              ],
-            );
-          }),
+      body:   StreamBuilder<QuerySnapshot>(
+              stream: FirebaseFirestore.instance
+                  .collection('thread')
+                  //.where('state', isEqualTo: 'True')
+                  .orderBy('postTimeStamp', descending: true)
+                  .snapshots(),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) return LinearProgressIndicator();
+                return Stack(
+                  children: <Widget>[
+                    snapshot.data!.docs.length > 0
+                        ? ListView(
+                            shrinkWrap: true,
+                            children:
+                                snapshot.data!.docs.map((DocumentSnapshot data) {
+                              return ThreadItem(
+                                data: data,
+                                isFromThread: true,
+                                likeCount: data['postLikeCount'],
+                                commentCount: data['postCommentCount'],
+                                parentContext: context,
+                              );
+                            }).toList(),
+                          )
+                        : Container(
+                            child: Center(
+                                child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Icon(
+                                  Icons.error,
+                                  color: Colors.grey[700],
+                                  size: 64,
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(14.0),
+                                  child: Text(
+                                    'There are no posts',
+                                    style: TextStyle(
+                                        fontSize: 16, color: Colors.grey[700]),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                              ],
+                            )),
+                          ),
+                    Utils.loadingCircle(_isLoading),
+                  ],
+                );
+              }
+              ),
+             
+      
       floatingActionButton: FloatingActionButton(
         onPressed: _writePost,
         tooltip: 'Increment',

@@ -320,26 +320,14 @@ class _ProfileThreadItem extends State<ProfileThreadItem> {
                             ),
                             GestureDetector(
                               onTap: () {
-                                // Navigator.of(context).push(PageRouteBuilder(
-                                //       //fullscreenDialog: true,
-                                //       pageBuilder: (BuildContext context, _, __) =>
-                                //           Comments(
-                                //         postID: widget.data['postID'],
-                                //         userID: widget.data['userID'],
-                                //       ),
-                                //     ));
+                          
                               },
                               child: Row(
                                 children: <Widget>[
                                   Padding(
                                       padding: const EdgeInsets.only(left: 4)),
                                   GestureDetector(
-                                    /* onTap:() => showComments(
-    context,
-    postId: widget.data['postID'],
-    ownerId: widget.data['userID'],
-    ),*/
-                                    onTap: () {},
+                                 onTap: () {},
                                     child: Icon(Icons.mode_comment, size: 18),
                                   ),
                                   Padding(
@@ -661,34 +649,6 @@ class _EditPost extends State<EditPost> {
     );
   }
 
-/*
-  Future<void> _getImageAndCrop() async {
-    if (Platform.isAndroid) {
-      var cameraStatus = Permission.camera.status;
-      print(cameraStatus);
-      if (await cameraStatus.isGranted) {
-        print(cameraStatus);
-      } else {
-        showToastMessage("We need to access your camera");
-        await Permission.camera.request();
-      }
-    }
-    try {
-      final ImagePicker _picker = ImagePicker();
-      final imageFileFromGallery =
-          await _picker.pickImage(source: ImageSource.gallery);
-
-      File? cropImageFile = File(imageFileFromGallery!.path);
-      cropImageFile = await Utils.cropImageFile(
-          cropImageFile); //await cropImageFile(imageFileFromGallery);
-      setState(() {
-        _postImageFile = cropImageFile;
-      });
-    } on PlatformException catch (e) {
-      print('Failed to pick image: $e');
-    }
-  }
-*/
   checkPermission(ImageSource source) async {
     var cameraStatus = Permission.camera.status;
     print(cameraStatus);
