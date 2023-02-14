@@ -35,7 +35,7 @@ class _ThreadMain extends State<ThreadMain> {
       body: StreamBuilder<QuerySnapshot>(
           stream: FirebaseFirestore.instance
               .collection('thread')
-              .where('state', isEqualTo: 'True')
+              //.where('state', isEqualTo: 'True')
               .orderBy('postTimeStamp', descending: true)
               .snapshots(),
           builder: (context, snapshot) {

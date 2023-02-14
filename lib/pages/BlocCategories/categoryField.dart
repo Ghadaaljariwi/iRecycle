@@ -49,6 +49,7 @@ class _CategoryFieldState extends State<CategoryField> {
     //context.read<CategoryBloc>().add(AddCategory(object: object));
 */
     addCategoryDB(NameController.text, DescriptionController.text, image);
+    showToastMessage("The category has been added successfully");
     Navigator.pop(context);
   }
 
