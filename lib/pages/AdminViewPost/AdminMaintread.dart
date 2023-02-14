@@ -36,7 +36,7 @@ class _AdminThreadMain extends State<AdminThreadMain> {
       body: StreamBuilder<QuerySnapshot>(
           stream: FirebaseFirestore.instance
               .collection('thread')
-              .where('state', isEqualTo: 'False')
+              //.where('state', isEqualTo: 'False')
               .orderBy('postTimeStamp', descending: true)
               .snapshots(),
           builder: (context, snapshot) {
