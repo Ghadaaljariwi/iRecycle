@@ -319,15 +319,13 @@ class _ProfileThreadItem extends State<ProfileThreadItem> {
                               ),
                             ),
                             GestureDetector(
-                              onTap: () {
-                          
-                              },
+                              onTap: () {},
                               child: Row(
                                 children: <Widget>[
                                   Padding(
                                       padding: const EdgeInsets.only(left: 4)),
                                   GestureDetector(
-                                 onTap: () {},
+                                    onTap: () {},
                                     child: Icon(Icons.mode_comment, size: 18),
                                   ),
                                   Padding(
@@ -529,7 +527,7 @@ class _EditPost extends State<EditPost> {
       FBCloudStore.sendPostInFirebase(
           postId, name, writingTextController.text, post);
 
-      //showToastMessage("The post is under review by the admin");
+      showToastMessage("The post is under review by the admin");
 
       setState(() {
         _isLoading = false;

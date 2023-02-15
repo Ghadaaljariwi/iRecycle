@@ -7,7 +7,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:irecycle/pages/categories.dart';
 import 'package:irecycle/pages/login_page.dart';
-import 'package:irecycle/pages/scan_object.dart';
+import 'package:irecycle/pages/scanText.dart';
 import 'package:irecycle/pages/splash_screen.dart';
 import 'package:irecycle/profile/profile_page.dart';
 import 'package:irecycle/pages/widgets/header_widget.dart';
@@ -111,7 +111,7 @@ class _HomePageState extends State<HomePage> {
   final List<Widget> _pages = [
     categories(),
     ThreadMain(),
-    CameraScreen(),
+    ScanText(),
     ProfilePage(),
   ];
 

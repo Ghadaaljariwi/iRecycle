@@ -8,12 +8,15 @@ import 'dart:io';
 
 import 'Mycard.dart';
 
-class CameraScreen extends StatefulWidget {
+class ScanText extends StatefulWidget {
+  const ScanText({super.key});
+
   @override
-  _CameraScreenState createState() => _CameraScreenState();
+  // ignore: library_private_types_in_public_api
+  _ScanTextState createState() => _ScanTextState();
 }
 
-class _CameraScreenState extends State<CameraScreen> {
+class _ScanTextState extends State<ScanText> {
   final imagePicker = ImagePicker();
   final apiKey = 'AIzaSyDvdqwITHh09sYJE7kq0R4MPLf7OoObSCo';
   String result = '';
@@ -108,10 +111,8 @@ class _CameraScreenState extends State<CameraScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
-
-        child: Column(
-          children:[
-            SizedBox(
+        child: Column(children: [
+          SizedBox(
             height: 25,
           ),
           Padding(
@@ -125,11 +126,10 @@ class _CameraScreenState extends State<CameraScreen> {
                     fontSize: 33,
                   ),
                 ),
-          
               ],
             ),
           ),
-             Padding(
+          Padding(
             padding: const EdgeInsets.symmetric(horizontal: 25),
             child: Row(
               //  mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -138,51 +138,34 @@ class _CameraScreenState extends State<CameraScreen> {
                   'plastic?',
                   style: TextStyle(
                     fontSize: 66,
-                                                            fontWeight: FontWeight.bold,
-
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
-                
               ],
             ),
           ),
-         
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 25),
             child: Row(
               //  mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-          
-          
                 Text(
                   'Scan the Triangle Symbol!',
                   style: TextStyle(
                     fontStyle: FontStyle.italic,
                     fontSize: 20,
-
                   ),
                 ),
-                 
               ],
             ),
           ),
-             SizedBox(
+          SizedBox(
             height: 90,
           ),
           Center(
             child: new Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  /*
-                  ElevatedButton(
-                    child: Text('Scan Object'),
-                    onPressed: () {
-                      _getPermission();
-                      _pickImage();
-                      type = 'OBJECT_LOCALIZATION';
-                    },
-                  ),
-                  */
                   ElevatedButton(
                     child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -231,8 +214,8 @@ class _CameraScreenState extends State<CameraScreen> {
                     },
                   ),
                 ]),
-          ),]
-        ),
+          ),
+        ]),
       ),
     );
   }

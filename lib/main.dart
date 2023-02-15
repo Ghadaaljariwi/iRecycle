@@ -9,7 +9,7 @@ import 'package:irecycle/pages/BlocCategories/category.dart';
 
 import 'package:irecycle/pages/homes.dart';
 import 'package:irecycle/pages/login_page.dart';
-import 'package:irecycle/pages/scan_object.dart';
+import 'package:irecycle/pages/scanText.dart';
 import 'package:irecycle/pages/splash_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';

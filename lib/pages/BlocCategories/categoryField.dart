@@ -330,7 +330,7 @@ class _CategoryFieldState extends State<CategoryField> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
                         FloatingActionButton(
-                          onPressed: add, //validate
+                          onPressed: validate,
                           child: Text('Add'),
                         )
                       ],
