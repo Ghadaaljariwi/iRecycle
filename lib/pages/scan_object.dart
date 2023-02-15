@@ -107,68 +107,132 @@ class _CameraScreenState extends State<CameraScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: new Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              /*
-              ElevatedButton(
-                child: Text('Scan Object'),
-                onPressed: () {
-                  _getPermission();
-                  _pickImage();
-                  type = 'OBJECT_LOCALIZATION';
-                },
-              ),
-              */
-              ElevatedButton(
-                child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Text('From Gallery',
-                          style: TextStyle(
-                            fontSize: 20,
-                          )),
-                      Padding(padding: EdgeInsets.all(5)),
-                      Icon(
-                        Icons.photo_library_outlined,
-                        size: 30,
-                      )
-                    ]),
-                onPressed: () {
-                  _getPermission();
-                  _pickImage(ImageSource.gallery);
-                  type = 'TEXT_DETECTION';
-                },
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              ElevatedButton(
-                child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Text('From Camera',
-                          style: TextStyle(
-                            fontSize: 20,
-                          )),
-                      Padding(padding: EdgeInsets.all(5)),
-                      Icon(
-                        Icons.photo_camera,
-                        size: 30,
-                      )
-                    ]),
-                onPressed: () {
-                  _getPermission();
-                  _pickImage(ImageSource.camera);
-                  type = 'TEXT_DETECTION';
-                },
-              ),
-            ]),
+      body: SingleChildScrollView(
+
+        child: Column(
+          children:[
+            SizedBox(
+            height: 25,
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 25),
+            child: Row(
+              //  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Got some',
+                  style: TextStyle(
+                    fontSize: 33,
+                  ),
+                ),
+          
+              ],
+            ),
+          ),
+             Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 25),
+            child: Row(
+              //  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'plastic?',
+                  style: TextStyle(
+                    fontSize: 66,
+                                                            fontWeight: FontWeight.bold,
+
+                  ),
+                ),
+                
+              ],
+            ),
+          ),
+         
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 25),
+            child: Row(
+              //  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+          
+          
+                Text(
+                  'Scan the Triangle Symbol!',
+                  style: TextStyle(
+                    fontStyle: FontStyle.italic,
+                    fontSize: 20,
+
+                  ),
+                ),
+                 
+              ],
+            ),
+          ),
+             SizedBox(
+            height: 90,
+          ),
+          Center(
+            child: new Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  /*
+                  ElevatedButton(
+                    child: Text('Scan Object'),
+                    onPressed: () {
+                      _getPermission();
+                      _pickImage();
+                      type = 'OBJECT_LOCALIZATION';
+                    },
+                  ),
+                  */
+                  ElevatedButton(
+                    child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Text('From Gallery',
+                              style: TextStyle(
+                                fontSize: 20,
+                              )),
+                          Padding(padding: EdgeInsets.all(5)),
+                          Icon(
+                            Icons.photo_library_outlined,
+                            size: 30,
+                          )
+                        ]),
+                    onPressed: () {
+                      _getPermission();
+                      _pickImage(ImageSource.gallery);
+                      type = 'TEXT_DETECTION';
+                    },
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  ElevatedButton(
+                    child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Text('From Camera',
+                              style: TextStyle(
+                                fontSize: 20,
+                              )),
+                          Padding(padding: EdgeInsets.all(5)),
+                          Icon(
+                            Icons.photo_camera,
+                            size: 30,
+                          )
+                        ]),
+                    onPressed: () {
+                      _getPermission();
+                      _pickImage(ImageSource.camera);
+                      type = 'TEXT_DETECTION';
+                    },
+                  ),
+                ]),
+          ),]
+        ),
       ),
     );
   }

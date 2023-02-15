@@ -144,7 +144,10 @@ class _EditProfileState extends State<EditProfile> {
                 child: Text('Pick Camera')),
           ],
           */
-            ), //
+            ), 
+            SizedBox(
+              height: 30,
+            ),//
         Divider(
           height: 1,
           color: Colors.black,

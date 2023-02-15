@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:irecycle/common/theme_helper.dart';
 
 import '../common/utils.dart';
 import '../models/profileThreadItem.dart';
@@ -31,24 +32,11 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   void initState() {
-    // TODO: implement initState
 
     _getUserDetail();
     super.initState();
   }
 
-  _getUserDetail() {
-    FirebaseFirestore.instance
-        .collection('users')
-        .doc(FirebaseAuth.instance.currentUser!.uid)
-        .snapshots()
-        .listen((DocumentSnapshot snapshot) {
-      uid = FirebaseAuth.instance.currentUser!.uid;
-      userName = snapshot.get("firstName");
-      userImage = snapshot.get('image');
-      setState(() {});
-    });
-  }
 
   editProfile() {
     Navigator.push(
@@ -68,47 +56,69 @@ class _ProfilePageState extends State<ProfilePage> {
       body: SingleChildScrollView(
         child: Column(
       children: [
+        SizedBox(
+          height: 30,
+        ),
         Padding(
             padding: const EdgeInsets.symmetric(horizontal: 25),
             child: Row(
               //  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Hey',
+              children: [ Text(
+                  'Hey,',
                   style: TextStyle(
-                    fontSize: 77,
+                    fontSize: 44,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
+                
               ],
             ),
           ),
-          Padding(
+           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 25),
             child: Row(
               //  mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  '',
+               'recycle buddy',
                   style: TextStyle(
-                    fontSize: 28,
+                    fontSize: 44,
                   ),
                 ),
               ],
             ),
           ),
-      
-        Container(
-          alignment: Alignment.centerLeft,
-          padding: EdgeInsets.only(top: 12.0),
+       
+    Container(
+      padding: EdgeInsets.only(top: 2.0),
+      child: ElevatedButton(
+        style: ThemeHelper().buttonStyle(),
+        onPressed:editProfile,
+        child: Container(
+          width: width * 240.0 / width,
+          height: height * 27.0 / height,
           child: Text(
-            FirebaseAuth.instance.currentUser!.email.toString(),
+            'edit your profile',
             style: TextStyle(
+              color: Colors.white,
               fontWeight: FontWeight.bold,
-              fontSize: 16.0,
             ),
           ),
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            color: Theme.of(context).primaryColorLight,
+            border: Border.all(
+              color: Theme.of(context).primaryColorLight,
+            ),
+            borderRadius: BorderRadius.circular(5.0),
+          ),
         ),
+      ),
+    ),
+                
+         
+      
+      
         Divider(
           height: 1,
           color: Colors.black,
@@ -177,5 +187,21 @@ class _ProfilePageState extends State<ProfilePage> {
     ),
       ),
     );
+  }
+
+
+
+
+  _getUserDetail() {
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .snapshots()
+        .listen((DocumentSnapshot snapshot) {
+      uid = FirebaseAuth.instance.currentUser!.uid;
+      userName = snapshot.get("firstName");
+      userImage = snapshot.get('image');
+      setState(() {});
+    });
   }
 }
