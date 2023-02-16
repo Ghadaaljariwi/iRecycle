@@ -145,6 +145,7 @@ class _ProfileThreadItem extends State<ProfileThreadItem> {
 
   void delete() {
     deletePostDB();
+    Navigator.pop(context);
   }
 
   Future deletePostDB() async {

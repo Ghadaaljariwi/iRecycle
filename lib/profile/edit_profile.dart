@@ -23,10 +23,7 @@ import '../controllers/FBStorage.dart';
 import '../pages/registration_page.dart';
 
 class EditProfile extends StatefulWidget {
-  final String currentUserId = FirebaseAuth.instance.currentUser!.uid;
-  //currentUserId= FirebaseAuth.instance.currentUser!.uid;
-
-  EditProfile({currentUserId});
+  EditProfile();
 
   @override
   _EditProfileState createState() => _EditProfileState();
@@ -36,8 +33,16 @@ class _EditProfileState extends State<EditProfile> {
   bool isLoading = false;
   TextEditingController nameController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
+  String uid = FirebaseAuth.instance.currentUser!.uid;
   File? image;
   //User user;
+
+  @override
+  void initState() {
+    super.initState();
+    _getUserDetail();
+    //getUser();
+  }
 
   _getUserDetail() {
     FirebaseFirestore.instance
@@ -48,28 +53,66 @@ class _EditProfileState extends State<EditProfile> {
       nameController.text = snapshot.get("firstName");
       image = File(snapshot.get('image'));
       _emailController.text = snapshot.get("email");
-      setState(() {});
+      if (mounted) setState(() {});
     });
   }
 
-  @override
-  void initState() {
-    super.initState();
-    _getUserDetail();
-    getUser();
+  updateProfile() {
+    if (_emailController.text.isEmpty || nameController.text.isEmpty) {
+      showPopUp("Empty Fields", "Please enter all required fields");
+    } else if (!_emailController.text.contains('@')) {
+      showPopUp("Invalid E-mail", 'Please enter a valid E-mail address');
+    } else {
+      FirebaseFirestore.instance.collection('users').doc(uid).update({
+        'firstName': nameController.text.toString(),
+        'email': _emailController.text.toString()
+      }).then((value) {
+        showToastMessage("Your profile has been updated successfully");
+        Navigator.pop(context);
+      }).onError((error, stackTrace) {
+        showToastMessage("This E-mail address is already in use");
+      });
+    }
   }
 
+/*
   getUser() async {
     setState(() {
       isLoading = true;
     });
-    DocumentSnapshot doc = await _getUserDetail();
+    //DocumentSnapshot doc = await _getUserDetail();
     //user = User.fromDocument(doc);
     //displayNameController.text = user.displayName;
     //bioController.text = user.bio;
     setState(() {
       isLoading = false;
     });
+  }
+*/
+  void showPopUp(String title, String text) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text(
+              title,
+              style: TextStyle(color: Colors.lightGreen, fontSize: 20),
+            ),
+            content: Text(
+              text,
+              style: TextStyle(fontSize: 20),
+            ),
+            actions: <Widget>[
+              TextButton(
+                onPressed: Navigator.of(context).pop,
+                child: const Text(
+                  "OK",
+                  style: TextStyle(fontSize: 20),
+                ),
+              )
+            ],
+          );
+        });
   }
 
   void showToastMessage(String message) {
@@ -144,10 +187,10 @@ class _EditProfileState extends State<EditProfile> {
                 child: Text('Pick Camera')),
           ],
           */
-            ), 
-            SizedBox(
-              height: 30,
-            ),//
+            ),
+        SizedBox(
+          height: 30,
+        ), //
         Divider(
           height: 1,
           color: Colors.black,
@@ -196,10 +239,63 @@ class _EditProfileState extends State<EditProfile> {
     );
   }
 
+  int count = 0;
+  void _showDialog() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          // set up the buttons
+          Widget cancelButton = TextButton(
+            child: Text(
+              "No",
+              style: TextStyle(fontSize: 20, color: Colors.red),
+            ),
+            onPressed: Navigator.of(context).pop,
+          );
+          Widget continueButton = TextButton(
+            child: Text(
+              "Yes",
+              style: TextStyle(fontSize: 20, color: Colors.green),
+            ),
+            onPressed: () => Navigator.popUntil(
+              context,
+              (route) {
+                return count++ == 2;
+              },
+            ),
+          );
+
+          return AlertDialog(
+            title: Text(
+              'Exit',
+              style: TextStyle(color: Colors.deepPurple, fontSize: 20),
+            ),
+            content: Text(
+              'Are you sure you want to exit ?',
+              style: TextStyle(fontSize: 20),
+            ),
+            actions: [
+              cancelButton,
+              continueButton,
+            ],
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back,
+            color: Colors.white,
+            size: 40,
+          ),
+          onPressed: () {
+            _showDialog();
+          },
+        ),
         backgroundColor: Theme.of(context).primaryColorLight,
         title: Text(
           "Edit Profile",
@@ -208,7 +304,8 @@ class _EditProfileState extends State<EditProfile> {
           ),
         ),
         actions: <Widget>[
-          IconButton(
+          //IconButton(
+          /*
             onPressed: () => Navigator.pop(context),
             icon: Icon(
               Icons.done,
@@ -216,6 +313,7 @@ class _EditProfileState extends State<EditProfile> {
               color: Colors.green,
             ),
           ),
+          */
         ],
       ),
       body:
@@ -241,14 +339,14 @@ class _EditProfileState extends State<EditProfile> {
                   padding: EdgeInsets.all(16.0),
                   child: Column(
                     children: <Widget>[
-                      buildPictureField(),
+                      // buildPictureField(),
                       buildDisplayNameField(),
                       buildBioField(),
                     ],
                   ),
                 ),
                 ElevatedButton(
-                  onPressed: () => print('update profile data'),
+                  onPressed: () => updateProfile(),
                   child: Text(
                     "Update Profile",
                     style: TextStyle(

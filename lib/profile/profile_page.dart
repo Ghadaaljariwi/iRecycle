@@ -38,10 +38,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   editProfile() {
     Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => EditProfile(
-                currentUserId: FirebaseAuth.instance.currentUser!.uid)));
+        context, MaterialPageRoute(builder: (context) => EditProfile()));
   }
 
   @override
@@ -93,7 +90,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   width: width * 240.0 / width,
                   height: height * 27.0 / height,
                   child: Text(
-                    'edit your profile',
+                    'Edit Profile',
                     style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,

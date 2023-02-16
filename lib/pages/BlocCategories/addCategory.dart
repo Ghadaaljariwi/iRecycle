@@ -250,7 +250,7 @@ class _addCategoryState extends State<addCategory> {
                 children: [
                   Container(
                     width: width,
-                    height: height,
+                    //height: height,
                     child: StreamBuilder<QuerySnapshot>(
                         stream: FirebaseFirestore.instance
                             .collection('categories')
@@ -265,6 +265,7 @@ class _addCategoryState extends State<addCategory> {
                                   ? ListView(
                                       //scrollDirection: Axis.vertical,
                                       //controller: _controller,
+                                      physics: NeverScrollableScrollPhysics(),
                                       shrinkWrap: true,
                                       children: snapshot.data!.docs
                                           .map((DocumentSnapshot data) {
