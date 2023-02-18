@@ -48,15 +48,44 @@ class _AdminThreadItem extends State<AdminThreadItem> {
         fontSize: 16.0);
   }
 
-  _updateState(state) {
-    widget.data.reference.update({'state': state});
-    String str = '';
+  Future deletePostDB() async {
+    await FirebaseFirestore.instance
+        .collection('thread')
+        .doc(widget.data['postID'])
+        .delete();
+  }
+
+  _updateState(state) async {
     if (state == false) {
-      str = "declined";
-    } else {
-      str = "accepted";
+      bool confirmDelete = await showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text("Are you sure?"),
+          content: Text("This action cannot be redone"),
+          actions: [
+            TextButton(
+              child: Text("Cancel"),
+              onPressed: () => Navigator.pop(context, false),
+            ),
+            TextButton(
+              child: Text("Decline"),
+              onPressed: () => Navigator.pop(context, true),
+            ),
+          ],
+        ),
+      );
+
+      if (confirmDelete == null || !confirmDelete) {
+        return;
+      }
+
+      await deletePostDB();
     }
-    showToastMessage("The post has been " + str + " successfully");
+
+    widget.data.reference.update({'state': state});
+
+    String str = state == false ? "declined" : "accepted";
+    showToastMessage("The post has been $str successfully");
   }
 
   @override
@@ -143,7 +172,7 @@ class _AdminThreadItem extends State<AdminThreadItem> {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
                     GestureDetector(
-                      onTap: () => _updateState(false),
+                      onTap: () => {_updateState(false)},
                       child: Row(
                         children: <Widget>[
                           Icon(Icons.disabled_by_default_outlined,
