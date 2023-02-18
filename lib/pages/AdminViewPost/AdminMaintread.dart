@@ -36,48 +36,29 @@ class _AdminThreadMain extends State<AdminThreadMain> {
       body: StreamBuilder<QuerySnapshot>(
           stream: FirebaseFirestore.instance
               .collection('thread')
-              //.where('state', isEqualTo: 'False')
               .orderBy('postTimeStamp', descending: true)
               .snapshots(),
           builder: (context, snapshot) {
             if (!snapshot.hasData) return LinearProgressIndicator();
             return Stack(
               children: <Widget>[
-                snapshot.hasData
-                    ? ListView(
-                        shrinkWrap: true,
-                        children:
-                            snapshot.data!.docs.map((DocumentSnapshot data) {
-                          return AdminThreadItem(
-                            data: data,
-                            isFromThread: true,
-                            commentCount: data['postCommentCount'],
-                            parentContext: context,
-                          );
-                        }).toList(),
-                      )
-                    : Container(
-                        child: Center(
-                            child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Icon(
-                              Icons.error,
-                              color: Colors.grey[700],
-                              size: 64,
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(14.0),
-                              child: Text(
-                                'There is no post',
-                                style: TextStyle(
-                                    fontSize: 16, color: Colors.grey[700]),
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                          ],
-                        )),
-                      ),
+                ListView(
+                  shrinkWrap: true,
+                  children: snapshot.data!.docs
+                      .where((doc) =>
+                          (doc.data() as Map<String, dynamic>)
+                                  .containsKey('state') ==
+                              true &&
+                          doc['state'] == false)
+                      .map((DocumentSnapshot data) {
+                    return AdminThreadItem(
+                      data: data,
+                      isFromThread: true,
+                      commentCount: data['postCommentCount'],
+                      parentContext: context,
+                    );
+                  }).toList(),
+                ),
                 Utils.loadingCircle(_isLoading),
               ],
             );

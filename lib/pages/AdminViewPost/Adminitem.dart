@@ -51,7 +51,7 @@ class _AdminThreadItem extends State<AdminThreadItem> {
   _updateState(state) {
     widget.data.reference.update({'state': state});
     String str = '';
-    if (state == 'False') {
+    if (state == false) {
       str = "declined";
     } else {
       str = "accepted";
@@ -143,7 +143,7 @@ class _AdminThreadItem extends State<AdminThreadItem> {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
                     GestureDetector(
-                      onTap: () => _updateState('False'),
+                      onTap: () => _updateState(false),
                       child: Row(
                         children: <Widget>[
                           Icon(Icons.disabled_by_default_outlined,
@@ -171,7 +171,7 @@ context,
 postId: widget.data['postID'],
 ownerId: widget.data['userID'],
 ),*/
-                            onTap: () => _updateState('True'),
+                            onTap: () => _updateState(true),
                             child: Icon(Icons.done_outlined, size: 18),
                           ),
                           Padding(
