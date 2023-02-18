@@ -21,6 +21,7 @@ import '../../common/utils.dart';
 import '../../controllers/FBStorage.dart';
 import 'bloc/category_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:irecycle/common/theme_helper.dart';
 
 import 'category.dart';
 
@@ -242,6 +243,7 @@ class _CategoryFieldState extends State<CategoryField> {
           //KeyboardActions(
           //config: _buildConfig(context),
           Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Container(
                   //    width: size.width,
@@ -256,34 +258,28 @@ class _CategoryFieldState extends State<CategoryField> {
                     TextFormField(
                       autofocus: mounted,
                       focusNode: writingTextFocus,
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: 'Category Name',
-                        hintMaxLines: 4,
-                      ),
+                      decoration: ThemeHelper().textInputDecoration(
+                          'Category Name', 'Enter Category Name'),
                       controller: NameController,
                       keyboardType: TextInputType.multiline,
                       maxLines: null,
                     ),
                     Divider(
-                      height: 1,
-                      color: Colors.black,
+                      height: 15,
+                      color: Colors.white,
                     ),
                     TextFormField(
                       //autofocus: mounted,
                       //focusNode: writingTextFocus,
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: 'Category Description',
-                        hintMaxLines: 10,
-                      ),
+                      decoration: ThemeHelper().textInputDecoration(
+                          'Category Description', 'Enter Category Description'),
                       controller: DescriptionController,
                       keyboardType: TextInputType.multiline,
                       maxLines: null,
                     ),
                     Divider(
-                      height: 1,
-                      color: Colors.black,
+                      height: 15,
+                      color: Colors.white,
                     ),
                     image != null
                         ? Center(
@@ -316,6 +312,7 @@ class _CategoryFieldState extends State<CategoryField> {
                       ],
                     ),
                     SizedBox(
+                      height: 10,
                       height: 10,
                     ),
                     Divider(
