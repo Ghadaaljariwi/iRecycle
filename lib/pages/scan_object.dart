@@ -72,7 +72,7 @@ class _CameraScreenState extends State<CameraScreen> {
     Navigator.of(context).push(PageRouteBuilder(
       //fullscreenDialog: true,
       pageBuilder: (BuildContext context, _, __) => ImageResult(
-        result: result,
+        result: result.replaceAll(' ', ''),
       ),
     ));
   }

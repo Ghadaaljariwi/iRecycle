@@ -11,14 +11,63 @@ import 'Mycard.dart';
 
 final _controller = PageController();
 final _controller2 = PageController();
+String advice = "";
+String result2 = "";
+String image = "";
 
 class ImageResult extends StatelessWidget {
   final String result;
 
-  const ImageResult({super.key, required this.result});
+  const ImageResult({
+    super.key,
+    required this.result,
+  });
+
+  void resultA() {
+    String result2 = result;
+    if (result[0] == "1") {
+      image = 'assets/images/B5B010A4-9372-49F9-967F-9FC665BCC8E3.png';
+      //result2 = result.substring(2);
+      advice =
+          "PET or PETE (polyethylene terephthalate) is the most common plastic for single-use bottled beverages because it's inexpensive, lightweight and easy to recycle. Found in: Soft drinks, water, ketchup and beer bottles.";
+    } else if (result[0] == "2") {
+      image = 'assets/images/hdpe.png';
+      // result2 = result.substring(2);
+      advice =
+          'HDPE (high density polyethylene) is a versatile plastic with many uses, especially when it comes to packaging. Found in: Milk jugs, juice bottles, bleach, detergent and other household cleaner bottles.';
+    } else if (result[0] == "3") {
+      image = 'assets/images/pvc.png';
+      // result2 = result.substring(2);
+      advice =
+          "PVC (polyvinyl chloride) and V (vinyl) is tough and weathers well, so it's commonly used for things like piping and siding. Found in: Blister packaging, wire jacketing, siding, windows, piping.";
+    } else if (result[0] == "4") {
+      image = 'assets/images/ldpe.png';
+      //  result2 = result.substring(4);
+      advice =
+          "LDPE (low density polyethylene) is a flexible plastic with many applications. Found in: Squeezable bottles, bread, frozen food, dry cleaning, and shopping bags.";
+    } else if (result[0] == "5") {
+      image = 'assets/images/pp.png';
+      // result2 = result.substring(4);
+      advice =
+          "PP (polypropylene) has a high melting point, so it's often chosen for containers that will hold hot liquid. Found in: Some yogurt containers, syrup and medicine bottles, caps, straws.";
+    } else if (result[0] == "6") {
+      image = 'assets/images/ps.png';
+      // result2 = result.substring(4);
+      advice =
+          "PS (polystyrene) can be made into rigid or foam products — in the latter case, it is popularly known as the trademark Styrofoam. Found in: Disposable plates and cups, meat trays, egg cartons, carry-out containers.";
+    } else if (result[0] == "7") {
+      image = 'assets/images/plastic.png';
+      // result2 = result.substring(4);
+      advice =
+          "A wide variety of plastic resins that don't fit into the previous categories are lumped into this one. Found in: Three- and five-gallon water bottles, bullet-proof materials, sunglasses, DVDs, iPod and computer cases.";
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    resultA();
+    print(advice);
+    print(result);
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -63,21 +112,19 @@ class ImageResult extends StatelessWidget {
                 controller: _controller,
                 children: [
                   MyCard2(
-                    category: 'THIS IS A ' + result.toUpperCase(),
+                    category: 'THIS IS A ' + result,
                     color: Theme.of(context).primaryColorLight,
                     width: 390,
-                    img: 'assets/images/290C268D-B7D6-4B19-B104-68FBAAF2D007.png',
+                    img: image,
                     h: 250,
                     w: 700,
                     f: 20,
                   ),
                   MyCard2(
-                    category: '4 tips to recycle ' +
-                        result +
-                        ':\n\n1. No bags. Like really, no bags.\n2. Small things are big problems\n3. Make sure it’s clean, empty and dry\n4. Combined materials are trash',
+                    category: ' tips to recycle ' + result + ":\n\n" + advice,
                     color: Theme.of(context).primaryColorLight,
                     width: 390,
-                    img: 'assets/images/B6057A36-3281-4CD6-A8EF-8DAB5EBF14AC.png',
+                    img: image,
                     h: 230,
                     w: 700,
                     f: 20,
@@ -86,7 +133,8 @@ class ImageResult extends StatelessWidget {
                     category: 'START RECYCLING NOW',
                     color: Theme.of(context).primaryColorLight,
                     width: 390,
-                    img: 'assets/images/8E286D7B-44C5-4688-9D7F-607339723A9B.png',
+                    img:
+                        'assets/images/8E286D7B-44C5-4688-9D7F-607339723A9B.png',
                     h: 250,
                     w: 700,
                     f: 50,
