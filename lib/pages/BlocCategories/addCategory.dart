@@ -279,13 +279,15 @@ class _addCategoryState extends State<addCategory> {
                                             wid: width,
                                             w: 200,
                                             h: 200,
-                                            admin: true,
                                           ),
                                           onTap: () =>
                                               Navigator.of(context).push(
                                             MaterialPageRoute(
                                               builder: (context) =>
-                                                  CategoryDetail(cat: data),
+                                                  CategoryDetail(
+                                                cat: data,
+                                                admin: true,
+                                              ),
                                             ),
                                           ),
                                         );

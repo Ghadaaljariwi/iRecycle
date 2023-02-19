@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:math';
+import 'dart:ui' as ui;
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -9,26 +10,32 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
+import 'package:irecycle/main.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:uuid/uuid.dart';
+
 import 'package:irecycle/pages/BlocCategories/addCategory.dart';
 import 'package:irecycle/pages/login_page.dart';
 import 'package:irecycle/pages/splash_screen.dart';
 import 'package:irecycle/pages/widgets/header_widget.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:uuid/uuid.dart';
-import 'package:intl/intl.dart';
-import 'dart:ui' as ui;
+
 import '../../common/utils.dart';
 import '../../controllers/FBStorage.dart';
 import 'bloc/category_bloc.dart';
-import 'package:image_picker/image_picker.dart';
-
-import 'category.dart';
 import 'cat.dart';
+import 'category.dart';
 
 class CategoryDetail extends StatefulWidget {
   final DocumentSnapshot cat;
+  late bool admin;
 
-  CategoryDetail({required this.cat});
+  CategoryDetail({
+    Key? key,
+    required this.cat,
+    required this.admin,
+  }) : super(key: key);
 
   @override
   _CategoryDetailState createState() => _CategoryDetailState();
@@ -36,7 +43,6 @@ class CategoryDetail extends StatefulWidget {
 
 class _CategoryDetailState extends State<CategoryDetail> {
   late DocumentSnapshot _cat;
-
   // @override
   // void initState() {
   //   super.initState();
@@ -51,6 +57,16 @@ class _CategoryDetailState extends State<CategoryDetail> {
   //   });
   // }
 
+  void delete() {
+    deleteCategoryDB(widget.cat['id']);
+  }
+
+  Future deleteCategoryDB(String id) async {
+    final firebaseUser = await FirebaseAuth.instance.currentUser!;
+
+    await FirebaseFirestore.instance.collection('categories').doc(id).delete();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,7 +75,7 @@ class _CategoryDetailState extends State<CategoryDetail> {
         centerTitle: true,
       ),
       body: Container(
-        padding: EdgeInsets.all(20),
+        padding: EdgeInsets.all(5),
         decoration: BoxDecoration(
           color: Colors.grey[200],
           borderRadius: BorderRadius.circular(20),
@@ -74,7 +90,7 @@ class _CategoryDetailState extends State<CategoryDetail> {
                 height: 450,
                 width: 450,
               ),
-            SizedBox(height: 20),
+            SizedBox(height: 5),
             Text(
               widget.cat['name'].toString(),
               style: TextStyle(
@@ -82,7 +98,7 @@ class _CategoryDetailState extends State<CategoryDetail> {
                 fontSize: 25,
               ),
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 5),
             Container(
               width: double.infinity,
               child: Text(
@@ -91,6 +107,34 @@ class _CategoryDetailState extends State<CategoryDetail> {
                 style: TextStyle(fontSize: 20),
               ),
             ),
+            SizedBox(height: 5),
+            widget.admin
+                ? ElevatedButton(
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStatePropertyAll(
+                          Color.fromARGB(255, 139, 2, 2)),
+                    ),
+                    child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Text('Delete',
+                              style: TextStyle(
+                                fontSize: 20,
+                              )),
+                          Padding(padding: EdgeInsets.all(5)),
+                          Icon(
+                            Icons.delete,
+                            size: 20,
+                            color: (Colors.white),
+                          )
+                        ]),
+                    onPressed: () {
+                      delete();
+                    },
+                  )
+                : SizedBox()
           ],
         ),
       ),

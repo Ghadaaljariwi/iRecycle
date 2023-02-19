@@ -16,7 +16,6 @@ class Cat extends StatelessWidget {
   late double wid;
   late double w;
   late double h;
-  late bool admin;
 
   Cat(
       {required this.name,
@@ -27,7 +26,6 @@ class Cat extends StatelessWidget {
       required this.wid,
       required this.w,
       required this.h,
-      required this.admin,
       Key? key});
 
   void delete() {
@@ -76,6 +74,7 @@ class Cat extends StatelessWidget {
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
               ),
             ),
+            /*
             admin
                 ? Center(
                     child: IconButton(
@@ -88,6 +87,7 @@ class Cat extends StatelessWidget {
                     ),
                   )
                 : SizedBox()
+                */
           ],
         ),
       ),

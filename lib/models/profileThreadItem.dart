@@ -540,9 +540,16 @@ class _EditPost extends State<EditPost> {
             postID: postId, postImageFile: _postImageFile!));
       }
 
-      FBCloudStore.sendPostInFirebase(
-          postId, name, writingTextController.text, post);
-
+      //FBCloudStore.sendPostInFirebase(postId, name, writingTextController.text, post);
+      FirebaseFirestore.instance
+          .collection('thread')
+          .doc(widget.data['postID'])
+          .update({
+        'postContent': writingTextController.text,
+        'postImage': post,
+        'postTimeStamp': DateTime.now().millisecondsSinceEpoch,
+        'state': false,
+      });
       showToastMessage("The post is under review by the admin");
 
       setState(() {

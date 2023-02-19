@@ -249,11 +249,13 @@ class _categoriesState extends State<categories> {
                         wid: 150,
                         w: 100,
                         h: 100,
-                        admin: false,
                       ),
                       onTap: () => Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (context) => CategoryDetail(cat: data),
+                          builder: (context) => CategoryDetail(
+                            cat: data,
+                            admin: false,
+                          ),
                         ),
                       ),
                     );
