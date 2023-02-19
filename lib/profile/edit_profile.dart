@@ -32,7 +32,7 @@ class EditProfile extends StatefulWidget {
 class _EditProfileState extends State<EditProfile> {
   bool isLoading = false;
   TextEditingController nameController = TextEditingController();
-  TextEditingController _emailController = TextEditingController();
+  //TextEditingController _emailController = TextEditingController();
   String uid = FirebaseAuth.instance.currentUser!.uid;
   File? image;
   //User user;
@@ -52,20 +52,24 @@ class _EditProfileState extends State<EditProfile> {
         .listen((DocumentSnapshot snapshot) {
       nameController.text = snapshot.get("firstName");
       image = File(snapshot.get('image'));
-      _emailController.text = snapshot.get("email");
+      // _emailController.text = snapshot.get("email");
       if (mounted) setState(() {});
     });
   }
 
   updateProfile() {
-    if (_emailController.text.isEmpty || nameController.text.isEmpty) {
+    if (nameController.text.isEmpty) {
       showPopUp("Empty Fields", "Please enter all required fields");
-    } else if (!_emailController.text.contains('@')) {
+    }
+    /*
+    else if (!_emailController.text.contains('@')) {
       showPopUp("Invalid E-mail", 'Please enter a valid E-mail address');
-    } else {
+      */
+    // }
+    else {
       FirebaseFirestore.instance.collection('users').doc(uid).update({
         'firstName': nameController.text.toString(),
-        'email': _emailController.text.toString()
+        //'email': _emailController.text.toString()
       }).then((value) {
         showToastMessage("Your profile has been updated successfully");
         Navigator.pop(context);
@@ -219,6 +223,7 @@ class _EditProfileState extends State<EditProfile> {
     );
   }
 
+/*
   Column buildBioField() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -238,7 +243,7 @@ class _EditProfileState extends State<EditProfile> {
       ],
     );
   }
-
+*/
   int count = 0;
   void _showDialog() {
     showDialog(
@@ -341,7 +346,7 @@ class _EditProfileState extends State<EditProfile> {
                     children: <Widget>[
                       // buildPictureField(),
                       buildDisplayNameField(),
-                      buildBioField(),
+                      // buildBioField(),
                     ],
                   ),
                 ),

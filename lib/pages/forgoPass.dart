@@ -43,6 +43,48 @@ class _forgotPassState extends State<forgotPass> {
         });
   }
 
+  int count = 0;
+  void _showExit() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          // set up the buttons
+          Widget cancelButton = TextButton(
+            child: Text(
+              "No",
+              style: TextStyle(fontSize: 20, color: Colors.red),
+            ),
+            onPressed: Navigator.of(context).pop,
+          );
+          Widget continueButton = TextButton(
+            child: Text(
+              "Yes",
+              style: TextStyle(fontSize: 20, color: Colors.green),
+            ),
+            onPressed: () => Navigator.popUntil(
+              context,
+              (route) {
+                return count++ == 2;
+              },
+            ),
+          );
+          return AlertDialog(
+            title: Text(
+              'Exit',
+              style: TextStyle(color: Colors.deepPurple, fontSize: 20),
+            ),
+            content: Text(
+              'Are you sure you want to exit ?',
+              style: TextStyle(fontSize: 20),
+            ),
+            actions: [
+              cancelButton,
+              continueButton,
+            ],
+          );
+        });
+  }
+
   void showToastMessage(String message) {
     Fluttertoast.showToast(
         msg: message,
@@ -58,6 +100,25 @@ class _forgotPassState extends State<forgotPass> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back,
+            color: Colors.white,
+            size: 40,
+          ),
+          onPressed: () {
+            _showExit();
+          },
+        ),
+        backgroundColor: Theme.of(context).primaryColorLight,
+        title: Text(
+          "Forgot Password",
+          style: TextStyle(
+            color: Colors.black,
+          ),
+        ),
+      ),
       backgroundColor: Colors.white,
       body: Container(
         width: MediaQuery.of(context).size.width,
@@ -116,7 +177,8 @@ class _forgotPassState extends State<forgotPass> {
                                   .sendPasswordResetEmail(
                                       email: _emailController.text)
                                   .then((value) {
-                                showToastMessage('Reset password email sent successfully');
+                                showToastMessage(
+                                    'Reset password email sent successfully');
 
                                 Navigator.pop(
                                     context,
