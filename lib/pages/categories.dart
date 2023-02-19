@@ -7,6 +7,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'BlocCategories/bloc/category_bloc.dart';
 import 'BlocCategories/cat.dart';
 import 'BlocCategories/category.dart';
+import 'BlocCategories/categoryDetail.dart';
 import 'Mycard.dart';
 
 class categories extends StatefulWidget {
@@ -19,6 +20,19 @@ class categories extends StatefulWidget {
 class _categoriesState extends State<categories> {
   final _controller = PageController();
   final _controller2 = PageController();
+  int index = 0;
+
+  List<Color> myColors = [
+    Color.fromARGB(255, 189, 232, 152),
+    Color.fromARGB(255, 249, 215, 255),
+    Color.fromARGB(255, 255, 221, 176),
+    Color.fromARGB(255, 176, 230, 255),
+  ];
+
+  Color chooseColor(int i) {
+    index++;
+    return myColors[i];
+  }
 
   var name;
   @override
@@ -178,6 +192,77 @@ class _categoriesState extends State<categories> {
               ],
             ),
           ),
+
+          SmoothPageIndicator(
+              controller: _controller, // PageController
+              count: 3,
+              effect: WormEffect(
+                dotColor: Colors.grey,
+                activeDotColor: Theme.of(context).primaryColorDark,
+              ),
+              // your preferred effect
+              onDotClicked: (index) {}),
+
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 25),
+            child: Row(
+              //  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Matrial',
+                  style: TextStyle(
+                    fontSize: 28,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Text(
+                  ' Categories',
+                  style: TextStyle(
+                    fontSize: 28,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Container(
+            height: 200,
+            //width: 150,
+            child: StreamBuilder<QuerySnapshot>(
+              stream: FirebaseFirestore.instance
+                  .collection('categories')
+                  .snapshots(),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return const LinearProgressIndicator();
+                }
+                return ListView(
+                  scrollDirection: Axis.horizontal,
+                  controller: _controller2,
+                  children: snapshot.data!.docs.map((DocumentSnapshot data) {
+                    return InkWell(
+                      child: Cat(
+                        id: data["id"],
+                        name: data['name'],
+                        description: data['description'],
+                        image: data['image'],
+                        color: chooseColor(index % 4),
+                        wid: 150,
+                        w: 100,
+                        h: 100,
+                        admin: false,
+                      ),
+                      onTap: () => Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => CategoryDetail(cat: data),
+                        ),
+                      ),
+                    );
+                  }).toList(),
+                );
+              },
+            ),
+          ),
+
           SmoothPageIndicator(
               controller: _controller, // PageController
               count: 3,

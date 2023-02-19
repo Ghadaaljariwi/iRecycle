@@ -276,6 +276,10 @@ class _addCategoryState extends State<addCategory> {
                                             description: data['description'],
                                             image: data['image'],
                                             color: chooseColor(index % 4),
+                                            wid: width,
+                                            w: 200,
+                                            h: 200,
+                                            admin: true,
                                           ),
                                           onTap: () =>
                                               Navigator.of(context).push(
@@ -301,7 +305,7 @@ class _addCategoryState extends State<addCategory> {
                                           Padding(
                                             padding: const EdgeInsets.all(14.0),
                                             child: Text(
-                                              'There is no post',
+                                              'There is no category',
                                               style: TextStyle(
                                                   fontSize: 16,
                                                   color: Colors.grey[700]),

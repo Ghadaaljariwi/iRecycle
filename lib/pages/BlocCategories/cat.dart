@@ -13,6 +13,10 @@ class Cat extends StatelessWidget {
   late String description;
   late String image;
   late Color color;
+  late double wid;
+  late double w;
+  late double h;
+  late bool admin;
 
   Cat(
       {required this.name,
@@ -20,6 +24,10 @@ class Cat extends StatelessWidget {
       required this.description,
       required this.image,
       required this.color,
+      required this.wid,
+      required this.w,
+      required this.h,
+      required this.admin,
       Key? key});
 
   void delete() {
@@ -40,7 +48,7 @@ class Cat extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(20),
       child: Container(
-        width: 200,
+        width: wid, //width,
         padding: EdgeInsets.all(20),
         decoration: BoxDecoration(
           color: color,
@@ -50,9 +58,10 @@ class Cat extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           //crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            Center(
-              widthFactor: 100,
-              child: Utils.cacheNetworkImageWithEvent(context, image, 500, 0),
+            Container(
+              width: w,
+              height: h,
+              child: Utils.cacheNetworkImageWithEvent(context, image, 100, 100),
               /*
               Image.file(
                 File(image),
@@ -67,16 +76,18 @@ class Cat extends StatelessWidget {
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
               ),
             ),
-            Center(
-              child: IconButton(
-                icon: const Icon(
-                  Icons.delete,
-                  size: 20,
-                  color: Color.fromARGB(255, 139, 2, 2),
-                ),
-                onPressed: delete,
-              ),
-            ),
+            admin
+                ? Center(
+                    child: IconButton(
+                      icon: const Icon(
+                        Icons.delete,
+                        size: 20,
+                        color: Color.fromARGB(255, 139, 2, 2),
+                      ),
+                      onPressed: delete,
+                    ),
+                  )
+                : SizedBox()
           ],
         ),
       ),

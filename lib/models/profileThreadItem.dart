@@ -160,9 +160,9 @@ class _ProfileThreadItem extends State<ProfileThreadItem> {
     return Column(children: [
       if (widget.data['state'] == false)
         Container(
-          width: double.infinity,
+          //width: double.infinity,
           color: Colors.amber,
-          padding: const EdgeInsets.all(10.0),
+          padding: const EdgeInsets.fromLTRB(8, 10, 4, 10),
           child: Text(
             'This post has not been accepted yet',
             textAlign: TextAlign.center,

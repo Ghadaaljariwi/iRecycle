@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:irecycle/pages/BlocCategories/addCategory.dart';
 import 'package:irecycle/pages/login_page.dart';
 import 'package:irecycle/pages/splash_screen.dart';
@@ -149,13 +150,38 @@ class _CategoryFieldState extends State<CategoryField> {
     try {
       final img = await ImagePicker().pickImage(source: source);
       if (img == null) return;
-
+/*
+      final croppedFile = await ImageCropper().cropImage(
+        sourcePath: img.path,
+        aspectRatioPresets: [
+          CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio3x2,
+          CropAspectRatioPreset.original,
+          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.ratio16x9
+        ],
+        uiSettings: [
+          AndroidUiSettings(
+              toolbarTitle: 'Cropper',
+              toolbarColor: Colors.deepOrange,
+              toolbarWidgetColor: Colors.white,
+              initAspectRatio: CropAspectRatioPreset.original,
+              lockAspectRatio: false),
+          IOSUiSettings(
+            title: 'Cropper',
+          ),
+          WebUiSettings(
+            context: context,
+          ),
+        ],
+      );
+*/
       final ImageTemporary = File(img.path);
       setState(() {
         image = ImageTemporary;
       });
-    } on PlatformException catch (e) {
-      print('Failed to pick image: $e');
+    } on Exception catch (e) {
+      showToastMessage('Failed to pick image: $e');
     }
   }
 

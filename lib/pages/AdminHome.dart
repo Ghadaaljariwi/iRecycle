@@ -34,7 +34,6 @@ class _AdminHomePageState extends State<AdminHomePage> {
   TextEditingController nameController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
   final List<Widget> _pages = [
-    AdminCategories(),
     AdminThreadMain(),
     addCategory(),
   ];
@@ -186,30 +185,6 @@ class _AdminHomePageState extends State<AdminHomePage> {
               ),
               ListTile(
                 leading: Icon(
-                  Icons.home_filled,
-                  size: _drawerIconSize,
-                  color: Theme.of(context).accentColor,
-                ),
-                title: Text(
-                  'Home Page',
-                  style: TextStyle(
-                      fontSize: _drawerFontSize,
-                      color: Theme.of(context).accentColor),
-                ),
-                onTap: () {
-                  /*   Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => ForgotPasswordPage()),
-                  ); */
-                },
-              ),
-              Divider(
-                color: Theme.of(context).primaryColor,
-                height: 1,
-              ),
-              ListTile(
-                leading: Icon(
                   Icons.logout_rounded,
                   size: _drawerIconSize,
                   color: Theme.of(context).accentColor,
@@ -272,10 +247,6 @@ class _AdminHomePageState extends State<AdminHomePage> {
             tabBackgroundColor: Theme.of(context).primaryColorLight,
             color: Colors.white,
             tabs: [
-              GButton(
-                icon: Icons.home,
-                text: 'Home',
-              ),
               GButton(
                 icon: Icons.park_sharp,
                 text: 'Community',

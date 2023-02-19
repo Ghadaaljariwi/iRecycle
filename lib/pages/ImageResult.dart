@@ -1,7 +1,9 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:irecycle/pages/MyCard2.dart';
 import 'package:irecycle/scan_text.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -60,7 +62,19 @@ class ImageResult extends StatelessWidget {
       // result2 = result.substring(4);
       advice =
           "A wide variety of plastic resins that don't fit into the previous categories are lumped into this one. Found in: Three- and five-gallon water bottles, bullet-proof materials, sunglasses, DVDs, iPod and computer cases.";
+    } else {
+      showToastMessage("Can't read image");
     }
+  }
+
+  void showToastMessage(String message) {
+    Fluttertoast.showToast(
+        msg: message,
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
+        textColor: Colors.white,
+        fontSize: 16.0);
   }
 
   @override
