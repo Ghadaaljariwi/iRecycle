@@ -63,7 +63,9 @@ class ImageResult extends StatelessWidget {
       advice =
           "A wide variety of plastic resins that don't fit into the previous categories are lumped into this one. Found in: Three- and five-gallon water bottles, bullet-proof materials, sunglasses, DVDs, iPod and computer cases.";
     } else {
-      showToastMessage("Can't read image");
+      image = 'assets/images/error.png';
+      result2 = "(we could not recognize it)";
+      advice = "";
     }
   }
 
