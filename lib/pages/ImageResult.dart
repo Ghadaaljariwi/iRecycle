@@ -29,37 +29,37 @@ class ImageResult extends StatelessWidget {
     String result2 = result;
     if (result[0] == "1") {
       image = 'assets/images/B5B010A4-9372-49F9-967F-9FC665BCC8E3.png';
-      //result2 = result.substring(2);
+      result2 = "PET or PETE";
       advice =
           "PET or PETE (polyethylene terephthalate) is the most common plastic for single-use bottled beverages because it's inexpensive, lightweight and easy to recycle. Found in: Soft drinks, water, ketchup and beer bottles.";
     } else if (result[0] == "2") {
       image = 'assets/images/hdpe.png';
-      // result2 = result.substring(2);
+      result2 = "HDPE";
       advice =
           'HDPE (high density polyethylene) is a versatile plastic with many uses, especially when it comes to packaging. Found in: Milk jugs, juice bottles, bleach, detergent and other household cleaner bottles.';
     } else if (result[0] == "3") {
       image = 'assets/images/pvc.png';
-      // result2 = result.substring(2);
+      result2 = "PVC";
       advice =
           "PVC (polyvinyl chloride) and V (vinyl) is tough and weathers well, so it's commonly used for things like piping and siding. Found in: Blister packaging, wire jacketing, siding, windows, piping.";
     } else if (result[0] == "4") {
       image = 'assets/images/ldpe.png';
-      //  result2 = result.substring(4);
+      result2 = "LDPE";
       advice =
           "LDPE (low density polyethylene) is a flexible plastic with many applications. Found in: Squeezable bottles, bread, frozen food, dry cleaning, and shopping bags.";
     } else if (result[0] == "5") {
       image = 'assets/images/pp.png';
-      // result2 = result.substring(4);
+      result2 = "PP";
       advice =
           "PP (polypropylene) has a high melting point, so it's often chosen for containers that will hold hot liquid. Found in: Some yogurt containers, syrup and medicine bottles, caps, straws.";
     } else if (result[0] == "6") {
       image = 'assets/images/ps.png';
-      // result2 = result.substring(4);
+      result2 = "PS";
       advice =
           "PS (polystyrene) can be made into rigid or foam products — in the latter case, it is popularly known as the trademark Styrofoam. Found in: Disposable plates and cups, meat trays, egg cartons, carry-out containers.";
     } else if (result[0] == "7") {
       image = 'assets/images/plastic.png';
-      // result2 = result.substring(4);
+      result2 = "OTHER";
       advice =
           "A wide variety of plastic resins that don't fit into the previous categories are lumped into this one. Found in: Three- and five-gallon water bottles, bullet-proof materials, sunglasses, DVDs, iPod and computer cases.";
     } else {
@@ -126,7 +126,7 @@ class ImageResult extends StatelessWidget {
                 controller: _controller,
                 children: [
                   MyCard2(
-                    category: 'THIS IS A ' + result,
+                    category: 'THIS IS A ' + result2,
                     color: Theme.of(context).primaryColorLight,
                     width: 390,
                     img: image,
@@ -135,7 +135,7 @@ class ImageResult extends StatelessWidget {
                     f: 20,
                   ),
                   MyCard2(
-                    category: ' tips to recycle ' + result + ":\n\n" + advice,
+                    category: ' tips to recycle ' + result2 + ":\n\n" + advice,
                     color: Theme.of(context).primaryColorLight,
                     width: 390,
                     img: image,
