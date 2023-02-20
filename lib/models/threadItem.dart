@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:irecycle/common/utils.dart';
 import 'package:irecycle/models/Comments.dart';
+import 'package:irecycle/models/profileThreadItem.dart';
 import 'package:irecycle/pages/widgets/contentDetail.dart';
 
 import '../pages/widgets/contentDetailProfile.dart';
@@ -59,6 +60,7 @@ class _ThreadItem extends State<ThreadItem> {
       "userName": data,
       "userId": FirebaseAuth.instance.currentUser!.uid,
     });
+    showToastMessage("You followed " + data);
   }
 
   void _updateLikeCount(bool isLikePost) async {

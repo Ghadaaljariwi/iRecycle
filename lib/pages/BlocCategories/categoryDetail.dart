@@ -56,9 +56,49 @@ class _CategoryDetailState extends State<CategoryDetail> {
   //     _cat = cat;
   //   });
   // }
-
+  int count = 0;
   void delete() {
-    deleteCategoryDB(widget.cat['id']);
+    showDialog(
+        context: context,
+        builder: (context) {
+          // set up the buttons
+          Widget cancelButton = TextButton(
+            child: Text(
+              "No",
+              style: TextStyle(fontSize: 20, color: Colors.red),
+            ),
+            onPressed: () => Navigator.popUntil(
+              context,
+              (route) {
+                return count++ == 2;
+              },
+            ),
+          );
+          Widget continueButton = TextButton(
+            child: Text(
+              "Yes",
+              style: TextStyle(fontSize: 20, color: Colors.green),
+            ),
+            onPressed: () {
+              deleteCategoryDB(widget.cat['id']);
+            },
+          );
+
+          return AlertDialog(
+            title: Text(
+              'Delete Category',
+              style: TextStyle(color: Colors.deepPurple, fontSize: 20),
+            ),
+            content: Text(
+              'Are you sure you want to delete this category ?',
+              style: TextStyle(fontSize: 20),
+            ),
+            actions: [
+              cancelButton,
+              continueButton,
+            ],
+          );
+        });
   }
 
   Future deleteCategoryDB(String id) async {
